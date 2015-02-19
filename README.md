@@ -17,7 +17,7 @@ using Gadfly
 using RDatasets
 iris = dataset("datasets", "iris")
 
-# AverageShiftedHistogram does not support DataFrames (currently)
+# AverageShiftedHistograms does not support DataFrames (currently)
 sepal_length = array(iris[1])
 
 b = Bin1(sepal_length, ab = [0, 10])
