@@ -38,7 +38,7 @@ mydata = array(iris[1])  # Get SepalLength
 
 ````julia
 binSepalLength = Bin1(mydata, nbin = 40)  # create bins
-ashSepalLength = Ash1(binSepalLength, m = 4, kern = :biweight)  # create ash
+ashSepalLength = Ash1(binSepalLength, m = 4, kernel = :biweight)  # create ash
 ````
 
 

@@ -21,6 +21,6 @@ iris = dataset("datasets", "iris")
 sepal_length = array(iris[1])
 
 b = Bin1(sepal_length, ab = [0, 10])
-f = Ash1(b, 5, :gaussian)
+f = Ash1(b, m=5, kernel=:gaussian)
 plot(f, sepal_length)
 ```

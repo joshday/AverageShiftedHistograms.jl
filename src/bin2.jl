@@ -37,8 +37,8 @@ of the range.
 """ ->
 function Bin2(y1::Vector,
               y2::Vector;
-              ab1::Vector = ab(y1, 0.1),
-              ab2::Vector = ab(y2, 0.1),
+              ab1::Vector = extremastretch(y1, 0.1),
+              ab2::Vector = extremastretch(y2, 0.1),
               nbin1::Int64 = 50,
               nbin2::Int64 = 50)
     a1, b1 = ab1

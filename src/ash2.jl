@@ -12,8 +12,9 @@ Type for storing bivariate ash estimate
 | `y::Vector`                | y values
 | `z::Matrix`                | density at x, y
 | `m1::Int64`                | smoothing parameter
-| `k::Symbol                 | kernel
-| `b`                        | Bin1 object
+| `kernel1::Symbol`          | kernel for x dimension
+| `kernel2::Symbol`          | kernel for y dimension
+| `b`                        | Bin2 object
 | `non0::Bool`               | true if nonzero estimate at endpoints
 """ ->
 type Ash2
@@ -54,8 +55,8 @@ and kernels `k1`/`k2`.
 function Ash2(bin::Bin2;
               m1::Int64 = 5,
               m2::Int64 = 5,
-              k1::Symbol = :biweight,
-              k2::Symbol = :biweight)
+              kernel1::Symbol = :biweight,
+              kernel2::Symbol = :biweight)
 
     a1, b1 = bin.ab1
     a2, b2 = bin.ab2
@@ -64,8 +65,8 @@ function Ash2(bin::Bin2;
 
     w = zeros(2*m1 - 1, 2*m2 - 1)
     for i = (1 - m1):(m1 - 1), j = (1 - m2):(m2 - 1)
-        w[i + m1, j + m2] = SmoothingKernels.kernels[k1](i / m1) *
-            SmoothingKernels.kernels[k2](i / m2)
+        w[i + m1, j + m2] = SmoothingKernels.kernels[kernel1](i / m1) *
+            SmoothingKernels.kernels[kernel2](i / m2)
     end
 
     δ1 = (b1 - a1) / nbin1
@@ -100,5 +101,5 @@ function Ash2(bin::Bin2;
         warn("nonzero density outside of bounds")
     end
 
-    Ash2(x, y, z, m1, m2, k1, k2, bin, non0)
+    Ash2(x, y, z, m1, m2, kernel1, kernel2, bin, non0)
 end

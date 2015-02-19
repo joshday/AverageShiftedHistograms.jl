@@ -5,14 +5,14 @@ export Ash1
 @doc doc"""
 Type for storing ash estimate
 
-| Field        | Description
-|:-------------|:------------------------------
-| `x::Vector`  | x values
-| `y::Vector`  | density at x
-| `m::Int64`   | smoothing parameter
-| `k::Symbol   | kernel
-| `b`          | Bin1 object
-| `non0::Bool` | true if nonzero estimate at endpoints
+| Field           | Description
+|:----------------|:------------------------------
+| `x::Vector`     | x values
+| `y::Vector`     | density at x
+| `m::Int64`      | smoothing parameter
+| `kernel::Symbol | kernel
+| `b`             | Bin1 object
+| `non0::Bool`    | true if nonzero estimate at endpoints
 """->
 type Ash1
     x::Vector                            # vector of x values
@@ -43,7 +43,7 @@ and kernel `kern`.
 - :cosine
 - :logistic
 """  ->
-function Ash1(bin::Bin1; m::Int64 = 5, kern::Symbol=:biweight)
+function Ash1(bin::Bin1; m::Int64 = 5, kernel::Symbol=:biweight)
     a, b = bin.ab
     δ = (b - a) / bin.nbin
     h = m*δ
@@ -52,7 +52,7 @@ function Ash1(bin::Bin1; m::Int64 = 5, kern::Symbol=:biweight)
     for k = 1:bin.nbin
         if bin.v != 0
             for i = maximum([1, k - m + 1]):minimum([bin.nbin, k + m - 1])
-                y[i] += bin.v[k]  * SmoothingKernels.kernels[kern]((i - k) / m)
+                y[i] += bin.v[k]  * SmoothingKernels.kernels[kernel]((i - k) / m)
             end
         end
     end
@@ -62,5 +62,5 @@ function Ash1(bin::Bin1; m::Int64 = 5, kern::Symbol=:biweight)
     if non0
         warn("nonzero density outside interval [a, b)")
     end
-    Ash1(x, y, m, kern, bin, non0)
+    Ash1(x, y, m, kernel, bin, non0)
 end

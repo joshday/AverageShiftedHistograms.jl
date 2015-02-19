@@ -1,6 +1,22 @@
 export Bin1, ab
 
 #-----------------------------------------------------------------------------#
+#---------------------------------------------------------------# function: ab
+@doc md"""
+Returns a length-two vector.  Elements are the extended range of the data
+`y` by the factor `c`.  This function is used to generate the end points
+for a `Bin1` object.
+
+Usage: `Bin1(mydata, ab=ab(mydata, .2))
+""" ->
+function extremastretch(y::Vector, c::Float64 = 0.1)
+    ymin, ymax = extrema(y)
+    r = ymax - ymin
+    return [ymin - c*r, ymax + c*r]
+end
+
+
+#-----------------------------------------------------------------------------#
 #-----------------------------------------------------------------# type: Bin1
 @doc md"""
 ### Bins for an ASH estimate
@@ -27,7 +43,7 @@ Contruct a `Bin1` object from a vector of data using `nbin` bins.
 
 The default values for `ab` extend `y`'s minimum/maximum by 10% of the range.
 """ ->
-function Bin1(y::Vector; ab::Vector=ab(y, 0.1), nbin::Int64=50)
+function Bin1(y::Vector; ab::Vector = extremastretch(y, 0.1), nbin::Int64=50)
     a, b = ab
     nout::Int64 = 0
     δ = (b - a) / nbin
@@ -57,18 +73,4 @@ end
 
 
 
-#-----------------------------------------------------------------------------#
-#---------------------------------------------------------------# function: ab
-@doc md"""
-Returns a length-two vector.  Elements are the extended range of the data
-`y` by the factor `c`.  This function is used to generate the end points
-for a `Bin1` object.
 
-Usage: `Bin1(mydata, ab=ab(mydata, .2))
-""" ->
-function ab(y::Vector, c::Float64)
-    ymax = maximum(y)
-    ymin = minimum(y)
-    r = ymax - ymin
-    return [ymin - c*r, ymax + c*r]
-end

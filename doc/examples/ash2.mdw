@@ -35,7 +35,7 @@ mydata = array(iris[1:2])  # Get SepalLength, SepalWidth
 
 <<term=false>>=
 bin = Bin2(mydata[:, 1], mydata[:, 2], nbin1 = 50, nbin2 = 50)  # create bins
-ash = Ash2(bin, m1 = 3, m2 = 3, k1 = :biweight, k2 = :gaussian)
+ash = Ash2(bin, m1 = 3, m2 = 3, kernel1 = :biweight, kernel2 = :gaussian)
 @
 
 
