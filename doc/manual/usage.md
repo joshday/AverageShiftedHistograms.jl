@@ -5,9 +5,13 @@
 
 ```
 bins = Bin1(y, ab = [lowerbound, upperbound], nbin=50) 
-ash = Ash1(bins, m=5, kern=:epanechnikov)
+ash = Ash1(bins, m=5, kernel=:epanechnikov)
 Gadfly.plot(ash)
 ```
+
+Plots can also take the form `Gadfly.plot(ash, y)` to produce the density estimate overlaid on a histogram.  
+
+`[lowerbound, upperbound]` can be set with `extremastretch(y, c)` which extends the extrema of `y` by `c` * `range(y)`
 
 
 
@@ -22,14 +26,13 @@ Gadfly.plot(ash)
 
 ##### `Ash1`
 	
-| Argument       | Description
-|:---------------|--------------------------------
-| `bin::Bin1`    | data
-| `m::Int64  `   | smoothing parameter
-| `kern::Symbol` |kernel to use	 
+| Argument         | Description
+|:-----------------|--------------------------------
+| `bin::Bin1`      | data
+| `m::Int64  `     | smoothing parameter
+| `kernel::Symbol` |kernel to use	 
 		
-		
-Plots can also take the form `Gadfly.plot(ash, y)` to produce the density estimate overlaid on a histogram.
+	
 
 ----
 ----
@@ -65,12 +68,12 @@ Plot is a contour plot for now.  When 3D plots appear in Gadfly, more options wi
 
 ##### `Ash2`
 	
-| Argument       | Description
-|:---------------|--------------------------------
-| `bin::Bin2`    | data
-| `m1::Int64`    | smoothing parameter for y1
-| `m2::Int64`    | smoothing parameter for y2
-| `k1::Symbol`   | kernel associated with y1
-| `k2::Symbol`   | kernel associated with y2
+| Argument          | Description
+|:------------------|--------------------------------
+| `bin::Bin2`       | data
+| `m1::Int64`       | smoothing parameter for y1
+| `m2::Int64`       | smoothing parameter for y2
+| `kernel1::Symbol` | kernel associated with y1
+| `kernel2::Symbol` | kernel associated with y2
 
 
