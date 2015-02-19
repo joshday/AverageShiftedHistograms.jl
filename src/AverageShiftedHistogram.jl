@@ -1,5 +1,14 @@
 module AverageShiftedHistogram
 
-# package code goes here
+    import SmoothingKernels
+    using Gadfly
+    using Docile
 
-end # module
+
+    include("bin1.jl")
+    include("ash1.jl")
+    include("bin2.jl")
+    include("ash2.jl")
+    include("plot.jl")
+end
+
