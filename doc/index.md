@@ -4,7 +4,7 @@
 ## Usage
 
 
-This example generates bins from some `myUnivariateDataset` using 50 bins.  The default range of the bins extends the range of the data by 10%.  A Gaussian kernel is then used to make the ASH estimator with smoothing parameter $m=5$.
+This example generates bins from some `myUnivariateDataset` using 50 bins.  The default range of the bins extends the range of the data by 10%.  A Gaussian kernel is then used to make the ASH estimator with smoothing parameter `m`=$.
 
 ```julia
 using AverageShiftedHistograms
