@@ -18,7 +18,7 @@ find the best fit.
 
 ### Load packages, iris data.
 <<term=false>>=
-using AverageShiftedHistogram
+using AverageShiftedHistograms
 using Gadfly
 using RDatasets
 using DataFrames

@@ -1,4 +1,4 @@
-using AverageShiftedHistogram
+using AverageShiftedHistograms
 using Distributions
 using Base.Test
 
