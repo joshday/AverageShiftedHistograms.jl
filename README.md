@@ -20,7 +20,7 @@ iris = dataset("datasets", "iris")
 # AverageShiftedHistograms does not support DataFrames (currently)
 sepal_length = array(iris[1])
 
-b = Bin1(sepal_length, ab = [0, 10])
-f = Ash1(b, m=5, kernel=:gaussian)
+b = Bin1(sepal_length)
+f = Ash1(b)
 plot(f, sepal_length)
 ```
