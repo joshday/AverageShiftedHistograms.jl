@@ -22,5 +22,5 @@ sepal_length = array(iris[1])
 
 b = Bin1(sepal_length)
 f = Ash1(b)
-plot(f, sepal_length)
+Gadfly.plot(f, sepal_length)
 ```
