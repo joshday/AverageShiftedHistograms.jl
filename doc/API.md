@@ -1,4 +1,4 @@
-# AverageShiftedHistogram
+# AverageShiftedHistograms
 
 ## Exported
 ---
@@ -23,7 +23,7 @@ and kernel `kern`.
 
 
 **source:**
-[AverageShiftedHistogram/src/ash1.jl:45](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/ash1.jl#L45)
+[AverageShiftedHistograms/src/ash1.jl:45](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/ash1.jl#L45)
 
 ---
 
@@ -48,7 +48,7 @@ and kernels `k1`/`k2`.
 
 
 **source:**
-[AverageShiftedHistogram/src/ash2.jl:53](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/ash2.jl#L53)
+[AverageShiftedHistograms/src/ash2.jl:53](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/ash2.jl#L53)
 
 ---
 
@@ -59,7 +59,7 @@ The default values for `ab` extend `y`'s minimum/maximum by 10% of the range.
 
 
 **source:**
-[AverageShiftedHistogram/src/bin1.jl:29](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/bin1.jl#L29)
+[AverageShiftedHistograms/src/bin1.jl:29](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/bin1.jl#L29)
 
 ---
 
@@ -72,7 +72,7 @@ of the range.
 
 
 **source:**
-[AverageShiftedHistogram/src/bin2.jl:37](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/bin2.jl#L37)
+[AverageShiftedHistograms/src/bin2.jl:37](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/bin2.jl#L37)
 
 ---
 
@@ -85,7 +85,7 @@ Usage: `Bin1(mydata, ab=ab(mydata, .2))
 
 
 **source:**
-[AverageShiftedHistogram/src/bin1.jl:68](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/bin1.jl#L68)
+[AverageShiftedHistograms/src/bin1.jl:68](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/bin1.jl#L68)
 
 ---
 
@@ -103,7 +103,7 @@ Type for storing ash estimate
 
 
 **source:**
-[AverageShiftedHistogram/src/ash1.jl:16](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/ash1.jl#L16)
+[AverageShiftedHistograms/src/ash1.jl:16](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/ash1.jl#L16)
 
 ---
 
@@ -122,7 +122,7 @@ Type for storing bivariate ash estimate
 
 
 **source:**
-[AverageShiftedHistogram/src/ash2.jl:18](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/ash2.jl#L18)
+[AverageShiftedHistograms/src/ash2.jl:18](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/ash2.jl#L18)
 
 ---
 
@@ -139,7 +139,7 @@ Type for storing bivariate ash estimate
 
 
 **source:**
-[AverageShiftedHistogram/src/bin1.jl:15](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/bin1.jl#L15)
+[AverageShiftedHistograms/src/bin1.jl:15](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/bin1.jl#L15)
 
 ---
 
@@ -158,7 +158,7 @@ Type for storing bivariate ash estimate
 
 
 **source:**
-[AverageShiftedHistogram/src/bin2.jl:17](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/bin2.jl#L17)
+[AverageShiftedHistograms/src/bin2.jl:17](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/bin2.jl#L17)
 
 ## Internal
 ---
@@ -167,7 +167,7 @@ Type for storing bivariate ash estimate
 Plot an `Ash1`density estimate
 
 **source:**
-[AverageShiftedHistogram/src/plot.jl:1](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/plot.jl#L1)
+[AverageShiftedHistograms/src/plot.jl:1](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/plot.jl#L1)
 
 ---
 
@@ -175,7 +175,7 @@ Plot an `Ash1`density estimate
 Plot an `Ash2`density estimate
 
 **source:**
-[AverageShiftedHistogram/src/plot.jl:16](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/plot.jl#L16)
+[AverageShiftedHistograms/src/plot.jl:16](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/plot.jl#L16)
 
 ---
 
@@ -184,6 +184,6 @@ Update a `Bin1` object with a new vector of data
 
 
 **source:**
-[AverageShiftedHistogram/src/bin1.jl:50](https://github.com/joshday/AverageShiftedHistogram.jl/tree/aa5d57100fb64b9babe0595486288eb2ee7d9fc3/src/bin1.jl#L50)
+[AverageShiftedHistograms/src/bin1.jl:50](https://github.com/joshday/AverageShiftedHistograms.jl/tree/0c730217465b3894b1f4d91fb19546a3bef7c475/src/bin1.jl#L50)
 
 

@@ -49,4 +49,4 @@ plot(ash)  # plot estimate with histogram
     draw(PNG("doc/examples/figures/ash2_ex.png", 15cm, 11cm),
     plot(ash))
 @
-![](https://raw.githubusercontent.com/joshday/AverageShiftedHistogram.jl/master/doc/examples/figures/ash2_ex.png)
+![](https://raw.githubusercontent.com/joshday/AverageShiftedHistograms.jl/master/doc/examples/figures/ash2_ex.png)

@@ -19,7 +19,7 @@ find the best fit.
 
 ### Load packages, iris data.
 ````julia
-using AverageShiftedHistogram
+using AverageShiftedHistograms
 using Gadfly
 using RDatasets
 using DataFrames
@@ -59,4 +59,4 @@ plot(ash)  # plot estimate with histogram
 
 
 
-![](https://raw.githubusercontent.com/joshday/AverageShiftedHistogram.jl/master/doc/examples/figures/ash2_ex.png)
+![](https://raw.githubusercontent.com/joshday/AverageShiftedHistograms.jl/master/doc/examples/figures/ash2_ex.png)

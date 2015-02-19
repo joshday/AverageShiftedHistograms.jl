@@ -1,4 +1,4 @@
-module AverageShiftedHistogram
+module AverageShiftedHistograms
 
     import SmoothingKernels
     using Gadfly
