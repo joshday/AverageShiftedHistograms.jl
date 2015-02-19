@@ -21,7 +21,7 @@ bin = Bin2(y1, y2, nbin1=100, nbin2=77)
 
 
 # Get ash estimate with Gaussian Kernel
-ash = Ash2(bin, m1=10, k1=:gaussian, k2=:triweight)
+ash = Ash2(bin, m1=10, kernel1=:gaussian, kernel2=:triweight)
 
 @test ash.m1 == 10
 @test ash.m2 == 5
