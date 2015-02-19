@@ -24,3 +24,4 @@ b = Bin1(sepal_length)
 f = Ash1(b)
 Gadfly.plot(f, sepal_length)
 ```
+![](doc/examples/figures/READMEplot.png)
