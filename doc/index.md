@@ -11,7 +11,7 @@ using AverageShiftedHistograms
 using Gadfly
 
 bins = Bin1(myUnivariateDataset, nbin=50)
-ash = Ash1(bins, 5, :gaussian)
+ash = Ash1(bins, m=5, kernel=:gaussian)
 
 plot(ash)
 ```
