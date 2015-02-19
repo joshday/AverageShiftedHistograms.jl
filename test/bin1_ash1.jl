@@ -2,7 +2,6 @@ using AverageShiftedHistograms
 using Distributions
 using Base.Test
 
-##### Testing probably needs to be redone
 
 #generate data
 srand(12345)
@@ -10,7 +9,6 @@ y = rand(Gamma(5,2), 1000)
 
 # Get bins
 bin = Bin1(y, ab=[0, maximum(y) + 1], nbin=100)
-bin = Bin1(y, nbin=100)
 
 @test bin.n == 1000
 @test bin.nout == 0
