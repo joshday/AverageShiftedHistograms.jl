@@ -14,8 +14,8 @@ bin = Bin2(y1, y2, nbin1=100, nbin2=77)
 
 @test bin.n == 1000
 @test bin.nout == 0
-@test bin.ab1 == ab(y1, 0.1)
-@test bin.ab2 == ab(y2, 0.1)
+@test bin.ab1 == extremastretch(y1, 0.1)
+@test bin.ab2 == extremastretch(y2, 0.1)
 @test bin.nbin1 == 100
 @test bin.nbin2 == 77
 
