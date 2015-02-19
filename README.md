@@ -3,7 +3,7 @@
 
 # AverageShiftedHistograms
 
-Density estimation using **Average Shifted Histograms**.  A great summary of the ASH estimator is [here](http://www.stat.rice.edu/~scottdw/stat550/HW/hw4/c05.pdf).
+Density estimation using **Average Shifted Histograms**.  A great summary of ASH is [here](http://www.stat.rice.edu/~scottdw/stat550/HW/hw4/c05.pdf).
 
 ## Read The Docs: [Documentation](http://averageshiftedhistogramsjl.readthedocs.org)
 
