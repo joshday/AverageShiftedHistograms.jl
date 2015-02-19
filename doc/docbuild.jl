@@ -5,5 +5,5 @@ using Weave
 using AverageShiftedHistograms
 
 save("doc/API.md", AverageShiftedHistograms)
-# weave(Pkg.dir("AverageShiftedHistogram", "doc", "examples", "ash1.mdw"), doctype="github")
+weave(Pkg.dir("AverageShiftedHistograms", "doc", "examples", "ash1.mdw"), doctype="github")
 weave(Pkg.dir("AverageShiftedHistograms", "doc", "examples", "ash2.mdw"), doctype="github")

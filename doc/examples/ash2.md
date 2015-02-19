@@ -52,7 +52,7 @@ ash = Ash2(bin, m1 = 3, m2 = 3, k1 = :biweight, k2 = :gaussian)
 ### Check fit.
 
 ````julia
-plot(ash)  # plot estimate with histogram
+plot(ash)  # plot estimate
 ````
 
 

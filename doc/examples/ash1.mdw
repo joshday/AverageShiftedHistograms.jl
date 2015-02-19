@@ -39,7 +39,7 @@ ashSepalLength = Ash1(binSepalLength, m = 4, kern = :biweight)  # create ash
 ### Check fit.
 
 <<term=true; eval=false>>=
-plot(ashSepalLength, mydata)  # plot estimate with histogram
+plot(ashSepalLength, mydata)  # plot estimate over histogram
 @
 <<term=true; echo=false>>=
     draw(PNG("doc/examples/figures/ash1_ex.png", 15cm, 11cm),

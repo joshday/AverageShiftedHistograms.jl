@@ -43,7 +43,7 @@ ash = Ash2(bin, m1 = 3, m2 = 3, k1 = :biweight, k2 = :gaussian)
 ### Check fit.
 
 <<term=true; eval=false>>=
-plot(ash)  # plot estimate with histogram
+plot(ash)  # plot estimate
 @
 <<term=true; echo=false>>=
     draw(PNG("doc/examples/figures/ash2_ex.png", 15cm, 11cm),

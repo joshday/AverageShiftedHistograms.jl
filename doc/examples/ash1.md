@@ -19,7 +19,7 @@ best fit.
 
 ### Load packages, iris data.
 ````julia
-using ASH
+using AverageShiftedHistograms
 using Gadfly
 using RDatasets
 using DataFrames
@@ -48,11 +48,11 @@ ashSepalLength = Ash1(binSepalLength, m = 4, kern = :biweight)  # create ash
 ### Check fit.
 
 ````julia
-plot(ashSepalLength, mydata)  # plot estimate with histogram
+plot(ashSepalLength, mydata)  # plot estimate over histogram
 ````
 
 
 
 
 
-![](https://raw.githubusercontent.com/joshday/ASH.jl/master/doc/examples/figures/ash1_ex.png)
+![](https://raw.githubusercontent.com/joshday/AverageShiftedHistograms.jl/master/doc/examples/figures/ash1_ex.png)

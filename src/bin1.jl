@@ -28,7 +28,7 @@ Contruct a `Bin1` object from a vector of data using `nbin` bins.
 The default values for `ab` extend `y`'s minimum/maximum by 10% of the range.
 """ ->
 function Bin1(y::Vector; ab::Vector=ab(y, 0.1), nbin::Int64=50)
-    a,b = ab
+    a, b = ab
     nout::Int64 = 0
     δ = (b - a) / nbin
     n = length(y)
