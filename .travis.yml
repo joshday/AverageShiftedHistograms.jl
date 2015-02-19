@@ -9,6 +9,6 @@ notifications:
   email: false
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("DataFrames"); Pkg.test("DataFrames"; coverage=true)'
+  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("AverageShiftedHistograms"); Pkg.test("AverageShiftedHistograms"; coverage=true)'
 after_success:
-  - julia -e 'cd(Pkg.dir("DataFrames")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+  - julia -e 'cd(Pkg.dir("AverageShiftedHistograms")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
