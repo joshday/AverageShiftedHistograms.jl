@@ -5,6 +5,14 @@
 
 Density estimation using **Average Shifted Histograms**.  A great summary of ASH is [here](http://www.stat.rice.edu/~scottdw/stat550/HW/hw4/c05.pdf).
 
+## Installation:
+
+From Julia REPL:
+
+```julia
+Pkg.add("AverageShiftedHistograms")
+```
+
 ## Read The Docs: [Documentation](http://averageshiftedhistogramsjl.readthedocs.org)
 
 ## Basic Usage
