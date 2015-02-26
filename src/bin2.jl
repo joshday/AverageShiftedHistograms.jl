@@ -21,7 +21,7 @@ type Bin2
     ab2::Vector             # bounds for second data vector
     nbin1::Int64            # number of bins
     nbin2::Int64            # number of bins
-    nout::Int64             # n outside interval [a, b) (not tracked yet)
+    nout::Int64             # n outside interval [a, b)
     n::Int64                # number of observations
 end
 
@@ -60,3 +60,15 @@ function Bin2(y1::Vector,
     Bin2(v, ab1, ab2, nbin1, nbin2, 0, length(y1))
 end
 
+
+@doc md"""
+Update a `Bin2` object with new vectors of data
+""" ->
+function update!(obj::Bin2, y1::Vector, y2::Vector)
+    newbin = Bin2(y1, y2,
+                  ab1 = obj.ab1, ab2 = obj.ab2,
+                  nbin1 = obj.nbin1, nbin2 = obj.nbin2)
+    obj.v += newbin.v
+    obj.nout += newbin.nout
+    obj.n += newbin.n
+end

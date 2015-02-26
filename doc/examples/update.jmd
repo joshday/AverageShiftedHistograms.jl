@@ -1,0 +1,24 @@
+# Univariate `Update!`
+
+```{julia; term=false; eval=true}
+using AverageShiftedHistograms
+using Gadfly
+```
+
+### First-batch bins and ash estimate
+```{julia; term=false; eval=true}
+x = randn(100)
+bin = Bin1(x, ab=[-5, 5])
+ash = Ash1(bin)
+plot(ash, x)
+```
+
+### Update bins with many batches
+```{julia; term=false; eval=true}
+for i =1:100000
+	update!(bin, randn(100))
+end
+
+ash = Ash1(bin, m=2)
+plot(ash)
+```

@@ -27,3 +27,11 @@ ash = Ash1(bin, m=5, kernel=:gaussian)
 @test ash.kernel == :gaussian
 
 
+# Update bins
+y2 = rand(Gamma(5,2), 1001)
+update!(bin, y2)
+
+@test bin.n == 2001
+@test bin.ab == [0, maximum(y) + 1]
+@test bin.nbin == 100
+

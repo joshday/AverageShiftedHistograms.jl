@@ -1,4 +1,4 @@
-export Bin1, extremastretch
+export Bin1, extremastretch, update!
 
 #-----------------------------------------------------------------------------#
 #---------------------------------------------------------------# function: ab
@@ -7,7 +7,7 @@ Returns a length-two vector.  Elements are the extended range of the data
 `y` by the factor `c`.  This function is used to generate the end points
 for a `Bin1` object.
 
-Usage: `Bin1(mydata, ab=ab(mydata, .2))
+Usage: `Bin1(mydata, ab=extremastretch(mydata, .2))
 """ ->
 function extremastretch(y::Vector, c::Float64 = 0.1)
     ymin, ymax = extrema(y)

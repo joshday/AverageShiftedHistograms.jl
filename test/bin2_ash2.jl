@@ -31,3 +31,16 @@ ash = Ash2(bin, m1=10, kernel1=:gaussian, kernel2=:triweight)
 @test length(ash.y) == 77
 @test ash.kernel1 == :gaussian
 @test ash.kernel2 == :triweight
+
+ 
+
+# Update bins with new data
+y1_new = rand(Gamma(5,2), 1000)
+y2_new = y1_new + rand(Normal(), 1000) + 5
+update!(bin, y1_new, y2_new)
+
+@test bin.n == 2000
+@test bin.ab1 == extremastretch(y1, 0.1)
+@test bin.ab2 == extremastretch(y2, 0.1)
+@test bin.nbin1 == 100
+@test bin.nbin2 == 77
