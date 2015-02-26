@@ -51,6 +51,7 @@ julia> plot(ashSepalLength, mydata)  # plot estimate over histogram
 
 
 
+
 **Note**: For the same `Bin1` object, multiple `Ash1` objects can be made.  It may
-be best to try several smoothing parameters `m` and kernels `kern` to find the
+be best to try several smoothing parameters `m` and kernels `kernel` to find the
 best fit.

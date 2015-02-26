@@ -7,13 +7,11 @@ Density estimation using **Average Shifted Histograms**.  A great summary of ASH
 
 ## Installation:
 
-From Julia REPL:
-
 ```julia
 Pkg.add("AverageShiftedHistograms")
 ```
 
-## Read The Docs: [Documentation](http://averageshiftedhistogramsjl.readthedocs.org)
+## [Documentation](http://averageshiftedhistogramsjl.readthedocs.org)
 
 ## Basic Usage
 
@@ -33,3 +31,8 @@ f = Ash1(b)
 Gadfly.plot(f, sepal_length)
 ```
 ![](doc/examples/figures/READMEplot.png)
+
+
+## Differences from `R`'s `ash`:
+- update bins with a new batch of data using `update!(bins, newdata)`
+- More kernel options provided by the [`SmoothingKernels`](https://github.com/johnmyleswhite/SmoothingKernels.jl) package
