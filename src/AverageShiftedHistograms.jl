@@ -1,6 +1,8 @@
 module AverageShiftedHistograms
 
-    import SmoothingKernels
+    import SmoothingKernels, Distributions
+    import Base: quantile
+    using StatsBase
     using Gadfly
     using Docile
 
@@ -10,5 +12,6 @@ module AverageShiftedHistograms
     include("bin2.jl")
     include("ash2.jl")
     include("plot.jl")
+    include("summarystatistics.jl")
 end
 

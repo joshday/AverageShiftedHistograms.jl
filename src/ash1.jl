@@ -57,7 +57,7 @@ function Ash1(bin::Bin1; m::Int64 = 5, kernel::Symbol=:biweight)
         end
     end
     x = a + (x - 0.5) * δ
-    y /= sum(y * (x[2] - x[1]))  # make y integrate to 1
+    y /= sum(y * δ)  # make y integrate to 1
     non0 = y[1] != 0.0 || y[end] != 0.0
     if non0
         warn("nonzero density outside interval [a, b)")
