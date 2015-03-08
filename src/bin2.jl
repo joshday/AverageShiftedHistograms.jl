@@ -49,8 +49,8 @@ function Bin2(y1::Vector,
     nout = 0
 
     for i = 1:length(y1)
-        k1 = int(1 + (y1[i] - a1) / δ1)
-        k2 = int(1 + (y2[i] - a2) / δ2)
+        k1 = int(floor(1 + (y1[i] - a1) / δ1))
+        k2 = int(floor(1 + (y2[i] - a2) / δ2))
         if k1 >= 1 && k1 <= nbin1 && k2 >= 1 && k2 <= nbin2
             v[k1, k2] += 1
         else

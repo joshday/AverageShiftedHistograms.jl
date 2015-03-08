@@ -50,7 +50,7 @@ function Bin1(y::Vector; ab::Vector = extremastretch(y, 0.1), nbin::Int64=50)
     n = length(y)
     v = zeros(Int64, nbin)
     for i = 1:n
-        k = int((y[i] - a) / δ + 1)
+        k = int(floor((y[i] - a) / δ + 1))
         if k >= 1 && k <= nbin
            v[k] += 1
         else
