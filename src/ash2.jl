@@ -37,9 +37,9 @@ end
 # Bivariate Average Shifted Histogram
 
 Contruct an `Ash2` object from a `Bin2` object, smoothing parameters `m1`/`m2`,
-and kernels `k1`/`k2`.
+and kernels `kernel1`/`kernel2`.
 
-### `k1`/ `k2` options:
+### `kernel1`/ `kernel2` options:
 
 - :uniform
 - :triangular

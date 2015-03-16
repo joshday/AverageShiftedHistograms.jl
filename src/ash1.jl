@@ -29,9 +29,9 @@ end
 # Average Shifted Histogram
 
 Contruct an `Ash1` object from a `Bin1` object, smoothing parameter `m`,
-and kernel `kern`.
+and `kernel`.
 
-### `kern` options
+### `kernel` options
 
 - :uniform
 - :triangular
