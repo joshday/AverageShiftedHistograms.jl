@@ -35,3 +35,15 @@ plot(ashSepalLength, mydata)  # plot estimate over histogram
 **Note**: For the same `Bin1` object, multiple `Ash1` objects can be made.  It may
 be best to try several smoothing parameters `m` and kernels `kernel` to find the
 best fit.
+
+### Get Approximate Summary Statistics
+```{julia; term=true; eval=true}
+mean(ashSepalLength)
+var(ashSepalLength)
+quantile(ashSepalLength, [.25, .5, .75])
+
+# true values
+mean(mydata)
+var(mydata)
+quantile(mydata, [.25, .5, .75])
+```

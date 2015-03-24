@@ -5,14 +5,12 @@ export Ash1
 @doc doc"""
 Type for storing ash estimate
 
-| Field           | Description
-|:----------------|:------------------------------
-| `x::Vector`     | x values
-| `y::Vector`     | density at x
-| `m::Int64`      | smoothing parameter
-| `kernel::Symbol | kernel
-| `b`             | Bin1 object
-| `non0::Bool`    | true if nonzero estimate at endpoints
+- `x`:       x values
+- `y`:       density at x
+- `m`:       smoothing parameter
+- `kernel`:  kernel
+- `b`:       Bin1 object
+- `non0`:    true if nonzero estimate at endpoints
 """->
 type Ash1
     x::Vector                            # vector of x values
@@ -26,8 +24,6 @@ end
 
 
 @doc doc"""
-# Average Shifted Histogram
-
 Contruct an `Ash1` object from a `Bin1` object, smoothing parameter `m`,
 and `kernel`.
 

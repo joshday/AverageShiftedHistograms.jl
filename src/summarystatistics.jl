@@ -1,4 +1,3 @@
-
 function Base.mean(obj::Ash1)
     bw = obj.x[2] - obj.x[1]
     xfx = obj.x .* obj.y

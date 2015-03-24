@@ -6,16 +6,14 @@ export Ash2
 @doc md"""
 Type for storing bivariate ash estimate
 
-| Field                      | Description
-|:---------------------------|:------------------------------
-| `x::Vector`                | x values
-| `y::Vector`                | y values
-| `z::Matrix`                | density at x, y
-| `m1::Int64`                | smoothing parameter
-| `kernel1::Symbol`          | kernel for x dimension
-| `kernel2::Symbol`          | kernel for y dimension
-| `b`                        | Bin2 object
-| `non0::Bool`               | true if nonzero estimate at endpoints
+- `x`:        x values
+- `y`:        y values
+- `z`:        density at x, y
+- `m1`:       smoothing parameter
+- `kernel1`:  kernel for x dimension
+- `kernel2`:  kernel for y dimension
+- `b`:        Bin2 object
+- `non0`:     true if nonzero estimate at endpoints
 """ ->
 type Ash2
     x::Vector                    # vector of x values

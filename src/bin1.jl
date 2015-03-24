@@ -21,13 +21,11 @@ end
 @doc md"""
 ### Bins for an ASH estimate
 
-| Field              | Description
-|:-------------------|:---------------------
-| `v::Vector{Int64}` | Bin counts
-| `ab::Vector`       | (length two): Bins go from [a, b)
-| `nbin::Int64`      | number of bins to use
-| `nout::Int64`      | number of observations not captured inside [a, b)
-| `n::Int64`         | number of observations used
+- `v`:      bin counts
+- `ab`:     length two vector of endpoints
+- `nbin`:   number of bins
+- `nout`:   number of bins outside [a, b)
+- `n`:      number of observations used
 """ ->
 type Bin1
     v::Vector{Int64}        # Counts in each bin

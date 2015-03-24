@@ -5,15 +5,13 @@ export Bin2
 @doc md"""
 ### Bins for a bivarate ASH estimate
 
-| Field              | Description
-|:-------------------|:---------------------
-| `v::Vector{Int64}` | Bin counts
-| `ab1::Vector`      | (length two): data 1 range: [a, b)
-| `ab2::Vector`      | (length two): data 2 range: [a, b)
-| `nbin1::Int64`     | number of bins to use for data 1
-| `nbin1::Int64`     | number of bins to use for data 2
-| `nout::Int64`      | number of observations not captured inside [a, b)
-| `n::Int64`         | number of observations used
+- `v`:        Bin counts
+- `ab1`:      (length two): data 1 range: [a, b)
+- `ab2`:      (length two): data 2 range: [a, b)
+- `nbin1`:    number of bins to use for data 1
+- `nbin1`:    number of bins to use for data 2
+- `nout`:     number of observations not captured inside [a, b)
+- `n`:        number of observations used
 """ ->
 type Bin2
     v::Matrix{Int64}        # Counts in each bin
