@@ -45,12 +45,12 @@ function Bin1(y::Vector; ab::Vector = extremastretch(y, 0.1), nbin::Int64=50)
     a, b = ab
     nout::Int64 = 0
     δ = (b - a) / nbin
-    n = length(y)
-    v = zeros(Int64, nbin)
-    for i = 1:n
-        k = int(floor((y[i] - a) / δ + 1))
-        if k >= 1 && k <= nbin
-           v[k] += 1
+    n::Int64 = length(y)
+    v::Vector{Int64} = zeros(Int64, nbin)
+    k::Vector{Int64} = int64(floor((y - a) / δ + 1))
+    @simd for i = 1:n
+        @inbounds if k[i] >= 1 && k[i] <= nbin
+        @inbounds   v[k[i]] += 1
         else
             nout += 1
         end

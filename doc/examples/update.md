@@ -3,6 +3,7 @@
 
 ````julia
 using AverageShiftedHistograms
+using Distributions
 using Gadfly
 ````
 
@@ -35,3 +36,32 @@ plot(ash)
 
 
 ![](figures/update_3_1.png)
+
+
+
+````julia
+julia> mean(ash)
+9.930406508172438e-5
+
+julia> var(ash)
+1.024539966778512
+
+julia> quantile(ash, [.25, .5, .75])
+3-element Array{Float64,1}:
+ -0.7
+ -0.1
+  0.7
+
+julia> 
+# true quantiles:
+quantile(Normal(), [.25, .5, .75])
+3-element Array{Float64,1}:
+ -0.67449
+  0.0    
+  0.67449
+
+````
+
+
+
+

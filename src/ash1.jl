@@ -39,7 +39,7 @@ and `kernel`.
 - :cosine
 - :logistic
 """  ->
-function Ash1(bin::Bin1; m::Int64 = 5, kernel::Symbol=:biweight)
+function Ash1(bin::Bin1; m::Int64 = 5, kernel::Symbol=:biweight, warnout::Bool=true)
     a, b = bin.ab
     δ = (b - a) / bin.nbin
     h = m*δ
@@ -55,7 +55,7 @@ function Ash1(bin::Bin1; m::Int64 = 5, kernel::Symbol=:biweight)
     x = a + (x - 0.5) * δ
     y /= sum(y * δ)  # make y integrate to 1
     non0 = y[1] != 0.0 || y[end] != 0.0
-    if non0
+    if non0 && warnout
         warn("nonzero density outside interval [a, b)")
     end
     Ash1(x, y, m, kernel, bin, non0)

@@ -2,6 +2,7 @@
 
 ```{julia; term=false; eval=true}
 using AverageShiftedHistograms
+using Distributions
 using Gadfly
 ```
 
@@ -21,4 +22,13 @@ end
 
 ash = Ash1(bin, m=2)
 plot(ash)
+```
+
+```{julia; term=true; eval=true}
+mean(ash)
+var(ash)
+quantile(ash, [.25, .5, .75])
+
+# true quantiles:
+quantile(Normal(), [.25, .5, .75])
 ```
