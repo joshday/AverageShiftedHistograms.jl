@@ -1,8 +1,5 @@
-export Ash1
-
-#-----------------------------------------------------------------------------#
 #-----------------------------------------------------------------# type: Ash1
-@doc doc"""
+"""
 Type for storing ash estimate
 
 - `x`:       x values
@@ -11,11 +8,11 @@ Type for storing ash estimate
 - `kernel`:  kernel
 - `b`:       Bin1 object
 - `non0`:    true if nonzero estimate at endpoints
-"""->
+"""
 type Ash1
     x::Vector                            # vector of x values
     y::Vector                            # vector of y values
-    m::Int64                             # smoothing parameter
+    m::Int                               # smoothing parameter
     kernel::Symbol                       # kernel for weighting
     b::Bin1                              # Bin1 object
     non0::Bool                   # non-zero estimate outside of interval [a, b)?
@@ -23,7 +20,7 @@ end
 
 
 
-@doc doc"""
+"""
 Contruct an `Ash1` object from a `Bin1` object, smoothing parameter `m`,
 and `kernel`.
 
@@ -38,8 +35,8 @@ and `kernel`.
 - :gaussian
 - :cosine
 - :logistic
-"""  ->
-function Ash1(bin::Bin1; m::Int64 = 5, kernel::Symbol=:biweight, warnout::Bool=true)
+"""
+function Ash1(bin::Bin1; m::Int64 = 5, kernel::Symbol = :biweight, warnout::Bool = true)
     a, b = bin.ab
     δ = (b - a) / bin.nbin
     h = m*δ
