@@ -1,8 +1,5 @@
-export Bin2
-
-#-----------------------------------------------------------------------------#
-#-----------------------------------------------------------------# type: Bin2
-@doc md"""
+#------------------------------------------------------------------------# Bin2
+"""
 ### Bins for a bivarate ASH estimate
 
 - `v`:        Bin counts
@@ -12,27 +9,27 @@ export Bin2
 - `nbin1`:    number of bins to use for data 2
 - `nout`:     number of observations not captured inside [a, b)
 - `n`:        number of observations used
-""" ->
+"""
 type Bin2
-    v::Matrix{Int64}        # Counts in each bin
-    ab1::Vector             # bounds for first data vector
-    ab2::Vector             # bounds for second data vector
-    nbin1::Int64            # number of bins
-    nbin2::Int64            # number of bins
-    nout::Int64             # n outside interval [a, b)
-    n::Int64                # number of observations
+    v::Matrix{Int}        # Counts in each bin
+    ab1::Vector           # bounds for first data vector
+    ab2::Vector           # bounds for second data vector
+    nbin1::Int            # number of bins
+    nbin2::Int            # number of bins
+    nout::Int             # n outside interval [a, b)
+    n::Int                # number of observations
 end
 
 
 
 
-@doc md"""
+"""
 Contruct a `Bin2` object from two vectors of data using `nbin1` and `nbin2` bins,
 respectively.
 
 The default values for `ab1`/`ab2` extend `y1`'s / `y2`'s minimum/maximum by 10%
 of the range.
-""" ->
+"""
 function Bin2(y1::Vector,
               y2::Vector;
               ab1::Vector = extremastretch(y1, 0.1),
@@ -47,8 +44,8 @@ function Bin2(y1::Vector,
     nout = 0
 
     for i = 1:length(y1)
-        k1 = int(floor(1 + (y1[i] - a1) / δ1))
-        k2 = int(floor(1 + (y2[i] - a2) / δ2))
+        k1 = floor(Int, 1 + (y1[i] - a1) / δ1)
+        k2 = floor(Int, 1 + (y2[i] - a2) / δ2)
         if k1 >= 1 && k1 <= nbin1 && k2 >= 1 && k2 <= nbin2
             v[k1, k2] += 1
         else
@@ -59,9 +56,9 @@ function Bin2(y1::Vector,
 end
 
 
-@doc md"""
+"""
 Update a `Bin2` object with new vectors of data
-""" ->
+"""
 function update!(obj::Bin2, y1::Vector, y2::Vector)
     newbin = Bin2(y1, y2,
                   ab1 = obj.ab1, ab2 = obj.ab2,

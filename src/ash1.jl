@@ -37,23 +37,25 @@ and `kernel`.
 - :logistic
 """
 function Ash1(bin::Bin1; m::Int64 = 5, kernel::Symbol = :biweight, warnout::Bool = true)
+    m > 0 || error("m must be greater than 0")
     a, b = bin.ab
-    δ = (b - a) / bin.nbin
-    h = m*δ
-    y = zeros(bin.nbin)
-    x = [1:bin.nbin]
+    @compat δ = Float64((b - a) / bin.nbin)
+    y::Vector{Float64} = zeros(bin.nbin)
+    x::Vector{Float64} = zeros(bin.nbin)
+
     for k = 1:bin.nbin
         if bin.v != 0
             for i = maximum([1, k - m + 1]):minimum([bin.nbin, k + m - 1])
-                y[i] += bin.v[k]  * SmoothingKernels.kernels[kernel]((i - k) / m)
+                y[i] += bin.v[k] * SmoothingKernels.kernels[kernel](i - k)
             end
         end
+    x[k] = a + (k - 0.5) * δ
     end
-    x = a + (x - 0.5) * δ
-    y /= sum(y * δ)  # make y integrate to 1
+
+    y /= (sum(y) * δ)  # make y integrate to 1
+
     non0 = y[1] != 0.0 || y[end] != 0.0
-    if non0 && warnout
-        warn("nonzero density outside interval [a, b)")
-    end
+    (non0 && warnout) || warn("nonzero density outside interval [a, b)")
+
     Ash1(x, y, m, kernel, bin, non0)
 end

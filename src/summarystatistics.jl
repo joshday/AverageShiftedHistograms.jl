@@ -1,28 +1,56 @@
-function Base.mean(obj::Ash1)
-    bw = obj.x[2] - obj.x[1]
-    xfx = obj.x .* obj.y
-    return sum(xfx) * bw
+#------------------------------------------------------------------------# mean
+function mean(b::Bin1)
+    offset = .5 * (b.ab[2] - b.ab[1]) / b.nbin
+    mean(linspace(b.ab[1], b.ab[2], b.nbin), WeightVec(b.v)) - offset
 end
 
-function Base.var(obj::Ash1)
-    bw = obj.x[2] - obj.x[1]
-    m2 = (obj.x - mean(obj)) .^ 2
-    m2 = m2 .* obj.y
-    return sum(m2) * bw
+
+mean(a::Ash1) = mean(a.x, WeightVec(a.y))
+
+
+
+#-------------------------------------------------------------------------# var
+function var(b::Bin1)
+    offset = .5 * (b.ab[2] - b.ab[1]) / b.nbin
+    var(linspace(b.ab[1], b.ab[2], b.nbin) - offset, WeightVec(b.v))
 end
 
-function Distributions.cdf(obj::Ash1, x::Real)
-    cdf = cumsum(obj.y) * (obj.x[2] - obj.x[1])
-    obx_x = abs(x - obj.x)
-    ind = find(obx_x .== minimum(obx_x))
-    return cdf[ind][1]
+
+var(a::Ash1) = var(a.x, WeightVec(a.y))
+
+
+
+#-------------------------------------------------------------------------# cdf
+function cdf(a::Ash1, x::Real)
+    δ = (a.x[2] - a.x[1])
+    p = 0
+
+    for j in 1:length(a.x)
+        if a.x[j] < x
+            p += a.y[j]
+        else
+            γ = (x - a.x[j-1]) / δ
+            p = γ * p + (1 - γ) * (p + a.y[j])
+            break
+        end
+    end
+
+    return p * δ
 end
 
-function Distributions.pdf(obj::Ash1, x::Real)
-    obx_x = abs(x - obj.x)
-    ind = find(obx_x .== minimum(obx_x))
-    return obj.y[ind][1]
+function cdf(a::Ash1, x::Vector)
+    [cdf(a, xi) for xi in x]
 end
+
+
+
+#-------------------------------------------------------------------------# pdf
+function Distributions.pdf(a::Ash1, x::Real)
+    ax_x = abs(x - a.x)
+    ind = find(ax_x .== minimum(ax_x))
+    return a.y[ind][1]
+end
+
 
 # Accuracy depends on binwidth = (b - a) / nbin
 function quantile(obj::Ash1, τ::Vector = [.25, .5, .75])
@@ -36,6 +64,7 @@ function quantile(obj::Ash1, τ::Vector = [.25, .5, .75])
     end
     return result
 end
+
 
 quantile(obj::Ash1, τ::Real = .5) = quantile(obj, [τ])
 

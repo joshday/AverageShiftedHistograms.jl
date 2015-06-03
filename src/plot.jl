@@ -13,7 +13,7 @@ function plot(a::Ash1)
 end
 
 
-"Plot `Bin1` and `Ash` objects together.  The comparison can be used to check
+"Plot `Bin1` and `Ash1` objects together.  The comparison can be used to check
 for oversmoothing."
 function plot(b::Bin1, a::Ash1)
     δ = (b.ab[2] - b.ab[1]) / b.nbin
@@ -21,6 +21,14 @@ function plot(b::Bin1, a::Ash1)
                Geom.point, Theme(highlight_width = 0pt, default_point_size = 1.5pt,
                                  default_color = color("black"))),
          layer(x = a.x, y = a.y, Geom.line, Theme(default_color = color("black"))))
+end
+
+
+"Plot `Ash1` object with data `y`"
+function plot(a::Ash1, y::Vector)
+    plot(
+        layer(x = a.x, y = a.y, Geom.line, Theme(default_color = color("black"))),
+        layer(x = y, Geom.histogram(density = true)))
 end
 
 
@@ -45,10 +53,22 @@ end
 
 
 # testing
-x = randn(100_000)
-b = AverageShiftedHistograms.Bin1(x, nbin = 150)
-a = AverageShiftedHistograms.Ash1(b, m = 50)
-plot(b)
-plot(a)
-plot(b, a, x)
+# x = rand(Distributions.Gamma(10,1), 1_000_000)
+# @time b = AverageShiftedHistograms.Bin1(x, nbin = 100)
+# @time a = AverageShiftedHistograms.Ash1(b, m = 1)
+# println(cdf(a, 10) - cdf(Distributions.Gamma(10,1), 10))
+# println(cdf(a,[0:10]) - cdf(Distributions.Gamma(10,1), [0:10]))
+
+
+# x2 = rand(Distributions.Gamma(10,1), 1_000_000)
+# @time AverageShiftedHistograms.updatebatch!(b, x2)
+
+# @time b2 = AverageShiftedHistograms.Bin1(x, nbin = 1000)
+# @time merge(b, b2)
+# @time merge!(b, b2)
+# plot(b)
+# plot(a)
+# plot(b, a)
+# plot(b, a, x)
+# plot(a, x)
 

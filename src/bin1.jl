@@ -13,7 +13,7 @@ function extremastretch(y::Vector, c::Float64 = 0.1)
 end
 
 
-#-----------------------------------------------------------------# type: Bin1
+#------------------------------------------------------------------------# Bin1
 """
 ### Bins for an ASH estimate
 
@@ -40,31 +40,43 @@ The default values for `ab` extend `y`'s minimum/maximum by 10% of the range.
 function Bin1(y::Vector; ab::Vector = extremastretch(y, 0.1), nbin::Int=50)
     a, b = ab
     nout::Int = 0
-    δ = (b - a) / nbin
+    @compat δ = Float64((b - a) / nbin)
     n::Int = length(y)
     v::Vector{Int} = zeros(Int, nbin)
-#     @compat k::Vector{Int} = Int64(floor((y - a) / δ + 1))
 
     for i = 1:n
-        @compat ki::Int = Int64(floor((y[i] - a) / δ + 1))
-        ki >= 1 && ki <= nbin ? v[ki] += 1 : nout += 1
+        ki::Int = floor(Int, (y[i] - a) / δ + 1)
+        (ki >= 1 && ki <= nbin) ? v[ki] += 1 : nout += 1
     end
 
     Bin1(v, ab, nbin, nout, length(y))
 end
 
 
-# Moved to OnlineStats.jl
-# """
-# Update a `Bin1` object with a new vector of data
-# """
-# function update!(obj::Bin1, y::Vector)
-#     newbin = Bin1(y, ab = obj.ab, nbin = obj.nbin)
-#     obj.v += newbin.v
-#     obj.nout += newbin.nout
-#     obj.n += newbin.n
-# end
 
 
 
+"""
+Update a `Bin1` object with a new vector of data
+"""
+function updatebatch!(b::Bin1, y::Vector)
+    b2 = Bin1(y, ab = b.ab, nbin = b.nbin)
+    merge!(b, b2)
+end
+
+#------------------------------------------------------------------------# Base
+copy(b::Bin1) = Bin1(b.v, b.ab, b.nbin, b.nout, b.n)
+
+"Merge two `Bin1` objects together.  Overwrite the first argument"
+function merge!(b1::Bin1, b2::Bin1)
+    all(b1.ab .== b2.ab) || error("objects have different endpoints")
+    b1.nbin == b2.nbin || error("objects have different number of bins")
+
+    b1.nout += b2.nout
+    b1.n += b2.n
+    b1.v += b2.v
+end
+
+"Merge two `Bin1` objects together"
+merge(b1::Bin1, b2::Bin1) = merge!(copy(b1), b2)
 

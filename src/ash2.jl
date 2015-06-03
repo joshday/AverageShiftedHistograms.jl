@@ -1,9 +1,5 @@
-export Ash2
-
-
-#-----------------------------------------------------------------------------#
-#-----------------------------------------------------------------# type: Ash2
-@doc md"""
+#------------------------------------------------------------------------# Ash2
+"""
 Type for storing bivariate ash estimate
 
 - `x`:        x values
@@ -14,7 +10,7 @@ Type for storing bivariate ash estimate
 - `kernel2`:  kernel for y dimension
 - `b`:        Bin2 object
 - `non0`:     true if nonzero estimate at endpoints
-""" ->
+"""
 type Ash2
     x::Vector                    # vector of x values
     y::Vector                    # vector of y values
@@ -31,7 +27,7 @@ end
 
 
 
-@doc md"""
+"""
 # Bivariate Average Shifted Histogram
 
 Contruct an `Ash2` object from a `Bin2` object, smoothing parameters `m1`/`m2`,
@@ -48,8 +44,7 @@ and kernels `kernel1`/`kernel2`.
 - :gaussian
 - :cosine
 - :logistic
-
-""" ->
+"""
 function Ash2(bin::Bin2;
               m1::Int64 = 5,
               m2::Int64 = 5,
