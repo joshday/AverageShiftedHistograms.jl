@@ -6,10 +6,13 @@
 ```
 bins = Bin1(y, ab = [lowerbound, upperbound], nbin=50) 
 ash = Ash1(bins, m=5, kernel=:epanechnikov)
+Gadfly.plot(bins)
 Gadfly.plot(ash)
+Gadfly.plot(ash, y)
+Gadfly.plot(bins, ash, y)
 ```
 
-Plots can also take the form `Gadfly.plot(ash, y)` to produce the density estimate overlaid on a histogram.  
+Plotting methods create a graph of some combination of points (`bins`), line (`ash`), and histogram (`y`).  
 
 `[lowerbound, upperbound]` can be set with `extremastretch(y, c)` which extends the extrema of `y` by `c` * `range(y)`
 
@@ -49,7 +52,7 @@ bins = Bin2(y1, y2)
 
 ash = Ash2(bins)
 
-plot(ash)
+Gadfly.plot(ash)
 ```
 
 Plot is a contour plot for now.  When 3D plots appear in Gadfly, more options will be made available.

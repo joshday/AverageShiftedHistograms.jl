@@ -13,11 +13,10 @@ module AverageShiftedHistograms
     Docile.@document
 
     export
-        Bin1,
-        Bin2,
-        Ash1,
-        Ash2,
-        extremastretch
+        Bin1, Bin2,
+        Ash1, Ash2,
+        extremastretch,
+        merge, merge!, update!, updatebatch!
 
     include("bin1.jl")
     include("ash1.jl")

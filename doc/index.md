@@ -4,14 +4,14 @@
 ## Usage
 
 
-This example generates bins from some `myUnivariateDataset` using 50 bins.  The default range of the bins extends the range of the data by 10%.  A Gaussian kernel is then used to make the ASH estimator with smoothing parameter `m`=$.
+This example generates bins from some `myUnivariateDataset` using 50 bins.  The default range of the bins extends the range of the data by 10%.  A Gaussian kernel is then used to make the ASH estimator with smoothing parameter `m`.
 
 ```julia
 using AverageShiftedHistograms
 using Gadfly
 
-bins = Bin1(myUnivariateDataset, nbin=50)
-ash = Ash1(bins, m=5, kernel=:gaussian)
+bins = Bin1(myUnivariateDataset, nbin = 50)
+ash = Ash1(bins, m = 5, kernel = :gaussian)
 
 plot(ash)
 ```
