@@ -5,10 +5,7 @@ This example looks at Sepal Length from the Iris dataset in
 
 
 ```{julia; term=false; eval=true}
-using AverageShiftedHistograms
-using Gadfly
-using RDatasets
-using DataFrames
+using AverageShiftedHistograms, Gadfly, RDatasets, DataFrames
 ```
 
 
@@ -16,7 +13,7 @@ using DataFrames
 
 ```{julia; term=false; eval=true}
 iris = dataset("datasets", "iris")
-mydata = array(iris[1]) 
+mydata = convert(Array, iris[1])
 ```
 
 ### Make bins.  Make ash.
@@ -30,6 +27,7 @@ ashSepalLength = Ash1(binSepalLength, m = 4, kernel = :biweight)  # create ash
 
 ```{julia; term=true; eval=true}
 plot(ashSepalLength, mydata)  # plot estimate over histogram
+plot(binSepalLength, ashSepalLength)  # plot estimate over bins
 ```
 
 **Note**: For the same `Bin1` object, multiple `Ash1` objects can be made.  It may

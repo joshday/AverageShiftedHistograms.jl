@@ -17,7 +17,7 @@ using DataFrames
 
 ```{julia; term=false; eval=true}
 iris = dataset("datasets", "iris")
-mydata = array(iris[1:2])  # Get SepalLength, SepalWidth
+mydata = convert(Array, iris[1:2])  # Get SepalLength, SepalWidth
 ```
 
 

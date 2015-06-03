@@ -1,6 +1,7 @@
 module AverageShiftedHistograms
 
-    import SmoothingKernels, Distributions
+    import SmoothingKernels: kernels
+    import Distributions
     import Base: quantile, merge, merge!, copy, mean, var
     import StatsBase: mean, var, WeightVec
     import Gadfly: plot, Geom, layer, Theme

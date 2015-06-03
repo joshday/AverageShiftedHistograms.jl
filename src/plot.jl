@@ -45,11 +45,10 @@ end
 
 
 #-----------------------------------------------------------# Bin2/Ash2 methods
-# "Plot an `Ash2`density estimate"
-# function Gadfly.plot(obj::Ash2; levels=10, args...)
-#     Gadfly.plot(x = obj.x, y=obj.y, z=obj.z, Gadfly.Geom.contour(levels=levels),
-#                 args...)
-# end
+"Plot an `Ash2`density estimate"
+function plot(obj::Ash2; levels=10, args...)
+    plot(x = obj.x, y=obj.y, z=obj.z, Geom.contour(levels=levels), args...)
+end
 
 
 # testing

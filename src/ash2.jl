@@ -58,8 +58,7 @@ function Ash2(bin::Bin2;
 
     w = zeros(2*m1 - 1, 2*m2 - 1)
     for i = (1 - m1):(m1 - 1), j = (1 - m2):(m2 - 1)
-        w[i + m1, j + m2] = SmoothingKernels.kernels[kernel1](i / m1) *
-            SmoothingKernels.kernels[kernel2](i / m2)
+        w[i + m1, j + m2] = kernels[kernel1](i / m1) * kernels[kernel2](i / m2)
     end
 
     δ1 = (b1 - a1) / nbin1

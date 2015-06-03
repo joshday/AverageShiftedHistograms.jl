@@ -16,7 +16,7 @@ using Gadfly
 x = randn(100)
 bin = Bin1(x, ab=[-5, 5])
 ash = Ash1(bin)
-plot(ash, x)
+plot(bin, ash)
 ````
 
 
@@ -26,12 +26,12 @@ plot(ash, x)
 
 ### Update bins with many batches
 ````julia
-for i =1:100000
-	update!(bin, randn(100))
+for i = 1:100000
+	updatebatch!(bin, randn(100))
 end
 
 ash = Ash1(bin, m=2)
-plot(ash)
+plot(bin, ash)
 ````
 
 
@@ -41,16 +41,16 @@ plot(ash)
 
 ````julia
 julia> mean(ash)
-9.930406508172438e-5
+0.0002338729164677554
 
 julia> var(ash)
-1.024539966778512
+1.0239932546395352
 
 julia> quantile(ash, [.25, .5, .75])
-3-element Array{Float64,1}:
- -0.7
- -0.1
-  0.7
+3-element Array{Any,1}:
+ -0.784629 
+ -0.0998345
+  0.584876 
 
 julia> 
 # true quantiles:

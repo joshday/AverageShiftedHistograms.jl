@@ -53,24 +53,46 @@ end
 
 
 # Accuracy depends on binwidth = (b - a) / nbin
-function quantile(obj::Ash1, τ::Vector = [.25, .5, .75])
-    if minimum(τ) <= 0 || maximum(τ) >= 1
-        error("probabilities must be in (0, 1)")
-    end
-    cdf = cumsum(obj.y) * (obj.x[2] - obj.x[1])
-    result = []
-    for t in τ
-        result = [result; obj.x[minimum(find(cdf .>= t))]]
-    end
-    return result
+# function quantile(a::Ash1, τ::Vector = [.25, .5, .75])
+#     (minimum(τ) <= 0 || maximum(τ) >= 1) || error("probabilities must be in (0, 1)")
+
+#     cdf = cumsum(a.y) * (a.x[2] - a.x[1])
+#     result = []
+#     for t in τ
+#         result = [result; a.x[minimum(find(cdf .>= t))]]
+#     end
+#     return result
+# end
+
+
+# quantile(obj::Ash1, τ::Real = .5) = quantile(obj, [τ])
+
+
+# This quantile function is more accurate, but not well tested
+function quantile(a::Ash1, τ::Real = .5)
+    (τ > 0 && τ < 1) || error("τ must be in (0,1)")
+
+    cdf = cumsum(a.y) * (a.x[2] - a.x[1])
+
+    ind = maximum(find(cdf .< τ))
+    x1, y1 = a.x[ind], cdf[ind]
+    x2, y2 = a.x[ind + 1], cdf[ind + 1]
+
+    m = (y2 - y1) / (x2 - x1)
+    b = y1 - m * x1
+
+    return (τ - b) / m
 end
 
-
-quantile(obj::Ash1, τ::Real = .5) = quantile(obj, [τ])
-
+quantile(a::Ash1, τ::Vector) = [quantile(a, τi) for τi in τ]
 
 
 
+# x = rand(Distributions.Gamma(10,1), 1_000_000)
+
+# b = AverageShiftedHistograms.Bin1(x, nbin = 1000)
+# a = AverageShiftedHistograms.Ash1(b, m=3)
+# println(AverageShiftedHistograms.approxquantile(a, .5))
 
 # y = rand(Normal(), 10_000)
 # bins = AverageShiftedHistograms.Bin1(y, ab = [-5, 5], nbin=1000)

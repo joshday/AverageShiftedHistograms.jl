@@ -23,7 +23,7 @@ and `kernel`.
 
 
 *source:*
-[AverageShiftedHistograms/src/ash1.jl:39](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/ash1.jl#L39)
+[AverageShiftedHistograms/src/ash1.jl:39](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/ash1.jl#L39)
 
 ---
 
@@ -48,7 +48,7 @@ and kernels `kernel1`/`kernel2`.
 
 
 *source:*
-[AverageShiftedHistograms/src/ash2.jl:48](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/ash2.jl#L48)
+[AverageShiftedHistograms/src/ash2.jl:48](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/ash2.jl#L48)
 
 ---
 
@@ -60,7 +60,7 @@ The default values for `ab` extend `y`'s minimum/maximum by 10% of the range.
 
 
 *source:*
-[AverageShiftedHistograms/src/bin1.jl:40](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/bin1.jl#L40)
+[AverageShiftedHistograms/src/bin1.jl:40](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/bin1.jl#L40)
 
 ---
 
@@ -74,7 +74,7 @@ of the range.
 
 
 *source:*
-[AverageShiftedHistograms/src/bin2.jl:33](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/bin2.jl#L33)
+[AverageShiftedHistograms/src/bin2.jl:33](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/bin2.jl#L33)
 
 ---
 
@@ -84,11 +84,11 @@ Returns a length-two vector.  Elements are the extended range of the data
 `y` by the factor `c`.  This function is used to generate the end points
 for a `Bin1` object.
 
-Usage: `Bin1(mydata, ab=extremastretch(mydata, .2))
+Usage: `Bin1(mydata, ab=extremastretch(mydata, .2))`
 
 
 *source:*
-[AverageShiftedHistograms/src/bin1.jl:9](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/bin1.jl#L9)
+[AverageShiftedHistograms/src/bin1.jl:9](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/bin1.jl#L9)
 
 ---
 
@@ -98,11 +98,49 @@ Returns a length-two vector.  Elements are the extended range of the data
 `y` by the factor `c`.  This function is used to generate the end points
 for a `Bin1` object.
 
-Usage: `Bin1(mydata, ab=extremastretch(mydata, .2))
+Usage: `Bin1(mydata, ab=extremastretch(mydata, .2))`
 
 
 *source:*
-[AverageShiftedHistograms/src/bin1.jl:9](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/bin1.jl#L9)
+[AverageShiftedHistograms/src/bin1.jl:9](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/bin1.jl#L9)
+
+---
+
+<a id="method__merge.1" class="lexicon_definition"></a>
+#### merge!(b1::Bin1, b2::Bin1) [¶](#method__merge.1)
+Merge two `Bin1` objects together.  Overwrite the first argument
+
+*source:*
+[AverageShiftedHistograms/src/bin1.jl:71](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/bin1.jl#L71)
+
+---
+
+<a id="method__merge.2" class="lexicon_definition"></a>
+#### merge(b1::Bin1, b2::Bin1) [¶](#method__merge.2)
+Merge two `Bin1` objects together
+
+*source:*
+[AverageShiftedHistograms/src/bin1.jl:81](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/bin1.jl#L81)
+
+---
+
+<a id="method__update.1" class="lexicon_definition"></a>
+#### update!(obj::Bin2, y1::Array{T, 1}, y2::Array{T, 1}) [¶](#method__update.1)
+Update a `Bin2` object with new vectors of data
+
+
+*source:*
+[AverageShiftedHistograms/src/bin2.jl:62](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/bin2.jl#L62)
+
+---
+
+<a id="method__updatebatch.1" class="lexicon_definition"></a>
+#### updatebatch!(b::Bin1, y::Array{T, 1}) [¶](#method__updatebatch.1)
+Update a `Bin1` object with a new vector of data
+
+
+*source:*
+[AverageShiftedHistograms/src/bin1.jl:62](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/bin1.jl#L62)
 
 ---
 
@@ -119,7 +157,7 @@ Type for storing ash estimate
 
 
 *source:*
-[AverageShiftedHistograms/src/ash1.jl:12](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/ash1.jl#L12)
+[AverageShiftedHistograms/src/ash1.jl:12](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/ash1.jl#L12)
 
 ---
 
@@ -138,7 +176,7 @@ Type for storing bivariate ash estimate
 
 
 *source:*
-[AverageShiftedHistograms/src/ash2.jl:14](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/ash2.jl#L14)
+[AverageShiftedHistograms/src/ash2.jl:14](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/ash2.jl#L14)
 
 ---
 
@@ -154,7 +192,7 @@ Type for storing bivariate ash estimate
 
 
 *source:*
-[AverageShiftedHistograms/src/bin1.jl:26](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/bin1.jl#L26)
+[AverageShiftedHistograms/src/bin1.jl:26](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/bin1.jl#L26)
 
 ---
 
@@ -172,45 +210,62 @@ Type for storing bivariate ash estimate
 
 
 *source:*
-[AverageShiftedHistograms/src/bin2.jl:13](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/bin2.jl#L13)
+[AverageShiftedHistograms/src/bin2.jl:13](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/bin2.jl#L13)
 
 ## Internal
 
 ---
 
-<a id="method__merge.1" class="lexicon_definition"></a>
-#### merge!(b1::Bin1, b2::Bin1) [¶](#method__merge.1)
-Merge two `Bin1` objects together.  Overwrite the first argument
+<a id="method__plot.1" class="lexicon_definition"></a>
+#### plot(a::Ash1) [¶](#method__plot.1)
+Plot an `Ash1` density estimate
 
 *source:*
-[AverageShiftedHistograms/src/bin1.jl:71](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/bin1.jl#L71)
+[AverageShiftedHistograms/src/plot.jl:11](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/plot.jl#L11)
 
 ---
 
-<a id="method__merge.2" class="lexicon_definition"></a>
-#### merge(b1::Bin1, b2::Bin1) [¶](#method__merge.2)
-Merge two `Bin1` objects together
+<a id="method__plot.2" class="lexicon_definition"></a>
+#### plot(a::Ash1, y::Array{T, 1}) [¶](#method__plot.2)
+Plot `Ash1` object with data `y`
 
 *source:*
-[AverageShiftedHistograms/src/bin1.jl:81](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/bin1.jl#L81)
+[AverageShiftedHistograms/src/plot.jl:28](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/plot.jl#L28)
 
 ---
 
-<a id="method__update.1" class="lexicon_definition"></a>
-#### update!(obj::Bin2, y1::Array{T, 1}, y2::Array{T, 1}) [¶](#method__update.1)
-Update a `Bin2` object with new vectors of data
-
+<a id="method__plot.3" class="lexicon_definition"></a>
+#### plot(b::Bin1) [¶](#method__plot.3)
+Plot an `Bin1` object
 
 *source:*
-[AverageShiftedHistograms/src/bin2.jl:62](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/bin2.jl#L62)
+[AverageShiftedHistograms/src/plot.jl:3](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/plot.jl#L3)
 
 ---
 
-<a id="method__updatebatch.1" class="lexicon_definition"></a>
-#### updatebatch!(b::Bin1, y::Array{T, 1}) [¶](#method__updatebatch.1)
-Update a `Bin1` object with a new vector of data
-
+<a id="method__plot.4" class="lexicon_definition"></a>
+#### plot(b::Bin1, a::Ash1) [¶](#method__plot.4)
+Plot `Bin1` and `Ash1` objects together.  The comparison can be used to check
+for oversmoothing.
 
 *source:*
-[AverageShiftedHistograms/src/bin1.jl:62](https://github.com/joshday/AverageShiftedHistograms.jl/tree/7ffd8182a66cfa01df6b2c9394f998d2aa9856b3/src/bin1.jl#L62)
+[AverageShiftedHistograms/src/plot.jl:18](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/plot.jl#L18)
+
+---
+
+<a id="method__plot.5" class="lexicon_definition"></a>
+#### plot(b::Bin1, a::Ash1, y::Array{T, 1}) [¶](#method__plot.5)
+Plot `Bin1`, `Ash1`, and data `y` together
+
+*source:*
+[AverageShiftedHistograms/src/plot.jl:36](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/plot.jl#L36)
+
+---
+
+<a id="method__plot.6" class="lexicon_definition"></a>
+#### plot(obj::Ash2) [¶](#method__plot.6)
+Plot an `Ash2`density estimate
+
+*source:*
+[AverageShiftedHistograms/src/plot.jl:49](https://github.com/joshday/AverageShiftedHistograms.jl/tree/848651270ef192ae6f4cc4ce718a25bf96ef64c3/src/plot.jl#L49)
 

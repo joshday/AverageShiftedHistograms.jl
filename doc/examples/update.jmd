@@ -11,17 +11,17 @@ using Gadfly
 x = randn(100)
 bin = Bin1(x, ab=[-5, 5])
 ash = Ash1(bin)
-plot(ash, x)
+plot(bin, ash)
 ```
 
 ### Update bins with many batches
 ```{julia; term=false; eval=true}
-for i =1:100000
-	update!(bin, randn(100))
+for i = 1:100000
+	updatebatch!(bin, randn(100))
 end
 
 ash = Ash1(bin, m=2)
-plot(ash)
+plot(bin, ash)
 ```
 
 ```{julia; term=true; eval=true}

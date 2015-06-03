@@ -36,7 +36,7 @@ and `kernel`.
 - :cosine
 - :logistic
 """
-function Ash1(bin::Bin1; m::Int64 = 5, kernel::Symbol = :biweight, warnout::Bool = true)
+function Ash1(bin::Bin1; m::Int = 5, kernel::Symbol = :biweight, warnout::Bool = true)
     m > 0 || error("m must be greater than 0")
     a, b = bin.ab
     @compat δ = Float64((b - a) / bin.nbin)
@@ -46,7 +46,7 @@ function Ash1(bin::Bin1; m::Int64 = 5, kernel::Symbol = :biweight, warnout::Bool
     for k = 1:bin.nbin
         if bin.v != 0
             for i = maximum([1, k - m + 1]):minimum([bin.nbin, k + m - 1])
-                y[i] += bin.v[k] * SmoothingKernels.kernels[kernel](i - k)
+                y[i] += bin.v[k] * kernels[kernel]((i - k) / m)
             end
         end
     x[k] = a + (k - 0.5) * δ
