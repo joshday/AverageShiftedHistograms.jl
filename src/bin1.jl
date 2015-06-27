@@ -36,7 +36,7 @@ nobs(b::Bin1) = b.n
 
 
 # TESTING
-if true
+if false
     x = randn(10_000)
     b1 = AverageShiftedHistograms.Bin1(10_000, hist(x, linspace(-4, 4, 100))...)
     b2 = AverageShiftedHistograms.Bin1(x, -4, 4, 99)

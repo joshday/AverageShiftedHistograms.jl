@@ -1,6 +1,6 @@
 module UnivariateTest
 
-using AverageShiftedHistograms, Distributions, FactCheck
+using AverageShiftedHistograms, FactCheck
 a = AverageShiftedHistograms
 
 facts("Univariate") do
