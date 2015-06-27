@@ -73,6 +73,7 @@ function quantile(a::Ash1, τ::Real = .5)
     (τ > 0 && τ < 1) || error("τ must be in (0,1)")
 
     cdf = cumsum(a.y) * (a.x[2] - a.x[1])
+    cdf /= cdf[end]
 
     ind = maximum(find(cdf .< τ))
     x1, y1 = a.x[ind], cdf[ind]
@@ -88,11 +89,12 @@ quantile(a::Ash1, τ::Vector) = [quantile(a, τi) for τi in τ]
 
 
 
-# x = rand(Distributions.Gamma(10,1), 1_000_000)
+# x = rand(Distributions.Normal(10,1), 1_000_000)
 
-# b = AverageShiftedHistograms.Bin1(x, nbin = 1000)
+# b = AverageShiftedHistograms.Bin1(x, nbin = 100)
 # a = AverageShiftedHistograms.Ash1(b, m=3)
-# println(AverageShiftedHistograms.approxquantile(a, .5))
+# AverageShiftedHistograms.quantile(a, [.1:.1:.9])
+# quantile(Distributions.Normal(10,1), [.1:.1:.9])
 
 # y = rand(Normal(), 10_000)
 # bins = AverageShiftedHistograms.Bin1(y, ab = [-5, 5], nbin=1000)

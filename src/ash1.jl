@@ -55,7 +55,7 @@ function Ash1(bin::Bin1; m::Int = 5, kernel::Symbol = :biweight, warnout::Bool =
     y /= (sum(y) * δ)  # make y integrate to 1
 
     non0 = y[1] != 0.0 || y[end] != 0.0
-    (non0 && warnout) || warn("nonzero density outside interval [a, b)")
+    (non0 && warnout) && warn("nonzero density outside interval [a, b)")
 
     Ash1(x, y, m, kernel, bin, non0)
 end
