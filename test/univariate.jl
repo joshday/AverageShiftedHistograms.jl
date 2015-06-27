@@ -18,6 +18,10 @@ facts("Univariate") do
     end
 
     context("Ash1") do
+        n = rand(10_000:100_000)
+        y = randn(n)
+        b1 = a.Bin1(-3, 3, 500)
+        a1 = a.Ash1(b1, 10, warnout = false)
     end
 
     context("methods") do

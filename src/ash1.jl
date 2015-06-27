@@ -36,16 +36,17 @@ and `kernel`.
 - :cosine
 - :logistic
 """
-function Ash1(bin::Bin1; m::Int = 5, kernel::Symbol = :biweight, warnout::Bool = true)
+function Ash1(bin::Bin1, m::Int = 5; kernel::Symbol = :biweight, warnout::Bool = true)
     m > 0 || error("m must be greater than 0")
-    a, b = bin.ab
-    @compat δ = Float64((b - a) / bin.nbin)
-    y::Vector{Float64} = zeros(bin.nbin)
-    x::Vector{Float64} = zeros(bin.nbin)
+    a, b = bin.edges[1], bin.edges[end]
+    nbin = length(bin.edges) - 1
+    @compat δ = Float64((b - a) / nbin)
+    y::Vector{Float64} = zeros(nbin)
+    x::Vector{Float64} = zeros(nbin)
 
-    for k = 1:bin.nbin
+    for k = 1:nbin
         if bin.v != 0
-            for i = maximum([1, k - m + 1]):minimum([bin.nbin, k + m - 1])
+            for i = maximum([1, k - m + 1]):minimum([nbin, k + m - 1])
                 y[i] += bin.v[k] * kernels[kernel]((i - k) / m)
             end
         end

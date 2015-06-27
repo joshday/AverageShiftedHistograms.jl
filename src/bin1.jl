@@ -16,9 +16,9 @@ function Bin1(n::Int, e::Union(Range, Vector), counts::Vector{Int})
 end
 
 function Bin1{T <: Real}(y::Vector, a::T, b::T, nbin::Int)
-    b = Bin1(a, b, nbin)
-    updatebatch!(b, y)
-    b
+    o = Bin1(a, b, nbin)
+    updatebatch!(o, y)
+    o
 end
 
 
