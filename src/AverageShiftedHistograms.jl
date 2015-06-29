@@ -4,7 +4,7 @@ module AverageShiftedHistograms
     import SmoothingKernels: kernels
     import Base: quantile, merge, merge!, copy, mean, var
     import Compat: @compat
-    import StatsBase: fit, Histogram, AbstractHistogram
+    import StatsBase: fit, Histogram, AbstractHistogram, midpoints
 
     export UnivariateASH, updatebatch!, fit
 
