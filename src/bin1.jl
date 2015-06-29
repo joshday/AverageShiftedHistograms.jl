@@ -1,46 +1,38 @@
 #-------------------------------------------------------# type and constructors
-type Bin1{T <: Real}
-    v::Vector{Int}        # Counts in each bin
-    edges::Vector{T}      # bin edges
-    n::Int                # number of observations
+type UnivariateASH{T <: Real, E} <: AbstractHistogram{T, 1, E}
+    hist::Histogram{T, 1, E}  # Bins
+    ash::Vector{Float64}              # ASH
+    m::Int                            # Smoothing parameter
+    kernel::Symbol                    # kernel
+    n::Int                            # Number of observations
 end
 
+function UnivariateASH{T <: Real}(h::Histogram{T, 1}, ash, m, kernel, n)
+        kernellist = [:uniform, :triangular, :epanechnikov, :biweight, :triweight, :tricube, :gaussian, :cosine, :logistic]
+        kernel ∉ kernellist || error("kernel not recognized")
+        m > 0 || error("Smoothing parameter m must be greater than 0")
+        new(hist, ash, m, kernel, n)
+    end
 
-function Bin1{T <: Real}(a::T, b::T, nbin::Int)
-    Bin1(zeros(Int, nbin), linspace(a, b, nbin + 1), 0)
+function UnivariateASH{T <: Real}(h::Histogram{T, 1}, m::Int, kernel::Symbol)
+    UnivariateASH(h, zeros(length(h.edges) - 1), m, kernel, 0)
 end
-
-function Bin1(n::Int, e::Union(Range, Vector), counts::Vector{Int})
-    nbin = length(counts)
-    Bin1(counts, [e], n)
-end
-
-function Bin1{T <: Real}(y::Vector, a::T, b::T, nbin::Int)
-    o = Bin1(a, b, nbin)
-    updatebatch!(o, y)
-    o
-end
-
 
 #---------------------------------------------------------------------# update!
-function updatebatch!(b::Bin1, y::Vector)
-    n2 = length(y)
-    Base.hist!(b.v, y, b.edges, init = false)
-    b.n += length(y)
+
+
+#---------------------------------------------------------------------# Base
+function Base.show(io::IO, o::UnivariateASH)
+    println(io, "UnivariateASH")
 end
 
-
 #-----------------------------------------------------------# functions/methods
-nout(b::Bin1) = b.n - sum(b.v)
-nobs(b::Bin1) = b.n
+# nout(b::Bin1) = b.n - sum(b.v)
+nobs(b::UnivariateASH) = b.n
 
 
 # TESTING
-if false
-    x = randn(10_000)
-    b1 = AverageShiftedHistograms.Bin1(10_000, hist(x, linspace(-4, 4, 100))...)
-    b2 = AverageShiftedHistograms.Bin1(x, -4, 4, 99)
-    b1.v - b2.v
-    AverageShiftedHistograms.nout(b1)
-    AverageShiftedHistograms.nobs(b2)
+if true
+    h = fit(Histogram, randn(1000), -4:.1:4)
+    o = UnivariateASH(h, 1, :biweight)
 end
