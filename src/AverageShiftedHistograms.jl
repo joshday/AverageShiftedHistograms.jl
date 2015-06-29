@@ -8,6 +8,5 @@ module AverageShiftedHistograms
 
     export UnivariateASH, updatebatch!, fit
 
-    include("bin1.jl")
-#     include("ash1.jl")
+    include("univariateash.jljl")
 end
