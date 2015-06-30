@@ -6,7 +6,7 @@ module AverageShiftedHistograms
     import Compat: @compat
     import StatsBase: fit, Histogram, AbstractHistogram, midpoints
 
-    export UnivariateASH, updatebatch!, fit
+    export UnivariateASH, updatebatch!, fit, ash, midpoints
 
-    include("univariateash.jljl")
+    include("univariateash.jl")
 end
