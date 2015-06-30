@@ -1,7 +1,7 @@
 using AverageShiftedHistograms
 using Base.Test
 
-include("univariate.jl")
-include("bivariate.jl")
+include("univariate_test.jl")
+include("bivariate_test.jl")
 
 FactCheck.exitstatus()

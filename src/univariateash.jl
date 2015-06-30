@@ -148,7 +148,7 @@ end
 
 
 # TESTING
-if true
+if false
     h = fit(Histogram, randn(1000), -4:.1:4)
     x = randn(100_000)
     @time o = UnivariateASH(x, -4, 4, 1000, 5)
