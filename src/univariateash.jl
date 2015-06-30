@@ -1,5 +1,16 @@
-kernellist = [:uniform, :triangular, :epanechnikov, :biweight,
-              :triweight, :tricube, :gaussian, :cosine, :logistic]
+#=============================================================================#
+# Univariate Average Shifted Histograms
+#
+# This allows users to create an ASH estimate from a variety of contructors and
+# fit methods.  You can get approximate mean, var, and std from UnivariateASH.
+# TODO: quantiles, pdf, cdf
+#
+# Change the smoothing parameter `m` and `kernel` using ash!()
+#=============================================================================#
+
+const kernellist = [:uniform, :triangular, :epanechnikov, :biweight,
+                    :triweight, :tricube, :gaussian, :cosine, :logistic]
+const default_kernel = :biweight
 
 #-------------------------------------------------------# type and constructors
 type UnivariateASH{T<:Real}
@@ -18,36 +29,64 @@ type UnivariateASH{T<:Real}
     end
 end
 
-# Default outer constructor.  This doesn't get made automatically because of the inner constructor.
+# Default outer constructor.  This isn't generated because of the inner constructor.
 function UnivariateASH{T <: Real}(hist::Histogram{T, 1}, v::Vector{Float64}, m::Int, kernel::Symbol, n::Int)
     UnivariateASH{T}(hist, v, m, kernel, n)
 end
 
-function UnivariateASH(edg::AbstractVector, T::Type = Int, closed::Symbol = :right)
-    UnivariateASH(Histogram(edg, T, closed), zeros(length(edg) - 1), 1, :biweight, 0)
+function UnivariateASH(edg::AbstractVector, m::Int;
+                       closed::Symbol = :right, bintype::Type = Int, kernel::Symbol = default_kernel)
+    UnivariateASH(Histogram(edg, bintype, closed), zeros(length(edg) - 1), m, default_kernel, 0)
 end
 
-function UnivariateASH(a::Real, b::Real, nbin::Integer, T::Type = Int, closed::Symbol = :right)
-    UnivariateASH(linspace(a, b, nbin), T, closed)
+function UnivariateASH(a::Real, b::Real, nbin::Integer, m;
+                       closed::Symbol = :right, bintype::Type = Int, kernel::Symbol = default_kernel)
+    UnivariateASH(linrange(a, b, nbin), m,
+                  closed = closed, bintype = bintype, kernel = kernel)
 end
 
 
 # Constructor with data (user provides endpoints and nbins)
-function UnivariateASH(y::Vector, a::Real, b::Real, nbin::Int, T::Type = Int, closed::Symbol = :right)
-    o = UnivariateASH(a, b, nbin, T, closed)
+function UnivariateASH(y::Vector, a::Real, b::Real, nbin::Int, m::Int;
+                       closed::Symbol = :right, bintype::Type = Int, kernel::Symbol = default_kernel)
+    o = UnivariateASH(a, b, nbin, m, closed = closed, bintype = bintype, kernel = kernel)
     update!(o, y)
     o
 end
 # Constructor with data (user provide edges)
-function UnivariateASH(y::Vector, edg::AbstractVector, T::Type = Int, closed::Symbol = :right)
-    o = UnivariateASH(edge, T, closed)
+function UnivariateASH(y::Vector, edg::AbstractVector, m::Int;
+                       closed::Symbol = :right, bintype::Type = Int, kernel::Symbol = default_kernel)
+    o = UnivariateASH(edge, m, closed = closed, bintype = bintype, kernel = kernel)
     update!(o, y)
     o
+end
+
+#-------------------------------------------------------------------------# fit
+function fit(::Type{UnivariateASH}, y::Vector, w::WeightVec, edg::AbstractVector, m::Int;
+             closed::Symbol = :right, kernel::Symbol = default_kernel)
+    h = fit(Histogram, y, w, edg, closed = closed)
+    o = UnivariateASH(h, zeros(length(edg) - 1), m, kernel, 0)
+    update!(o, y)
+    o
+end
+
+function fit(::Type{UnivariateASH}, y::Vector, edg::AbstractVector, m::Int;
+             closed::Symbol = :right, kernel::Symbol = default_kernel)
+    h = fit(Histogram, y, edg, closed = closed)
+    o = UnivariateASH(h, zeros(length(edg) - 1), m, kernel, 0)
+    update!(o, y)
+    o
+end
+
+function fit(::Type{UnivariateASH}, y::Vector, a::Real, b::Real, nbin::Int, m::Int;
+             closed::Symbol = :right, kernel::Symbol = default_kernel)
+    fit(UnivariateASH, y, linrange(a, b, nbin), m, closed = closed, kernel = kernel)
 end
 
 #---------------------------------------------------------------------# update!
 function update!(o::UnivariateASH, y::Real, ash::Bool = true)
     push!(o.hist, y)
+    o.n += 1
     ash && ash!(o)
 end
 
@@ -68,18 +107,30 @@ end
 Base.copy(o::UnivariateASH) = deepcopy(o)
 
 function Base.merge!(o::UnivariateASH)
+    # TODO
 end
 
 Base.merge(o::UnivariateASH) = merge!(copy(o))
 
 
 #-----------------------------------------------------------# functions/methods
-nout(o::UnivariateASH) = nobs(o) - sum(b.v)
-nobs(o::UnivariateASH) = b.n
+nout(o::UnivariateASH) = nobs(o) - sum(o.hist.weights)
+nobs(o::UnivariateASH) = o.n
 midpoints(o::UnivariateASH) = midpoints(o.hist.edges[1])
 
-function ash!(o::UnivariateASH, m::Int = o.m, warnout = true)
+function mean(o::UnivariateASH)
+    mean(midpoints(o), WeightVec(o.v))
+end
+
+function var(o::UnivariateASH)
+    var(midpoints(o), WeightVec(o.v))
+end
+
+std(o::UnivariateASH) = sqrt(var(o))
+
+function ash!(o::UnivariateASH, m::Int = o.m, kernel = o.kernel; warnout = true)
     o.m = m
+    o.kernel = kernel
     nbins = length(o.hist.edges[1]) - 1
     @compat δ = Float64((o.hist.edges[1][2] - o.hist.edges[1][1]))
     for k = 1:nbins
@@ -91,7 +142,7 @@ function ash!(o::UnivariateASH, m::Int = o.m, warnout = true)
     end
 
     o.v /= (sum(o.v) * δ)  # make y integrate to 1
-    o.v[1] != 0 || o.v[end] != 0 && warn("out")
+    o.v[1] != 0 || o.v[end] != 0 && warn("nonzero density outside of bounds")
     return
 end
 
@@ -99,8 +150,14 @@ end
 # TESTING
 if true
     h = fit(Histogram, randn(1000), -4:.1:4)
-    o = AverageShiftedHistograms.UnivariateASH([-4:.1:4], Float64)
-    o = AverageShiftedHistograms.UnivariateASH(-4, 4, 50)
-    o = AverageShiftedHistograms.UnivariateASH(randn(100), -4, 4, 50)
-#     AverageShiftedHistograms.ash!(o, 4)
+    x = randn(100_000)
+    @time o = UnivariateASH(x, -4, 4, 1000, 5)
+    @time o = fit(UnivariateASH, x, WeightVec(ones(length(x))), -4:.1:4, 5)
+    @time o = fit(UnivariateASH, x, -4, 4, 100, 5)
+    @time o = fit(UnivariateASH, x, -4:.01:4, 5)
+    @time o = fit(UnivariateASH, x, linrange(-4, 4, 1000), 5)
+    println("mean: ", mean(o) - mean(x))
+    println(" var: ", var(o) - var(x))
+    println(" std: ", std(o) - std(x))
+    println("nobs: ", nobs(o))
 end
