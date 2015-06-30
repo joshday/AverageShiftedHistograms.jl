@@ -56,7 +56,7 @@ end
 # Constructor with data (user provide edges)
 function UnivariateASH(y::Vector, edg::AbstractVector, m::Int;
                        closed::Symbol = :right, bintype::Type = Int, kernel::Symbol = default_kernel)
-    o = UnivariateASH(edge, m, closed = closed, bintype = bintype, kernel = kernel)
+    o = UnivariateASH(edg, m, closed = closed, bintype = bintype, kernel = kernel)
     update!(o, y)
     o
 end
@@ -114,7 +114,6 @@ Base.merge(o::UnivariateASH) = merge!(copy(o))
 
 
 #-----------------------------------------------------------# functions/methods
-nout(o::UnivariateASH) = nobs(o) - sum(o.hist.weights)
 nobs(o::UnivariateASH) = o.n
 midpoints(o::UnivariateASH) = midpoints(o.hist.edges[1])
 
