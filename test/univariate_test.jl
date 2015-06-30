@@ -28,6 +28,15 @@ facts("Univariate") do
         @fact nobs(o) => n
     end
 
+    context("Gadfly") do
+        loadvis()
+        o = fit(UnivariateASH, y, linrange(-4, 4, 1000), 5)
+        plot(o)
+        plot(o, true, true)
+        plot(o, true, false)
+        plot(o, false, true)
+        @fact_throws plot(o, false, false)
+    end
 end
 
 end # module
