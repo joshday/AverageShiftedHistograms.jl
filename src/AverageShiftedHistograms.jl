@@ -7,7 +7,7 @@ module AverageShiftedHistograms
     import StatsBase:
         fit, nobs, Histogram, AbstractHistogram, midpoints, WeightVec
 
-    export UnivariateASH, updatebatch!, fit, ash, midpoints
+    export UnivariateASH, updatebatch!, fit, ash
 
     include("univariateash.jl")
 end
