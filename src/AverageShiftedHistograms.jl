@@ -10,4 +10,5 @@ module AverageShiftedHistograms
     export UnivariateASH, updatebatch!, fit, ash!, midpoints, loadvis
 
     include("univariateash.jl")
+    include("bivariateash.jl")
 end

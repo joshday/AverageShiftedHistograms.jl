@@ -12,28 +12,25 @@ Density estimation using **Average Shifted Histograms**.  A great summary of ASH
 Pkg.add("AverageShiftedHistograms")
 ```
 
-## [Documentation](http://averageshiftedhistogramsjl.readthedocs.org)
-
 ## Basic Usage
+To anyone using this package, v0.2.0 will be a complete rewrite.  You'll have to relearn how to use it, but it'll be faster and easier (hopefully) to use!  Check the josh branch for a preview.
 
-Extremely similar to `R`'s [ash](http://cran.r-project.org/web/packages/ash/index.html) package.
 
 ```julia
-using AverageShiftedHistograms
-using Gadfly
-using RDatasets
+using AverageShiftedHistograms, RDatasets
 iris = dataset("datasets", "iris")
+y = iris[:SepalLength].data
 
-# AverageShiftedHistograms does not support DataFrames (currently)
-sepal_length = array(iris[1])
-
-b = Bin1(sepal_length)
-f = Ash1(b)
-Gadfly.plot(f, sepal_length)
+# fit method takes arguments
+#	- y::Vector (data)
+#	- edg::AbstractVector (edges of histogram bins)
+#	- m::Int (smoothing parameter)
+o = fit(UnivariateASH, y, 2:.1:10, 5)
 ```
-![](doc/examples/figures/READMEplot.png)
 
 
 ## Differences from `R`'s `ash`:
-- update bins with a new batch of data using `update!(bins, newdata)`
+- TODO: timing comparison
+- update estimate with new data: `update!(o, newdata)`
+- Change smoothing parameter and kernel: `ash!(o, m [,kernel])`
 - More kernel options provided by the [`SmoothingKernels`](https://github.com/johnmyleswhite/SmoothingKernels.jl) package
