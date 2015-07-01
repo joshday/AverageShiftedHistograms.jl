@@ -29,6 +29,8 @@ facts("Univariate") do
         @fact var(o) => roughly(var(y), .01)
         @fact std(o) => roughly(std(y), .01)
         @fact nobs(o) => n
+        @fact value(o) => o.v
+        update!(o, randn(100))
     end
 end
 

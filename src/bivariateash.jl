@@ -81,7 +81,7 @@ function Base.show(io::IO, o::BivariateASH)
     println(io, "*   nbins: ", (length(o.hist.edges[1]),length(o.hist.edges[2])))
 end
 Base.copy(o::BivariateASH) = deepcopy(o)
-function Base.merge!(o::UnivariateASH)
+function Base.merge!(o::BivariateASH)
     # TODO
 end
 Base.merge(o::BivariateASH) = merge!(copy(o))

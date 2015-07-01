@@ -11,13 +11,17 @@ facts("Bivariate") do
         y = randn(100, 100)
         o = BivariateASH(y, (-4:.1:4, -4:.1:4), (5,5))
     end
-    
+
     context("methods") do
         y = randn(100, 100)
         o = BivariateASH(y, (-4:.1:4, -4:.1:4), (5,5))
+        update!(o, randn(100, 100))
         show(o)
         nobs(o)
         midpoints(o)
+        merge(o)
+        merge!(o)
+        @fact value(o) => o.v
     end
 end
 
