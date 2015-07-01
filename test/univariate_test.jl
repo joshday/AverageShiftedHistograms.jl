@@ -8,12 +8,15 @@ facts("Univariate") do
         h = fit(Histogram, y, -4:.1:4)
         o = UnivariateASH{Int}(h, zeros(length(-4:.1:4) - 1), 5, :triangular, 0)
         o = UnivariateASH(h, zeros(length(-4:.1:4) - 1), 5, :biweight, 0)
-        o = UnivariateASH(y, -4, 4, 1000, 5, bintype = Float64, closed = :left)
-        o = UnivariateASH(y, -4, 4, 1000, 5, kernel = :gaussian, bintype = Float64, closed = :left)
         o = UnivariateASH(y, -4:.1:4, 5, kernel = :triangular, closed = :right)
         o = fit(UnivariateASH, y, WeightVec(ones(length(y))), -4:.1:4, 5)
-        o = fit(UnivariateASH, y, -4, 4, 100, 5)
         o = fit(UnivariateASH, y, -4:.01:4, 5)
+        o = fit(UnivariateASH, y, linrange(-4, 4, 1000), 5)
+    end
+
+    context("methods") do
+        n = rand(10_000:100_000)
+        y = randn(n)
         o = fit(UnivariateASH, y, linrange(-4, 4, 1000), 5)
         ash!(o, 10)
         @fact o.m => 10

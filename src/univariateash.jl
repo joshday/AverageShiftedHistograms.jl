@@ -1,4 +1,4 @@
-#=============================================================================#
+#===================================================================================#
 # Univariate Average Shifted Histograms
 #
 # This allows users to create an ASH estimate from a variety of contructors and
@@ -6,13 +6,13 @@
 # TODO: quantiles, pdf, cdf
 #
 # Change the smoothing parameter `m` and `kernel` using ash!()
-#=============================================================================#
+#===================================================================================#
 
 const kernellist = [:uniform, :triangular, :epanechnikov, :biweight,
                     :triweight, :tricube, :gaussian, :cosine, :logistic]
 const default_kernel = :biweight
 
-#-------------------------------------------------------# type and constructors
+#-------------------------------------------------------------# type and constructors
 type UnivariateASH{T<:Real}
     hist::Histogram{T, 1}             # bins
     v::Vector{Float64}                # UnivariateASH estimate
@@ -35,33 +35,23 @@ function UnivariateASH{T <: Real}(hist::Histogram{T, 1}, v::Vector{Float64}, m::
 end
 
 function UnivariateASH(edg::AbstractVector, m::Int;
-                       closed::Symbol = :right, bintype::Type = Int, kernel::Symbol = default_kernel)
-    UnivariateASH(Histogram(edg, bintype, closed), zeros(length(edg) - 1), m, default_kernel, 0)
+                       closed::Symbol = :right,
+                       bintype::Type = Int,
+                       kernel::Symbol = default_kernel)
+    UnivariateASH(Histogram(edg, bintype, closed), zeros(length(edg) - 1), m, kernel, 0)
 end
 
-function UnivariateASH(a::Real, b::Real, nbin::Integer, m;
-                       closed::Symbol = :right, bintype::Type = Int, kernel::Symbol = default_kernel)
-    UnivariateASH(linrange(a, b, nbin), m,
-                  closed = closed, bintype = bintype, kernel = kernel)
-end
-
-
-# Constructor with data (user provides endpoints and nbins)
-function UnivariateASH(y::Vector, a::Real, b::Real, nbin::Int, m::Int;
-                       closed::Symbol = :right, bintype::Type = Int, kernel::Symbol = default_kernel)
-    o = UnivariateASH(a, b, nbin, m, closed = closed, bintype = bintype, kernel = kernel)
-    update!(o, y)
-    o
-end
-# Constructor with data (user provide edges)
+# Constructor with data
 function UnivariateASH(y::Vector, edg::AbstractVector, m::Int;
-                       closed::Symbol = :right, bintype::Type = Int, kernel::Symbol = default_kernel)
+                       closed::Symbol = :right,
+                       bintype::Type = Int,
+                       kernel::Symbol = default_kernel)
     o = UnivariateASH(edg, m, closed = closed, bintype = bintype, kernel = kernel)
     update!(o, y)
     o
 end
 
-#-------------------------------------------------------------------------# fit
+#-------------------------------------------------------------------------------# fit
 function fit(::Type{UnivariateASH}, y::Vector, w::WeightVec, edg::AbstractVector, m::Int;
              closed::Symbol = :right, kernel::Symbol = default_kernel)
     h = fit(Histogram, y, w, edg, closed = closed)
@@ -78,12 +68,7 @@ function fit(::Type{UnivariateASH}, y::Vector, edg::AbstractVector, m::Int;
     o
 end
 
-function fit(::Type{UnivariateASH}, y::Vector, a::Real, b::Real, nbin::Int, m::Int;
-             closed::Symbol = :right, kernel::Symbol = default_kernel)
-    fit(UnivariateASH, y, linrange(a, b, nbin), m, closed = closed, kernel = kernel)
-end
-
-#---------------------------------------------------------------------# update!
+#---------------------------------------------------------------------------# update!
 function update!(o::UnivariateASH, y::Real, ash::Bool = true)
     push!(o.hist, y)
     o.n += 1
@@ -96,12 +81,13 @@ function update!{T <: Real}(o::UnivariateASH, y::Vector{T})
 end
 
 
-#---------------------------------------------------------------------# Base
+#------------------------------------------------------------------------------# Base
 function Base.show(io::IO, o::UnivariateASH)
     println(io, typeof(o))
     println(io, "*  kernel: ", o.kernel)
     println(io, "*       m: ", o.m)
-    println(io, "*   edges:", o.hist.edges[1])
+    println(io, "*   nbins:", length(o.hist.edges[1]))
+    TextPlots.plot([midpoints(o)], o.v, title = false, cols=30, rows=10)
 end
 
 Base.copy(o::UnivariateASH) = deepcopy(o)
@@ -113,7 +99,8 @@ end
 Base.merge(o::UnivariateASH) = merge!(copy(o))
 
 
-#-----------------------------------------------------------# functions/methods
+#-----------------------------------------------------------------# functions/methods
+value(o::UnivariateASH) = copy(o.v)
 nobs(o::UnivariateASH) = o.n
 midpoints(o::UnivariateASH) = midpoints(o.hist.edges[1])
 
@@ -127,7 +114,7 @@ end
 
 std(o::UnivariateASH) = sqrt(var(o))
 
-function ash!(o::UnivariateASH, m::Int = o.m, kernel = o.kernel; warnout = true)
+function ash!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warnout = true)
     o.m = m
     o.kernel = kernel
     nbins = length(o.hist.edges[1]) - 1
@@ -146,17 +133,19 @@ function ash!(o::UnivariateASH, m::Int = o.m, kernel = o.kernel; warnout = true)
 end
 
 
+#/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/|
 # TESTING
 if false
     h = fit(Histogram, randn(1000), -4:.1:4)
     x = randn(100_000)
-    @time o = UnivariateASH(x, -4, 4, 1000, 5)
+    @time o = UnivariateASH(x, linspace(-4, 4, 1000), 5)
     @time o = fit(UnivariateASH, x, WeightVec(ones(length(x))), -4:.1:4, 5)
-    @time o = fit(UnivariateASH, x, -4, 4, 100, 5)
+    @time o = fit(UnivariateASH, x, linspace(-4, 4, 100), 5)
     @time o = fit(UnivariateASH, x, -4:.01:4, 5)
-    @time o = fit(UnivariateASH, x, linrange(-4, 4, 1000), 5)
+    @time o = fit(UnivariateASH, x, linspace(-4, 4, 1000), 5)
     println("mean: ", mean(o) - mean(x))
     println(" var: ", var(o) - var(x))
     println(" std: ", std(o) - std(x))
     println("nobs: ", nobs(o))
+    show(o)
 end
