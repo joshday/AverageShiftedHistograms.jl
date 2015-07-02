@@ -4,3 +4,4 @@ Compat
 FactCheck
 StatsBase
 TextPlots
+Reexport

@@ -13,7 +13,7 @@ Pkg.add("AverageShiftedHistograms")
 ```
 
 ## Basic Usage
-To anyone using this package, v0.2.0 will be a complete rewrite.  You'll have to relearn how to use it, but it'll be faster and easier (hopefully) to use!  Check the josh branch for a preview.
+To anyone using this package, v0.2.0 (coming very soon) will be a complete rewrite.  You'll have to relearn how to use it, but it'll be faster and easier (hopefully) to use!  Take a look at master for a preview.
 
 
 ```julia

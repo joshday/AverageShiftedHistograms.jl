@@ -1,6 +1,7 @@
 module AverageShiftedHistograms
     using Compat
-    using StatsBase
+    using Reexport
+    @reexport using StatsBase
     import Docile
     Docile.@document
 
