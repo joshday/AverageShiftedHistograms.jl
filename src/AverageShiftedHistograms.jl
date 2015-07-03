@@ -6,11 +6,11 @@ module AverageShiftedHistograms
     Docile.@document
 
     import SmoothingKernels: kernels
-    import Base: quantile, merge, merge!, copy, mean, var, std
+    import Base: quantile, merge, merge!, copy, mean, var, std, quantile
     import TextPlots
     import StatsBase: fit, nobs, Histogram, AbstractHistogram, WeightVec, midpoints
 
-    export UnivariateASH, BivariateASH, update!, ash!, value
+    export UnivariateASH, BivariateASH, update!, updatebatch!, ash!, value
 
     include("univariateash.jl")
     include("bivariateash.jl")

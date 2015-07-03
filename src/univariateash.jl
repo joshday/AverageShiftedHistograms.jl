@@ -80,6 +80,12 @@ function update!{T <: Real}(o::UnivariateASH, y::Vector{T})
     ash!(o)
 end
 
+function updatebatch!{T<:Real}(o::UnivariateASH, y::Vector{T})
+    append!(o.hist, y)
+    o.n += length(y)
+    ash!(o)
+end
+
 
 #------------------------------------------------------------------------------# Base
 function Base.show(io::IO, o::UnivariateASH)
@@ -104,24 +110,25 @@ value(o::UnivariateASH) = copy(o.v)
 nobs(o::UnivariateASH) = o.n
 midpoints(o::UnivariateASH) = midpoints(o.hist.edges[1])
 
-function mean(o::UnivariateASH)
-    mean(midpoints(o), WeightVec(o.v))
-end
-
-function var(o::UnivariateASH)
-    var(midpoints(o), WeightVec(o.v))
-end
-
+mean(o::UnivariateASH) = mean(midpoints(o), WeightVec(o.v))
+var(o::UnivariateASH) = var(midpoints(o), WeightVec(o.v))
 std(o::UnivariateASH) = sqrt(var(o))
+
+function quantile(o::UnivariateASH, τ::Real)
+    τ > 0 && τ < 1 || error("τ must be in (0, 1)")
+    cdf = cumsum(o.v) * (o.hist.edges[1][2] - o.hist.edges[1][1])
+
+    midpoints(o)[minimum(find(cdf .>= τ))]
+end
 
 function ash!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warnout = true)
     o.m = m
     o.kernel = kernel
     nbins = length(o.hist.edges[1]) - 1
     @compat δ = Float64((o.hist.edges[1][2] - o.hist.edges[1][1]))
-    for k = 1:nbins
+    @inbounds for k = 1:nbins
         if o.hist.weights[k] != 0
-            for i = maximum([1, k - o.m + 1]):minimum([nbins, k + o.m - 1])
+            @inbounds for i = maximum([1, k - o.m + 1]):minimum([nbins, k + o.m - 1])
                 o.v[i] += o.hist.weights[k] * kernels[o.kernel]((i - k) / o.m)
             end
         end
