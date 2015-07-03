@@ -127,7 +127,7 @@ function ash!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warnout
         end
     end
 
-    o.v /= (sum(o.v) * δ)  # make y integrate to 1
+    o.v /= sum(o.v) * δ  # make y integrate to 1
     o.v[1] != 0 || o.v[end] != 0 && warn("nonzero density outside of bounds")
     return
 end

@@ -33,4 +33,5 @@ o = fit(UnivariateASH, y, 2:.1:10, 5)
 - TODO: timing comparison
 - update estimate with new data: `update!(o, newdata)`
 - Change smoothing parameter and kernel: `ash!(o, m [,kernel])`
+- Get approximate mean/var from `UnivariateASH` with `mean(o)`, `var(o)`
 - More kernel options provided by the [`SmoothingKernels`](https://github.com/johnmyleswhite/SmoothingKernels.jl) package
