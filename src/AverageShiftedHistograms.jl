@@ -10,8 +10,12 @@ module AverageShiftedHistograms
     import TextPlots
     import StatsBase: fit, nobs, Histogram, AbstractHistogram, WeightVec, midpoints
 
-    export UnivariateASH, BivariateASH, update!, updatebatch!, ash!, value
+    export UnivariateASH, BivariateASH, update!, updatebatch!, ash!, value,
+        Bin1, Ash1, Bin2, Ash2
 
     include("univariateash.jl")
     include("bivariateash.jl")
+
+    include("Bin1.jl")
+    include("Ash1.jl")
 end

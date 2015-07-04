@@ -138,21 +138,3 @@ function ash!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warnout
     o.v[1] != 0 || o.v[end] != 0 && warn("nonzero density outside of bounds")
     return
 end
-
-
-#/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/|
-# TESTING
-if false
-    h = fit(Histogram, randn(1000), -4:.1:4)
-    x = randn(100_000)
-    @time o = UnivariateASH(x, linspace(-4, 4, 1000), 5)
-    @time o = fit(UnivariateASH, x, WeightVec(ones(length(x))), -4:.1:4, 5)
-    @time o = fit(UnivariateASH, x, linspace(-4, 4, 100), 5)
-    @time o = fit(UnivariateASH, x, -4:.01:4, 5)
-    @time o = fit(UnivariateASH, x, linspace(-4, 4, 1000), 5)
-    println("mean: ", mean(o) - mean(x))
-    println(" var: ", var(o) - var(x))
-    println(" std: ", std(o) - std(x))
-    println("nobs: ", nobs(o))
-    show(o)
-end
