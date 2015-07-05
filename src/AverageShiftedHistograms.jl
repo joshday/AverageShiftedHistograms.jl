@@ -10,7 +10,7 @@ module AverageShiftedHistograms
     import TextPlots
     import StatsBase: fit, nobs, WeightVec
 
-    export Bin1, UnivariateASH, ash!, nout, update!
+    export Bin1, Bin2, UnivariateASH, ash!, nout, update!
 
     const kernellist = [
         :uniform,
