@@ -51,7 +51,6 @@ function merge!(o1::Bin1, o2::Bin1)
     o1.v += o2.v
 end
 
-merge(o1::Bin1, o2::Bin1) = (o1 = copy(o1); merge!(o1, o2); o1)
 
 
 #------------------------------------------------------------------------------# Ash1
@@ -125,6 +124,10 @@ function update!(o::UnivariateASH, y::Vector{Float64}, m::Int = o.m, kernel::Sym
     ash!(o, m, kernel)
 end
 
+copy(o::UnivariateASH) = deepcopy(o)
+
+merge!(o1::UnivariateASH, o2::UnivariateASH) = (merge!(o1.bin1, o2.bin1); ash!(o1))
+
 function Base.show(io::IO, o::UnivariateASH)
     println(io, typeof(o))
     println(io, "*  kernel: ", o.kernel)
@@ -135,6 +138,8 @@ function Base.show(io::IO, o::UnivariateASH)
 end
 
 nobs(o::UnivariateASH) = o.bin1.n
+
+"return the number of observations outside the endpoints of the histogram bins"
 nout(o::UnivariateASH) = o.bin1.n - sum(o.bin1.v)
 mean(o::UnivariateASH) = mean(o.x, WeightVec(o.y))
 var(o::UnivariateASH) = var(o.x, WeightVec(o.y))

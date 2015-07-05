@@ -6,7 +6,7 @@ module AverageShiftedHistograms
     Docile.@document
 
     import SmoothingKernels: kernels
-    import Base: quantile, merge, merge!, copy, mean, var, std, quantile, push!
+    import Base: quantile, merge!, copy, mean, var, std, quantile, push!
     import TextPlots
     import StatsBase: fit, nobs, WeightVec
 
