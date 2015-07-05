@@ -6,16 +6,26 @@ module AverageShiftedHistograms
     Docile.@document
 
     import SmoothingKernels: kernels
-    import Base: quantile, merge, merge!, copy, mean, var, std, quantile
+    import Base: quantile, merge, merge!, copy, mean, var, std, quantile, push!
     import TextPlots
-    import StatsBase: fit, nobs, Histogram, AbstractHistogram, WeightVec, midpoints
+    import StatsBase: fit, nobs
 
-    export UnivariateASH, BivariateASH, update!, updatebatch!, ash!, value,
-        Bin1, Ash1, Bin2, Ash2
+    export Bin1, UnivariateASH, ash!, nout, update!
 
-    include("univariateash.jl")
-    include("bivariateash.jl")
+    # include("univariateash.jl")
+    # include("bivariateash.jl")
 
-    include("Bin1.jl")
-    include("Ash1.jl")
+    const kernellist = [
+        :uniform,
+        :triangular,
+        :epanechnikov,
+        :biweight,
+        :triweight,
+        :tricube,
+        :gaussian,
+        :cosine,
+        :logistic
+        ]
+
+    include("univariate.jl")
 end
