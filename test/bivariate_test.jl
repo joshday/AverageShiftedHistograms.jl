@@ -3,7 +3,7 @@ using AverageShiftedHistograms, FactCheck
 
 facts("Bivariate") do
     context("Constructors") do
-        println("nothing here")
+        o = Bin2(-4, 4, 50, -4, 4, 50)
     end
 
     context("methods") do

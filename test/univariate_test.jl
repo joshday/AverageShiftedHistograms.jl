@@ -12,6 +12,7 @@ facts("Univariate") do
         a = UnivariateASH(o, 3)
         a = UnivariateASH(o, 5, :gaussian, false)
         fit(UnivariateASH, y, -4:.1:4, 5)
+        fit(UnivariateASH, y, -4, 4, 100, 5)
     end
 
     context("methods") do

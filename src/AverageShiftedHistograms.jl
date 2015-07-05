@@ -25,4 +25,5 @@ module AverageShiftedHistograms
         ]
 
     include("univariate.jl")
+    include("bivariate.jl")
 end
