@@ -138,3 +138,6 @@ end
 
 nobs(o::UnivariateASH) = o.bin1.n
 nout(o::UnivariateASH) = o.bin1.nout
+mean(o::UnivariateASH) = mean(o.x, WeightVec(o.y))
+var(o::UnivariateASH) = var(o.x, WeightVec(o.y))
+std(o::UnivariateASH) = sqrt(var(o))

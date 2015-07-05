@@ -25,10 +25,15 @@ facts("Univariate") do
         ash!(o, 3, :triweight)
         @fact o.kernel => :triweight
         show(o)
-        nobs(o)
+        @fact nobs(o) => n
         nout(o)
         y2 = randn(n)
         update!(o, y2)
+        @fact nobs(o) => 2 * n
+
+        mean(o)
+        var(o)
+        std(o)
     end
 end
 

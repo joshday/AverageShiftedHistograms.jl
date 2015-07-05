@@ -8,12 +8,9 @@ module AverageShiftedHistograms
     import SmoothingKernels: kernels
     import Base: quantile, merge, merge!, copy, mean, var, std, quantile, push!
     import TextPlots
-    import StatsBase: fit, nobs
+    import StatsBase: fit, nobs, WeightVec
 
     export Bin1, UnivariateASH, ash!, nout, update!
-
-    # include("univariateash.jl")
-    # include("bivariateash.jl")
 
     const kernellist = [
         :uniform,
