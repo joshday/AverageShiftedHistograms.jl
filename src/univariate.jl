@@ -99,7 +99,7 @@ end
 "Get ASH estimate specifying the endpoints and nbins"
 function fit(::Type{UnivariateASH}, y::Vector{Float64}, a, b, nbin, m::Int,
              kernel::Symbol = :biweight; warnout::Bool = true)
-    bins = Bin1(y, a, b, nbinb)
+    bins = Bin1(y, a, b, nbin)
     UnivariateASH(bins, m, kernel, warnout)
 end
 
