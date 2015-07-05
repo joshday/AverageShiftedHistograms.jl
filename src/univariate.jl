@@ -9,20 +9,18 @@ type Bin1
     a::Float64            # lower bound
     b::Float64            # uppwer bound
     nbin::Int             # number of bins
-    nout::Int             # n outside interval [a, b)
     n::Int                # number of observations
 
-    function Bin1(v::Vector{Int}, a::Float64, b::Float64, nbin::Int, nout::Int, n::Int)
+    function Bin1(v::Vector{Int}, a::Float64, b::Float64, nbin::Int, n::Int)
         length(v) == nbin || error("length of count vector must match nbins")
         a < b || error("lower bound must be smaller than upper bound")
         nbin > 1 || error("must use at least 2 bins")
-        nout >= 0 || error("nout must be nonnegative")
         n >= 0 || error("n must be nonnegative")
-        new(v, a, b, nbin, nout, n)
+        new(v, a, b, nbin, n)
     end
 end
 
-@compat Bin1(a, b, nbin) = Bin1(zeros(Int, nbin), Float64(a), Float64(b), nbin, 0, 0)
+@compat Bin1(a, b, nbin) = Bin1(zeros(Int, nbin), Float64(a), Float64(b), nbin, 0)
 
 function Bin1(y::Vector{Float64}, a, b, nbin)
     o = Bin1(a, b, nbin)
@@ -37,7 +35,9 @@ function push!(o::Bin1, y::Vector{Float64})
     o.n += length(y)
     for yi in y
         ki::Int = floor(Int, (yi - o.a) / δ + 1)
-        1 <= ki <= o.nbin ? o.v[ki] += 1 : o.nout += 1
+        if 1 <= ki <= o.nbin
+            o.v[ki] += 1
+        end
     end
     nothing
 end
@@ -45,10 +45,8 @@ end
 copy(o::Bin1) = deepcopy(o)
 
 function merge!(o1::Bin1, o2::Bin1)
-    all(o1.ab .== o2.ab) || error("objects have different endpoints")
+    o1.a == o2.a && o1.b == o2.b || error("objects have different endpoints")
     o1.nbin == o2.nbin || error("objects have different number of bins")
-
-    o1.nout += o2.nout
     o1.n += o2.n
     o1.v += o2.v
 end
@@ -137,7 +135,7 @@ function Base.show(io::IO, o::UnivariateASH)
 end
 
 nobs(o::UnivariateASH) = o.bin1.n
-nout(o::UnivariateASH) = o.bin1.nout
+nout(o::UnivariateASH) = o.bin1.n - sum(o.bin1.v)
 mean(o::UnivariateASH) = mean(o.x, WeightVec(o.y))
 var(o::UnivariateASH) = var(o.x, WeightVec(o.y))
 std(o::UnivariateASH) = sqrt(var(o))
