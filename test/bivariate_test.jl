@@ -13,6 +13,9 @@ facts("Bivariate") do
         o = Bin2(x, y, -4:.1:4, -4:.1:4)
         h = hist2d([x y], -4:.1:4, -4:.1:4)
         @fact sum(h[3] - o.v) => 0 "Bin2 gives same result as hist2d"
+
+        a = BivariateASH(o, 5, 5)
+        ash!(a)
     end
 
     context("methods") do

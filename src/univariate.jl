@@ -24,13 +24,13 @@ end
 
 function Bin1(y::Vector{Float64}, a, b, nbin)
     o = Bin1(a, b, nbin)
-    push!(o, y)
+    update!(o, y)
     o
 end
 
 Bin1(y::Vector{Float64}, r::Range) = Bin1(y, minimum(r), maximum(r), length(r) - 1)
 
-function push!(o::Bin1, y::Vector{Float64})
+function update!(o::Bin1, y::Vector{Float64})
     @compat δ = Float64((o.b - o.a) / o.nbin)
     o.n += length(y)
     for yi in y
@@ -62,7 +62,7 @@ type UnivariateASH
     bin1::Bin1                           # Bin1 object
 
     function UnivariateASH(o::Bin1, m::Int, kernel::Symbol = :biweight, warnout::Bool = true)
-        m > 0 || error("m must be greater than 0")
+        m >= 0 || error("m must be nonnegative")
         δ = (o.b - o.a) / o.nbin
         x = o.a + ([1:o.nbin] - 0.5) .* δ
         a = new(x, zeros(o.nbin), m, kernel, o)
@@ -106,7 +106,7 @@ end
 
 "Update UnivariateASH with new data and optional new smoothing parameter/kernel"
 function update!(o::UnivariateASH, y::Vector{Float64}, m::Int = o.m, kernel::Symbol = o.kernel)
-    push!(o.bin1, y)
+    update!(o.bin1, y)
     ash!(o, m, kernel)
 end
 

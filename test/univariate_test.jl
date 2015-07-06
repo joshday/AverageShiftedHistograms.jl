@@ -8,7 +8,7 @@ facts("Univariate") do
             n = rand(10_000:100_000)
             y = randn(n)
             o = Bin1(-4, 4, 50)
-            push!(o, y)
+            update!(o, y)
             o = Bin1(y, -4, 4, 100)
             o = Bin1(y, -4:.1:4)
             a = UnivariateASH(o, 3)

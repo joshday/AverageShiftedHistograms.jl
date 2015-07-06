@@ -1,3 +1,6 @@
+# Bivariate Average Shifted Histogram
+#
+# Pseudocode available in http://www.stat.rice.edu/%7Escottdw/stat550/HW/hw4/c05.pdf
 
 type Bin2
     v::Matrix{Int}                  # Counts in each bin
@@ -58,24 +61,78 @@ end
 
 
 #----------------------------------------------------------------------# BivariateASH
-# type BivariateASH
-#     x::VecF
-#     y::VecF
-#     z::MatF         # density at (x, y)
-#     mx::Int64       # smoothing parameter in x direction
-#     my::Int64       # smoothing parameter in y direction
-#     kernelx::Symbol # kernel in x direction
-#     kernely::Symbol # kernel in y direction
-#     bin2::Bin2      # Bin2 object
-#
-#
-# function BivariateASH(o::Bin2, mx, my, kernelx, kernely; warnout::Bool = true)
-#
-# end
+type BivariateASH
+    x::VecF
+    y::VecF
+    z::MatF         # density at (x, y)
+    mx::Int64       # smoothing parameter in x direction
+    my::Int64       # smoothing parameter in y direction
+    kernelx::Symbol # kernel in x direction
+    kernely::Symbol # kernel in y direction
+    bin2::Bin2      # Bin2 object
 
 
+    function BivariateASH(o::Bin2, mx, my, kernelx = :biweight, kernely = :biweight, warnout::Bool = true)
+        mx >= 0 && my >= 0 || error("smoothing parameters must be nonnegative")
+        kernelx in kernellist || error("kernelx not recognized")
+        kernely in kernellist || error("kernely not recognized")
 
+        δx = (o.dimx[2] - o.dimx[1]) / o.dimx[3]
+        δy = (o.dimy[2] - o.dimy[1]) / o.dimy[3]
+        x, y = [1:o.dimx[3]], [1:o.dimy[3]]
+        x = o.dimx[1] + (x - 0.5) * δx
+        y = o.dimy[1] + (y - 0.5) * δy
+        a = new(x, y, zeros(o.dimx[3], o.dimy[3]), mx, my, kernelx, kernely, o)
+        ash!(a)
+        a
+    end
 
+end
+
+function fit(::Type{BivariateASH}, x, y, xrange::Range, yrange::Range, mx, my, kernelx = :biweight, kernely = :biweight; warnout::Bool = true)
+    b = Bin2(x, y, xrange, yrange)
+    o = BivariateASH(b, mx, my, kernelx, kernely, warnout)
+end
+
+function ash!(o::BivariateASH, mx = o.mx, my = o.my, kernelx = o.kernelx, kernely = o.kernely; warnout = true)
+    o.mx = mx
+    o.my = my
+    o.kernelx = kernelx
+    o.kernely = kernely
+
+    w = zeros(2 * my - 1, 2 * mx - 1)
+    for i = (1 - my):(my - 1), j = (1 - mx):(mx - 1)
+        w[i + my, j + mx] = kernels[kernely](i / my) * kernels[kernelx](i / mx)
+        # w[i + my, j + mx] = kernels[kernely](i) * kernels[kernelx](i)
+    end
+
+    δx = (o.bin2.dimx[2] - o.bin2.dimx[1]) / o.bin2.dimx[3] #(b1 - a1) / nbin1
+    δy = (o.bin2.dimy[2] - o.bin2.dimy[1]) / o.bin2.dimy[3]
+    hx = δx * mx
+    hy = δy * my
+
+    nbinx = o.bin2.dimx[3]
+    nbiny = o.bin2.dimy[3]
+    for k = 1:nbiny
+       for l = 1:nbinx
+           if o.bin2.v[k, l] == 0
+                l += 1
+            else
+                for i = max(1, k - my + 1):min(nbiny, k + my - 1)
+                    for j = max(1, l - mx + 1):min(nbinx, l + mx - 1)
+                        o.z[i, j] += o.bin2.v[k, l] * w[my + i - k, mx + j - l]
+                    end
+                end
+            end
+        end
+    end
+
+    o.z /= sum(o.z) * δx * δy # make the density integrate to 1
+
+    if any(o.z[1, :]!=0) || any(o.z[:, 1]!=0) || any(o.z[:, end]!=0) || any(o.z[end, :]!=0)
+        warn("nonzero density outside of bounds")
+    end
+end
 
 # function update!(bin::Bin2, mx::Int, my::Int, kernelx = :biweight, kernely = :biweight)
 #
