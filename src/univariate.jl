@@ -138,3 +138,8 @@ function quantile(o::UnivariateASH, τ::Real)
 
     o.x[minimum(find(cdf .>= τ))]
 end
+
+# pdf(o::UnivariateASH, x::Real) = println("TODO")
+# cdf(o::UnivariateASH, x::Real) = println("TODO")
+# median(o::UnivariateASH, x::Real) = quantile(o, 0.5)
+# mode(o::UnivariateASH, x::Real) = println("TODO")

@@ -19,7 +19,8 @@ facts("Bivariate") do
     end
 
     context("methods") do
-        println("nothing here")
+        o = Bin2(-4, 4, 50, -4, 4, 50)
+        nobs(o)
     end
 end
 

@@ -45,6 +45,10 @@ facts("Univariate") do
         merge!(o, o2)
         update!(o, y)
         quantile(o, 0.5)
+        # pdf(o)
+        # cdf(o)
+        # mode(o)
+        # median(o)
     end
 end
 
