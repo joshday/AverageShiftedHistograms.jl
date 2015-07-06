@@ -60,31 +60,17 @@ type UnivariateASH
     m::Int                               # smoothing parameter
     kernel::Symbol                       # kernel for weighting
     bin1::Bin1                           # Bin1 object
-end
 
-"Univariate Average Shifted Histogram"
-function UnivariateASH(o::Bin1, m::Int, kernel::Symbol = :biweight, warnout::Bool = true)
-    m > 0 || error("m must be greater than 0")
-    @compat δ = Float64((o.b - o.a) / o.nbin)
-    y::Vector{Float64} = zeros(o.nbin)
-    x::Vector{Float64} = zeros(o.nbin)
-
-    for k = 1:o.nbin
-        if o.v != 0
-            for i = maximum([1, k - m + 1]):minimum([o.nbin, k + m - 1])
-                y[i] += o.v[k] * kernels[kernel]((i - k) / m)
-            end
-        end
-    x[k] = o.a + (k - 0.5) * δ
+    function UnivariateASH(o::Bin1, m::Int, kernel::Symbol = :biweight, warnout::Bool = true)
+        m > 0 || error("m must be greater than 0")
+        δ = (o.b - o.a) / o.nbin
+        x = o.a + ([1:o.nbin] - 0.5) .* δ
+        a = new(x, zeros(o.nbin), m, kernel, o)
+        ash!(a, warnout = warnout)
+        a
     end
-
-    y /= (sum(y) * δ)  # make y integrate to 1
-
-    non0 = y[1] != 0.0 || y[end] != 0.0
-    (non0 && warnout) || warn("nonzero density outside interval [a, b)")
-
-    UnivariateASH(x, y, m, kernel, o)
 end
+
 
 "Get ASH estimate specifying the bin edges (nbins = length(edg) - 1)"
 function fit(::Type{UnivariateASH}, y::Vector{Float64}, edg::Range, m::Int,

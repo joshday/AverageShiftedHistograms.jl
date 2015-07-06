@@ -3,6 +3,7 @@ using AverageShiftedHistograms, FactCheck
 
 facts("Univariate") do
     context("Constructors") do
+        o = Bin1(-4, 4, 100)
         for i in 1:10
             n = rand(10_000:100_000)
             y = randn(n)
