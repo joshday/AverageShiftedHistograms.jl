@@ -36,12 +36,14 @@ facts("Univariate") do
         @fact nobs(o) => 2 * n
 
         mean(o)
+        midpoints(o)
         var(o)
         std(o)
         copy(o)
         o2 = fit(UnivariateASH, y, -4:.1:4, 5)
         merge!(o, o2)
         update!(o, y)
+        quantile(o, 0.5)
     end
 end
 

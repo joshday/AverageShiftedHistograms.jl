@@ -141,6 +141,14 @@ nobs(o::UnivariateASH) = o.bin1.n
 
 "return the number of observations outside the endpoints of the histogram bins"
 nout(o::UnivariateASH) = o.bin1.n - sum(o.bin1.v)
+midpoints(o::UnivariateASH) = o.x
 mean(o::UnivariateASH) = mean(o.x, WeightVec(o.y))
 var(o::UnivariateASH) = var(o.x, WeightVec(o.y))
 std(o::UnivariateASH) = sqrt(var(o))
+
+function quantile(o::UnivariateASH, τ::Real)
+    0 < τ < 1 || error("τ must be in (0, 1)")
+    cdf = cumsum(o.y) * (o.bin1.b - o.bin1.a) / o.bin1.nbin
+
+    o.x[minimum(find(cdf .>= τ))]
+end

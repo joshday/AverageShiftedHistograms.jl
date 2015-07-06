@@ -23,20 +23,61 @@ function Bin2(a1, b1, nbin1, a2, b2, nbin2)
     Bin2(zeros(Int, nbin1, nbin2), dimx, dimy, 0)
 end
 
-function Bin2(y, a1, b1, nbin1, a2, b2, nbin2)
+function Bin2(xedg::Range, yedg::Range)
+    Bin2(minimum(xedg), maximum(xedg), length(xedg) - 1,
+         minimum(yedg), maximum(yedg), length(yedg) - 1)
+end
+
+function Bin2(x::VecF, y::VecF, a1, b1, nbin1, a2, b2, nbin2)
     o = Bin2(a1, b1, nbin1, a2, b2, nbin2)
-    update!(o, y)
+    update!(o, x, y)
     o
 end
 
-function update!(o::Bin2, y::Matrix{Float64})
-    size(y, 2) == 2 || error("data must be an N by 2 Matrix")
-    # o.v += hist2d(y)
+function Bin2(x::VecF, y::VecF, xedg::Range, yedg::Range)
+    o = Bin2(xedg, yedg)
+    update!(o, x, y)
+    o
 end
 
 
-### TESTING
-o = Bin2(-4, 4, 50, -4, 4, 50)
+function update!(o::Bin2, x::Vector{Float64}, y::Vector{Float64})
+    length(x) == length(y) || error("data vectors must have equal length")
+    δ1 = (o.dimx[2] - o.dimx[1]) / o.dimx[3]
+    δ2 = (o.dimy[2] - o.dimy[1]) / o.dimy[3]
+
+    for i = 1:length(y)
+        k1 = floor(Int, 1 + (x[i] - o.dimx[1]) / δ1)
+        k2 = floor(Int, 1 + (y[i] - o.dimy[1]) / δ2)
+        if 1 <= k1 <= o.dimx[3] && 1 <= k2 <= o.dimy[3]
+            o.v[k1, k2] += 1
+        end
+    end
+end
+
+
+
+#----------------------------------------------------------------------# BivariateASH
+type Ash2
+    x::VecF
+    y::VecF
+    z::MatF         # density at (x, y)
+    mx::Int64       # smoothing parameter in x direction
+    my::Int64       # smoothing parameter in y direction
+    kernelx::Symbol # kernel in x direction
+    kernely::Symbol # kernel in y direction
+    bin2::Bin2      # Bin2 object
+end
+
+
+# TESTING
+if true
+    x = randn(10_000)
+    y = randn(10_000)
+    a = AverageShiftedHistograms
+    o = a.Bin2(x, y, -4:.1:4, -4:.1:4)
+    h = hist2d([x y], -4:.1:4, -4:.1:4)
+end
 
 # """
 # Contruct a `Bin2` object from two vectors of data using `nbin1` and `nbin2` bins,

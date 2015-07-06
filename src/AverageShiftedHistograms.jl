@@ -10,7 +10,12 @@ module AverageShiftedHistograms
     import TextPlots
     import StatsBase: fit, nobs, WeightVec
 
-    export Bin1, Bin2, UnivariateASH, ash!, nout, update!
+    export Bin1, Bin2, UnivariateASH, BivariateASH, ash!, nout, update!
+
+    typealias VecF Vector{Float64}
+    typealias MatF Matrix{Float64}
+    typealias AVecF AbstractVector{Float64}
+    typealias AMatF AbstractMatrix{Float64}
 
     const kernellist = [
         :uniform,
