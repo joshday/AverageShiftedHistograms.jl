@@ -106,5 +106,9 @@ function quantile(o::UnivariateASH, τ::Real)
     0 < τ < 1 || error("τ must be in (0, 1)")
     cdf = cumsum(o.y) * (o.rng.step / o.rng.divisor)
 
-    o.x[minimum(find(cdf .>= τ))]
+    o.rng[minimum(find(cdf .>= τ))]
+end
+
+function Grid.CoordInterpGrid(o::UnivariateASH)
+    Grid.CoordInterpGrid(o.rng, o.y, 0.0, InterpLinear)
 end

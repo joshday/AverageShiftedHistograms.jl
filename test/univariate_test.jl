@@ -17,6 +17,20 @@ facts("Univariate") do
         show(o)
 
         @fact nobs(o) => n
+
+        y2 = randn(n)
+        update!(o, y2)
+        @fact nobs(o) => 2n
+        o2 = copy(o)
+        @fact nobs(o2) - nobs(o) => 0
+        merge!(o, o2)
+        @fact nobs(o) => 4n
+
+        nout(o)
+        mean(o)
+        var(o)
+        std(o)
+        quantile(o, 0.5)
     end
 end
 
