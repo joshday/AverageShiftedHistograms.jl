@@ -22,11 +22,19 @@ type BivariateASH
         my >= 0 || error("smoothing parameter my must be nonnegative")
         kernelx in kernellist || error("kernelx not recognized")
         kernely in kernellist || error("kernely not recognized")
+        new(rngx, rngy, zeros(Int, lx, ly), zeros(lx, ly), mx, my, kernelx, kernely, 0.0)
     end
 end
 
+function BivariateASH(x::VecF, y::VecF, rngx::Range, rngy::Range;
+        mx::Int = 5, my::Int = 5, kernelx::Symbol = :biweight, kernely::Symbol = :biweight)
+    @compat myrngx = FloatRange(Float64(rngx.start), Float64(rngx.step), Float64(rngx.len), Float64(rngx.divisor))
+    @compat myrngy = FloatRange(Float64(rngy.start), Float64(rngy.step), Float64(rngy.len), Float64(rngy.divisor))
+    o = BivariateASH(myrngx, mx, kernelx, myrngy, my, kernely)
+end
 
 
+o = BivariateASH(randn(1000), randn(1000), -4:.1:4, -4:.1:4)
 # type Bin2
 #     v::Matrix{Int}                  # Counts in each bin
 #     dimx::(Float64, Float64, Int)   # (a, b, nbin)

@@ -25,7 +25,7 @@ type UnivariateASH
     end
 end
 
-function UnivariateASH(y::VecF, rng::Range, m::Int = 5, kernel::Symbol = :biweight)
+function UnivariateASH(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
     @compat myrng = FloatRange(Float64(rng.start), Float64(rng.step), Float64(rng.len), Float64(rng.divisor))
     o = UnivariateASH(rng, m, kernel)
     updatebin!(o, y)
@@ -33,9 +33,9 @@ function UnivariateASH(y::VecF, rng::Range, m::Int = 5, kernel::Symbol = :biweig
     o
 end
 
-ash(y::VecF, rng::Range, m::Int = 5, kernel::Symbol = :biweight) = UnivariateASH(y, rng, m, kernel)
-function fit(::Type{UnivariateASH}, y::VecF, rng::Range, m::Int = 5, kernel::Symbol = :biweight)
-    ash(y, rng, m, kernel)
+ash(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight) = UnivariateASH(y, rng, m = m, kernel = kernel)
+function fit(::Type{UnivariateASH}, y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
+    ash(y, rng, m = m, kernel = kernel)
 end
 
 
