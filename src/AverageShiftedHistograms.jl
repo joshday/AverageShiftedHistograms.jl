@@ -11,7 +11,7 @@ module AverageShiftedHistograms
     import StatsBase: fit, nobs, WeightVec
     import Grid
 
-    export Bin1, Bin2, UnivariateASH, BivariateASH, ash, nout, update!, xy
+    export Bin1, Bin2, UnivariateASH, BivariateASH, ash, nout, update!, xy, xyz
 
     typealias VecF Vector{Float64}
     typealias MatF Matrix{Float64}
@@ -31,5 +31,5 @@ module AverageShiftedHistograms
         ]
 
     include("univariate.jl")
-    # include("bivariate.jl")
+    include("bivariate.jl")
 end
