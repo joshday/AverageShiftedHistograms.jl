@@ -16,11 +16,15 @@ facts("Bivariate") do
 
         a = BivariateASH(o, 5, 5)
         ash!(a)
+        fit(BivariateASH, x, y, -4:.1:4, -4:.1:4, 5, 5)
     end
 
     context("methods") do
-        o = Bin2(-4, 4, 50, -4, 4, 50)
+        n = rand(1000:10_000)
+        x, y = randn(n), randn(n)
+        o = fit(BivariateASH, x, y, -4:.1:4, -4:.1:4, 5, 5)
         nobs(o)
+        midpoints(o)
     end
 end
 

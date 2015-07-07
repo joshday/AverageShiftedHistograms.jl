@@ -15,6 +15,8 @@ facts("Univariate") do
             a = UnivariateASH(o, 5, :gaussian, false)
             fit(UnivariateASH, y, -4:.1:4, 5)
             fit(UnivariateASH, y, -4, 4, 100, 5)
+            fit(UnivariateASH, y)
+            fit(UnivariateASH, y, nbin = 1001)
         end
     end
 
@@ -36,19 +38,17 @@ facts("Univariate") do
         update!(o, y2)
         @fact nobs(o) => 2 * n
 
-        mean(o)
-        midpoints(o)
-        var(o)
-        std(o)
-        copy(o)
+        @fact mean(o) => roughly(mean([y; y2]), .001)
+        @fact midpoints(o) => o.x
+        @fact var(o) => roughly(var([y; y2]), .1)
+        @fact std(o) => roughly(std([y; y2]), .1)
+        o2 = copy(o)
+        @fact o.x => o2.x
+        @fact o.y => o2.y
         o2 = fit(UnivariateASH, y, -4:.1:4, 5)
         merge!(o, o2)
         update!(o, y)
-        quantile(o, 0.5)
-        # pdf(o)
-        # cdf(o)
-        # mode(o)
-        # median(o)
+        @fact quantile(o, 0.5) => roughly(quantile(y, .5), .1)
     end
 end
 

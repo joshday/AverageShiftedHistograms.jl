@@ -4,7 +4,7 @@
 
 # AverageShiftedHistograms
 
-Density estimation using **Average Shifted Histograms**.  A great summary of ASH is [here](http://www.stat.rice.edu/~scottdw/stat550/HW/hw4/c05.pdf).
+Density estimation using **Average Shifted Histograms**.  A summary of ASH is [here](http://www.stat.rice.edu/~scottdw/stat550/HW/hw4/c05.pdf).
 
 ## Installation:
 
@@ -12,22 +12,91 @@ Density estimation using **Average Shifted Histograms**.  A great summary of ASH
 Pkg.add("AverageShiftedHistograms")
 ```
 
-## Basic Usage
-To anyone using this package, v0.2.0 (coming very soon) will be a complete rewrite.  You'll have to relearn how to use it, but it'll be faster and easier (hopefully) to use!  Take a look at master for a preview.
+This branch is a rewrite.  AverageShiftedHistograms will be (hopefully) faster and easier to use, but different from the version in Metadata.
 
+## `UnivariateASH` Usage
 
 ```julia
 using AverageShiftedHistograms, RDatasets
 iris = dataset("datasets", "iris")
 y = iris[:SepalLength].data
 
-# fit method takes arguments
-#	- y::Vector (data)
-#	- edg::AbstractVector (edges of histogram bins)
-#	- m::Int (smoothing parameter)
+# the fit function can make an educated guess
+o = fit(UnivariateASH, y)
+
+# OR you can supply a Range (bin edges) and smoothing parameter
 o = fit(UnivariateASH, y, 2:.1:10, 5)
+
+# OR lower limit, upper limit, number of bins, and smoothing parameter
+o = fit(UnivariateASH, y, 2, 10, 80, 5)
 ```
 
+A sketch of the `UnivariateASH` estimate displays in the terminal thanks to [TextPlots](https://github.com/sunetos/TextPlots.jl).  You can get estimates of mean, variance, and standard deviation from the object.  WARNING:  `std()` estimates are highly influenced by oversmoothing.  
+The estimate can be updated with new data via `update!(o, y)` and the smoothing parameter and kernel can be changed with `ash!(o, m, kernel)`
+
+```julia
+y = randn(100_000)
+
+julia> o = fit(UnivariateASH, y, -5:.01:5, 2)
+UnivariateASH
+*  kernel: biweight
+*       m: 2
+*   nbins: 1000
+*    nobs: 100000
+ 0.40000 ⡤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⢤
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠋⠀⠉⣶⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡏⠀⠀⠀⢻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠀⠀⠀⠀⠐⡧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠇⠀⠀⠀⠀⠀⠹⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡼⠀⠀⠀⠀⠀⠀⠀⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠃⠀⠀⠀⠀⠀⠀⠀⠙⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⣠⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⣀⣀⣀⣀⣀⣀⣠⡾⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠳⣄⣀⣀⣀⣀⣀⣀⡀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+       0 ⠓⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠚
+        -5                              5
+
+
+julia> mean(o)
+-0.0034575606229544312
+
+julia> std(o)
+1.0007091627478455
+
+julia> update!(o, randn(10_000_000))
+
+julia> ash!(o, 20, :gaussian)
+
+julia> mean(o)
+-0.0002740693968425348
+
+julia> std(o)
+1.0060198672102265
+
+julia> o
+UnivariateASH
+*  kernel: gaussian
+*       m: 20
+*   nbins: 1000
+*    nobs: 10100000
+ 0.40000 ⡤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⢤
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⠉⢧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠁⠀⠈⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠇⠀⠀⠀⠸⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡼⠀⠀⠀⠀⠀⢧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠇⠀⠀⠀⠀⠀⠸⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀⠀⠀⠀⠀⠀⢣⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠁⠀⠀⠀⠀⠀⠀⠀⠈⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⣰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+         ⡇⣀⣀⣀⣀⣀⣀⣠⠖⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠲⣄⣀⣀⣀⣀⣀⣀⡀⢸
+         ⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
+       0 ⠓⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠚
+        -5                              5
+```
+
+## `BivariateASH` Usage
+TODO
 
 ## Differences from `R`'s `ash`:
 - TODO: timing comparison

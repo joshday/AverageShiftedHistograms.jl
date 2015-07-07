@@ -94,6 +94,18 @@ function fit(::Type{BivariateASH}, x, y, xrange::Range, yrange::Range, mx, my, k
     o = BivariateASH(b, mx, my, kernelx, kernely, warnout)
 end
 
+function fit(::Type{BivariateASH}, x, y; nbin = 1000)
+    a, b = extrema(x)
+    c, d = extrema(y)
+    rx = b - a
+    ry = d - c
+    a -= 0.1 * rx
+    b += 0.1 * rx
+    c -= 0.1 * ry
+    d += 0.1 * rx
+    Bin2(x, y, a, b, nbin, c, d, nbin)
+end
+
 function ash!(o::BivariateASH, mx = o.mx, my = o.my, kernelx = o.kernelx, kernely = o.kernely; warnout = true)
     o.mx = mx
     o.my = my
@@ -136,3 +148,4 @@ end
 
 nobs(o::Bin2) = o.n
 nobs(o::BivariateASH) = nobs(o.bin2)
+midpoints(o::BivariateASH) = (copy(o.x), (o.y))

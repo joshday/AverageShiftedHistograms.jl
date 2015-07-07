@@ -4,268 +4,83 @@
 
 ---
 
-<a id="method__ash1.1" class="lexicon_definition"></a>
-#### Ash1(bin::Bin1) [¶](#method__ash1.1)
-Contruct an `Ash1` object from a `Bin1` object, smoothing parameter `m`,
-and `kernel`.
-
-### `kernel` options
-
-- :uniform
-- :triangular
-- :epanechnikov
-- :biweight
-- :triweight
-- :tricube
-- :gaussian
-- :cosine
-- :logistic
+<a id="function__ash.1" class="lexicon_definition"></a>
+#### ash! [¶](#function__ash.1)
+Create the ASH estimate and optionally change smoothing parameter(s) and kernel(s)
 
 
 *source:*
-[AverageShiftedHistograms/src/ash1.jl:39](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/ash1.jl#L39)
+[AverageShiftedHistograms/src/univariate.jl:92](https://github.com/joshday/AverageShiftedHistograms.jl/tree/15ceb3473aba47304e9b6091d5c0f660dd3b35a8/src/univariate.jl#L92)
 
 ---
 
-<a id="method__ash2.1" class="lexicon_definition"></a>
-#### Ash2(bin::Bin2) [¶](#method__ash2.1)
-# Bivariate Average Shifted Histogram
-
-Contruct an `Ash2` object from a `Bin2` object, smoothing parameters `m1`/`m2`,
-and kernels `kernel1`/`kernel2`.
-
-### `kernel1`/ `kernel2` options:
-
-- :uniform
-- :triangular
-- :epanechnikov
-- :biweight
-- :triweight
-- :tricube
-- :gaussian
-- :cosine
-- :logistic
-
+<a id="method__fit.1" class="lexicon_definition"></a>
+#### fit(::Type{UnivariateASH}, y::Array{Float64, 1}, a, b, nbin, m::Int64) [¶](#method__fit.1)
+Get ASH estimate specifying the endpoints and nbins
 
 *source:*
-[AverageShiftedHistograms/src/ash2.jl:48](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/ash2.jl#L48)
+[AverageShiftedHistograms/src/univariate.jl:83](https://github.com/joshday/AverageShiftedHistograms.jl/tree/15ceb3473aba47304e9b6091d5c0f660dd3b35a8/src/univariate.jl#L83)
 
 ---
 
-<a id="method__bin1.1" class="lexicon_definition"></a>
-#### Bin1(y::Array{T, 1}) [¶](#method__bin1.1)
-Contruct a `Bin1` object from a vector of data using `nbin` bins.
-
-The default values for `ab` extend `y`'s minimum/maximum by 10% of the range.
-
+<a id="method__fit.2" class="lexicon_definition"></a>
+#### fit(::Type{UnivariateASH}, y::Array{Float64, 1}, a, b, nbin, m::Int64, kernel::Symbol) [¶](#method__fit.2)
+Get ASH estimate specifying the endpoints and nbins
 
 *source:*
-[AverageShiftedHistograms/src/bin1.jl:40](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/bin1.jl#L40)
+[AverageShiftedHistograms/src/univariate.jl:83](https://github.com/joshday/AverageShiftedHistograms.jl/tree/15ceb3473aba47304e9b6091d5c0f660dd3b35a8/src/univariate.jl#L83)
 
 ---
 
-<a id="method__bin2.1" class="lexicon_definition"></a>
-#### Bin2(y1::Array{T, 1}, y2::Array{T, 1}) [¶](#method__bin2.1)
-Contruct a `Bin2` object from two vectors of data using `nbin1` and `nbin2` bins,
-respectively.
-
-The default values for `ab1`/`ab2` extend `y1`'s / `y2`'s minimum/maximum by 10%
-of the range.
-
+<a id="method__fit.3" class="lexicon_definition"></a>
+#### fit(::Type{UnivariateASH}, y::Array{Float64, 1}, edg::Range{T}, m::Int64) [¶](#method__fit.3)
+Get ASH estimate specifying the bin edges (nbins = length(edg) - 1)
 
 *source:*
-[AverageShiftedHistograms/src/bin2.jl:33](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/bin2.jl#L33)
+[AverageShiftedHistograms/src/univariate.jl:76](https://github.com/joshday/AverageShiftedHistograms.jl/tree/15ceb3473aba47304e9b6091d5c0f660dd3b35a8/src/univariate.jl#L76)
 
 ---
 
-<a id="method__extremastretch.1" class="lexicon_definition"></a>
-#### extremastretch(y::Array{T, 1}) [¶](#method__extremastretch.1)
-Returns a length-two vector.  Elements are the extended range of the data
-`y` by the factor `c`.  This function is used to generate the end points
-for a `Bin1` object.
-
-Usage: `Bin1(mydata, ab=extremastretch(mydata, .2))`
-
+<a id="method__fit.4" class="lexicon_definition"></a>
+#### fit(::Type{UnivariateASH}, y::Array{Float64, 1}, edg::Range{T}, m::Int64, kernel::Symbol) [¶](#method__fit.4)
+Get ASH estimate specifying the bin edges (nbins = length(edg) - 1)
 
 *source:*
-[AverageShiftedHistograms/src/bin1.jl:9](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/bin1.jl#L9)
+[AverageShiftedHistograms/src/univariate.jl:76](https://github.com/joshday/AverageShiftedHistograms.jl/tree/15ceb3473aba47304e9b6091d5c0f660dd3b35a8/src/univariate.jl#L76)
 
 ---
 
-<a id="method__extremastretch.2" class="lexicon_definition"></a>
-#### extremastretch(y::Array{T, 1}, c::Float64) [¶](#method__extremastretch.2)
-Returns a length-two vector.  Elements are the extended range of the data
-`y` by the factor `c`.  This function is used to generate the end points
-for a `Bin1` object.
-
-Usage: `Bin1(mydata, ab=extremastretch(mydata, .2))`
-
+<a id="method__nout.1" class="lexicon_definition"></a>
+#### nout(o::UnivariateASH) [¶](#method__nout.1)
+return the number of observations outside the endpoints of the histogram bins
 
 *source:*
-[AverageShiftedHistograms/src/bin1.jl:9](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/bin1.jl#L9)
-
----
-
-<a id="method__merge.1" class="lexicon_definition"></a>
-#### merge!(b1::Bin1, b2::Bin1) [¶](#method__merge.1)
-Merge two `Bin1` objects together.  Overwrite the first argument
-
-*source:*
-[AverageShiftedHistograms/src/bin1.jl:71](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/bin1.jl#L71)
-
----
-
-<a id="method__merge.2" class="lexicon_definition"></a>
-#### merge(b1::Bin1, b2::Bin1) [¶](#method__merge.2)
-Merge two `Bin1` objects together
-
-*source:*
-[AverageShiftedHistograms/src/bin1.jl:81](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/bin1.jl#L81)
+[AverageShiftedHistograms/src/univariate.jl:133](https://github.com/joshday/AverageShiftedHistograms.jl/tree/15ceb3473aba47304e9b6091d5c0f660dd3b35a8/src/univariate.jl#L133)
 
 ---
 
 <a id="method__update.1" class="lexicon_definition"></a>
-#### update!(obj::Bin2, y1::Array{T, 1}, y2::Array{T, 1}) [¶](#method__update.1)
-Update a `Bin2` object with new vectors of data
-
+#### update!(o::UnivariateASH, y::Array{Float64, 1}) [¶](#method__update.1)
+Update UnivariateASH with new data and optional new smoothing parameter/kernel
 
 *source:*
-[AverageShiftedHistograms/src/bin2.jl:62](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/bin2.jl#L62)
+[AverageShiftedHistograms/src/univariate.jl:112](https://github.com/joshday/AverageShiftedHistograms.jl/tree/15ceb3473aba47304e9b6091d5c0f660dd3b35a8/src/univariate.jl#L112)
 
 ---
 
-<a id="method__updatebatch.1" class="lexicon_definition"></a>
-#### updatebatch!(b::Bin1, y::Array{T, 1}) [¶](#method__updatebatch.1)
-Update a `Bin1` object with a new vector of data
-
+<a id="method__update.2" class="lexicon_definition"></a>
+#### update!(o::UnivariateASH, y::Array{Float64, 1}, m::Int64) [¶](#method__update.2)
+Update UnivariateASH with new data and optional new smoothing parameter/kernel
 
 *source:*
-[AverageShiftedHistograms/src/bin1.jl:62](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/bin1.jl#L62)
+[AverageShiftedHistograms/src/univariate.jl:112](https://github.com/joshday/AverageShiftedHistograms.jl/tree/15ceb3473aba47304e9b6091d5c0f660dd3b35a8/src/univariate.jl#L112)
 
 ---
 
-<a id="type__ash1.1" class="lexicon_definition"></a>
-#### Ash1 [¶](#type__ash1.1)
-Type for storing ash estimate
-
-- `x`:       x values
-- `y`:       density at x
-- `m`:       smoothing parameter
-- `kernel`:  kernel
-- `b`:       Bin1 object
-- `non0`:    true if nonzero estimate at endpoints
-
+<a id="method__update.3" class="lexicon_definition"></a>
+#### update!(o::UnivariateASH, y::Array{Float64, 1}, m::Int64, kernel::Symbol) [¶](#method__update.3)
+Update UnivariateASH with new data and optional new smoothing parameter/kernel
 
 *source:*
-[AverageShiftedHistograms/src/ash1.jl:12](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/ash1.jl#L12)
-
----
-
-<a id="type__ash2.1" class="lexicon_definition"></a>
-#### Ash2 [¶](#type__ash2.1)
-Type for storing bivariate ash estimate
-
-- `x`:        x values
-- `y`:        y values
-- `z`:        density at x, y
-- `m1`:       smoothing parameter
-- `kernel1`:  kernel for x dimension
-- `kernel2`:  kernel for y dimension
-- `b`:        Bin2 object
-- `non0`:     true if nonzero estimate at endpoints
-
-
-*source:*
-[AverageShiftedHistograms/src/ash2.jl:14](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/ash2.jl#L14)
-
----
-
-<a id="type__bin1.1" class="lexicon_definition"></a>
-#### Bin1 [¶](#type__bin1.1)
-### Bins for an ASH estimate
-
-- `v`:      bin counts
-- `ab`:     length two vector of endpoints
-- `nbin`:   number of bins
-- `nout`:   number of bins outside [a, b)
-- `n`:      number of observations used
-
-
-*source:*
-[AverageShiftedHistograms/src/bin1.jl:26](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/bin1.jl#L26)
-
----
-
-<a id="type__bin2.1" class="lexicon_definition"></a>
-#### Bin2 [¶](#type__bin2.1)
-### Bins for a bivarate ASH estimate
-
-- `v`:        Bin counts
-- `ab1`:      (length two): data 1 range: [a, b)
-- `ab2`:      (length two): data 2 range: [a, b)
-- `nbin1`:    number of bins to use for data 1
-- `nbin1`:    number of bins to use for data 2
-- `nout`:     number of observations not captured inside [a, b)
-- `n`:        number of observations used
-
-
-*source:*
-[AverageShiftedHistograms/src/bin2.jl:13](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/bin2.jl#L13)
-
-## Internal
-
----
-
-<a id="method__plot.1" class="lexicon_definition"></a>
-#### plot(a::Ash1) [¶](#method__plot.1)
-Plot an `Ash1` density estimate
-
-*source:*
-[AverageShiftedHistograms/src/plot.jl:11](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/plot.jl#L11)
-
----
-
-<a id="method__plot.2" class="lexicon_definition"></a>
-#### plot(a::Ash1, y::Array{T, 1}) [¶](#method__plot.2)
-Plot `Ash1` object with data `y`
-
-*source:*
-[AverageShiftedHistograms/src/plot.jl:28](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/plot.jl#L28)
-
----
-
-<a id="method__plot.3" class="lexicon_definition"></a>
-#### plot(b::Bin1) [¶](#method__plot.3)
-Plot an `Bin1` object
-
-*source:*
-[AverageShiftedHistograms/src/plot.jl:3](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/plot.jl#L3)
-
----
-
-<a id="method__plot.4" class="lexicon_definition"></a>
-#### plot(b::Bin1, a::Ash1) [¶](#method__plot.4)
-Plot `Bin1` and `Ash1` objects together.  The comparison can be used to check
-for oversmoothing.
-
-*source:*
-[AverageShiftedHistograms/src/plot.jl:18](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/plot.jl#L18)
-
----
-
-<a id="method__plot.5" class="lexicon_definition"></a>
-#### plot(b::Bin1, a::Ash1, y::Array{T, 1}) [¶](#method__plot.5)
-Plot `Bin1`, `Ash1`, and data `y` together
-
-*source:*
-[AverageShiftedHistograms/src/plot.jl:36](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/plot.jl#L36)
-
----
-
-<a id="method__plot.6" class="lexicon_definition"></a>
-#### plot(obj::Ash2) [¶](#method__plot.6)
-Plot an `Ash2`density estimate
-
-*source:*
-[AverageShiftedHistograms/src/plot.jl:49](https://github.com/joshday/AverageShiftedHistograms.jl/tree/59e678b3714ab4237a62d4baea071e872baa3832/src/plot.jl#L49)
+[AverageShiftedHistograms/src/univariate.jl:112](https://github.com/joshday/AverageShiftedHistograms.jl/tree/15ceb3473aba47304e9b6091d5c0f660dd3b35a8/src/univariate.jl#L112)
 

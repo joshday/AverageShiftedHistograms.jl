@@ -86,7 +86,16 @@ function fit(::Type{UnivariateASH}, y::Vector{Float64}, a, b, nbin, m::Int,
     UnivariateASH(bins, m, kernel, warnout)
 end
 
-"Change the smoothing parameter and kernel for the UnivariateASH estimate"
+"Get ASH estimate where the code guesses decent values"
+function fit(::Type{UnivariateASH}, y::Vector{Float64}; nbin = 1000)
+    # TODO: look up more robust way to find good values
+    a, b = extrema(y)
+    r = b - a
+    a -= 0.1 * r
+    b += 0.1 * r
+    fit(UnivariateASH, y, a, b, nbin, 20)
+end
+
 function ash!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warnout = true)
     o.m = m
     o.kernel = kernel
@@ -104,7 +113,6 @@ function ash!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warnout
     return
 end
 
-"Update UnivariateASH with new data and optional new smoothing parameter/kernel"
 function update!(o::UnivariateASH, y::Vector{Float64}, m::Int = o.m, kernel::Symbol = o.kernel)
     update!(o.bin1, y)
     ash!(o, m, kernel)
@@ -125,7 +133,6 @@ end
 
 nobs(o::UnivariateASH) = o.bin1.n
 
-"return the number of observations outside the endpoints of the histogram bins"
 nout(o::UnivariateASH) = o.bin1.n - sum(o.bin1.v)
 midpoints(o::UnivariateASH) = o.x
 mean(o::UnivariateASH) = mean(o.x, WeightVec(o.y))
@@ -138,8 +145,3 @@ function quantile(o::UnivariateASH, τ::Real)
 
     o.x[minimum(find(cdf .>= τ))]
 end
-
-# pdf(o::UnivariateASH, x::Real) = println("TODO")
-# cdf(o::UnivariateASH, x::Real) = println("TODO")
-# median(o::UnivariateASH, x::Real) = quantile(o, 0.5)
-# mode(o::UnivariateASH, x::Real) = println("TODO")
