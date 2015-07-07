@@ -2,15 +2,16 @@ module AverageShiftedHistograms
     using Compat
     using Reexport
     @reexport using StatsBase
-    import Docile
-    Docile.@document
+    using Docile
+    @document
 
     import SmoothingKernels: kernels
     import Base: quantile, merge!, copy, mean, var, std, quantile, push!
     import TextPlots
     import StatsBase: fit, nobs, WeightVec
+    import Grid
 
-    export Bin1, Bin2, UnivariateASH, BivariateASH, ash!, nout, update!
+    export Bin1, Bin2, UnivariateASH, BivariateASH, ash, nout, update!
 
     typealias VecF Vector{Float64}
     typealias MatF Matrix{Float64}
@@ -30,5 +31,5 @@ module AverageShiftedHistograms
         ]
 
     include("univariate.jl")
-    include("bivariate.jl")
+    # include("bivariate.jl")
 end
