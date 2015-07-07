@@ -11,7 +11,7 @@ Update a UnivariateASH object with new data or change the smoothing parameter an
 type UnivariateASH
     rng::FloatRange{Float64}    # x values for which you want to find density y = f(x)
     v::Vector{Int}              # Counts in each bin
-    y::Vector{Float64}          # density y = f(x)
+    y::VecF                     # density y = f(x)
     m::Int                      # smoothing parameter
     kernel::Symbol              # kernel
     n::Int                      # number of observations
@@ -25,7 +25,7 @@ type UnivariateASH
     end
 end
 
-function UnivariateASH(y::Vector{Float64}, rng::Range, m::Int = 5, kernel::Symbol = :biweight)
+function UnivariateASH(y::VecF, rng::Range, m::Int = 5, kernel::Symbol = :biweight)
     @compat myrng = FloatRange(Float64(rng.start), Float64(rng.step), Float64(rng.len), Float64(rng.divisor))
     o = UnivariateASH(rng, m, kernel)
     updatebin!(o, y)
@@ -33,9 +33,11 @@ function UnivariateASH(y::Vector{Float64}, rng::Range, m::Int = 5, kernel::Symbo
     o
 end
 
-function ash(y::Vector{Float64}, rng::Range, m::Int = 5, kernel::Symbol = :biweight)
-    UnivariateASH(y, rng, m, kernel)
+ash(y::VecF, rng::Range, m::Int = 5, kernel::Symbol = :biweight) = UnivariateASH(y, rng, m, kernel)
+function fit(::Type{UnivariateASH}, y::VecF, rng::Range, m::Int = 5, kernel::Symbol = :biweight)
+    ash(y, rng, m, kernel)
 end
+
 
 function updatebin!(o::UnivariateASH, y::Vector{Float64})
     δ = o.rng.step / o.rng.divisor
@@ -101,6 +103,7 @@ nout(o::UnivariateASH) = o.n - sum(o.v)
 mean(o::UnivariateASH) = mean([o.rng], WeightVec(o.y))
 var(o::UnivariateASH) = var([o.rng], WeightVec(o.y))
 std(o::UnivariateASH) = sqrt(var(o))
+xy(o::UnivariateASH) = ([o.rng], copy(o.y))
 
 function quantile(o::UnivariateASH, τ::Real)
     0 < τ < 1 || error("τ must be in (0, 1)")
@@ -110,5 +113,5 @@ function quantile(o::UnivariateASH, τ::Real)
 end
 
 function Grid.CoordInterpGrid(o::UnivariateASH)
-    Grid.CoordInterpGrid(o.rng, o.y, 0.0, InterpLinear)
+    Grid.CoordInterpGrid(o.rng, o.y, 0.0, Grid.InterpLinear)
 end

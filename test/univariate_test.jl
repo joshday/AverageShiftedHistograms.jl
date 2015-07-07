@@ -1,5 +1,5 @@
 module UnivariateTest
-using AverageShiftedHistograms, FactCheck
+using AverageShiftedHistograms, FactCheck, Grid
 
 facts("Univariate") do
     context("Constructors") do
@@ -7,6 +7,8 @@ facts("Univariate") do
         y = randn(n)
 
         o = UnivariateASH(y, -4:.1:4)
+        o = ash(y, -4:.1:4)
+        o = fit(UnivariateASH, y, -4:.1:4)
     end
 
     context("methods") do
@@ -30,7 +32,9 @@ facts("Univariate") do
         mean(o)
         var(o)
         std(o)
+        xy(o)
         quantile(o, 0.5)
+        CoordInterpGrid(o)
     end
 end
 
