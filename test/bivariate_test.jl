@@ -7,8 +7,9 @@ facts("Bivariate") do
         x = randn(n)
         y = sqrt(2)*randn(n) + 10
         BivariateASH(x, y, -4:.1:4, -5:.1:5)
-        ash(x, y, -4:.1:4, -5:.1:5)
+        o = ash(x, y, -4:.1:4, -5:.1:5)
         fit(BivariateASH, x, y, -4:.1:4, -5:.1:5)
+        show(o)
     end
 
     context("methods") do
@@ -23,7 +24,7 @@ facts("Bivariate") do
         @fact o.mx => 2
         @fact o.my => 3
         @fact o.kernelx => :triweight
-        @fact o.kernely => :logistic 
+        @fact o.kernely => :logistic
         xyz(o)
         @fact mean(o)[1] - mean(x) => roughly(0.0, .01)
         @fact mean(o)[2] - mean(y) => roughly(0.0, .01)
