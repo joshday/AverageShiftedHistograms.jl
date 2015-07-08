@@ -3,7 +3,7 @@ using AverageShiftedHistograms, FactCheck, Grid
 
 facts("Univariate") do
     context("Constructors") do
-        for i in 1:10 # hack to get this shown as covered
+        for i in 1:10 # hack to get this shown as covered?
             ash(randn(100), -4:.01:4)
             fit(UnivariateASH, randn(100), -4:.01:4)
         end

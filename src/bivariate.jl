@@ -121,8 +121,14 @@ xyz(o::BivariateASH) = ([o.rngx], [o.rngy], copy(o.z))
 function mean(o::BivariateASH)
     meanx = mean([o.rngx], WeightVec(vec(sum(o.z, 1))))
     meany = mean([o.rngy], WeightVec(vec(sum(o.z, 2))))
-    [meanx meany]
+    [meanx; meany]
 end
+function var(o::BivariateASH)
+    varx = var([o.rngx], WeightVec(vec(sum(o.z, 1))))
+    vary = var([o.rngy], WeightVec(vec(sum(o.z, 2))))
+    [varx; vary]
+end
+std(o::BivariateASH) = sqrt(var(o))
 
 
 
