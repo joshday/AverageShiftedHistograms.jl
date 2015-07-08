@@ -9,7 +9,6 @@ module AverageShiftedHistograms
     import Base: quantile, merge!, copy, mean, var, std, quantile, push!
     import TextPlots
     import StatsBase: fit, nobs, WeightVec
-    import Grid
 
     export Bin1, Bin2, UnivariateASH, BivariateASH, ash, nout, update!, xy, xyz, pdf
 

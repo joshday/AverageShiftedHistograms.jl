@@ -30,6 +30,7 @@ facts("Univariate") do
         @fact maxabs(o.v - hist(y, (-4:.1:4.1) - .05)[2]) => 0 "Check that histogram is correct"
         @fact pdf(o, 0.0) - 0.4 => roughly(0.0, .1)
         pdf(o, [-1, 0, 1])
+        @fact quadgk(x -> pdf(o, x), -Inf, Inf)[1] => roughly(1.0, .001) "pdf integrates to 1.0"
 
         @fact nobs(o) => n
 

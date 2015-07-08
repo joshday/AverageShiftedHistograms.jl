@@ -112,18 +112,14 @@ function quantile(o::UnivariateASH, τ::Real)
     cdf = cumsum(o.y) * (o.rng.step / o.rng.divisor)
     i = searchsortedlast(cdf, τ)
     if i >= length(o.rng)
-        1.0
+        o.rng[end]
     elseif i < 1
-        0.0
+        o.rng[1]
     else
-        println(o.rng[i])
         o.rng[i] + (o.rng[i+1] - o.rng[i]) * (τ - cdf[i]) / (cdf[i+1] - cdf[i])
     end
 end
 
-# function Grid.CoordInterpGrid(o::UnivariateASH)
-#     Grid.CoordInterpGrid(o.rng, o.y, 0.0, Grid.InterpLinear)
-# end
 
 function pdf(o::UnivariateASH, x::Real)
     i = searchsortedlast(o.rng, x)
