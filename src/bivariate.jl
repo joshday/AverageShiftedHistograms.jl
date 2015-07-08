@@ -108,5 +108,4 @@ xyz(o::BivariateASH) = ([o.rngx], [o.rngy], copy(o.z))
 
 
 
-
-o = AverageShiftedHistograms.BivariateASH(randn(1000), randn(1000), -4:.1:4, -4:.1:4)
+# o = AverageShiftedHistograms.BivariateASH(randn(1000), randn(1000), -4:.1:4, -4:.1:4)

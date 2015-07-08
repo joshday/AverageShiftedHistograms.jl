@@ -110,13 +110,32 @@ xy(o::UnivariateASH) = ([o.rng], copy(o.y))
 function quantile(o::UnivariateASH, τ::Real)
     0 < τ < 1 || error("τ must be in (0, 1)")
     cdf = cumsum(o.y) * (o.rng.step / o.rng.divisor)
-
-    o.rng[minimum(find(cdf .>= τ))]
+    i = searchsortedlast(cdf, τ)
+    if i >= length(o.rng)
+        1.0
+    elseif i < 1
+        0.0
+    else
+        println(o.rng[i])
+        o.rng[i] + (o.rng[i+1] - o.rng[i]) * (τ - cdf[i]) / (cdf[i+1] - cdf[i])
+    end
 end
 
-function Grid.CoordInterpGrid(o::UnivariateASH)
-    Grid.CoordInterpGrid(o.rng, o.y, 0.0, Grid.InterpLinear)
+# function Grid.CoordInterpGrid(o::UnivariateASH)
+#     Grid.CoordInterpGrid(o.rng, o.y, 0.0, Grid.InterpLinear)
+# end
+
+function pdf(o::UnivariateASH, x::Real)
+    i = searchsortedlast(o.rng, x)
+    if 1 <= i < length(o.rng)
+        o.y[i] + (o.y[i+1] - o.y[i]) * (x - o.rng[i]) / (o.rng[i+1] - o.rng[i])
+    else
+        0.0
+    end
 end
 
-pdf(o::UnivariateASH, x::Real) = Grid.CoordInterpGrid(o)[x]
-@vectorize_1arg Real pdf
+function pdf{T <: Real}(o::UnivariateASH, x::Array{T})
+    for xi in x
+        pdf(o, xi)
+    end
+end
