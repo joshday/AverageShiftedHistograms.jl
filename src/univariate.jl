@@ -45,7 +45,9 @@ function updatebin!(o::UnivariateASH, y::Vector{Float64})
     nbin = length(o.rng)
     o.n += length(y)
     for yi in y
-        ki::Int = floor(Int, (yi - a) / δ)
+        # This line below is different from the paper because the input to UnivariateASH
+        # is the points where you want the estimate and not the bin edges.
+        ki::Int = floor(Int, (yi - a) / δ + 1.5)
         if 1 <= ki <= nbin
             o.v[ki] += 1
         end
@@ -115,3 +117,6 @@ end
 function Grid.CoordInterpGrid(o::UnivariateASH)
     Grid.CoordInterpGrid(o.rng, o.y, 0.0, Grid.InterpLinear)
 end
+
+pdf(o::UnivariateASH, x::Real) = Grid.CoordInterpGrid(o)[x]
+@vectorize_1arg Real pdf
