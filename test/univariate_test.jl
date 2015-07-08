@@ -34,6 +34,7 @@ facts("Univariate") do
 
         @fact nobs(o) => n
 
+        # nobs and nout
         y2 = randn(n)
         update!(o, y2)
         @fact nobs(o) => 2n
@@ -41,13 +42,10 @@ facts("Univariate") do
         @fact nobs(o2) - nobs(o) => 0
         merge!(o, o2)
         @fact nobs(o) => 4n
-
         o = ash(rand(10), -1:.1:1)
         @fact nout(o) => 0
         update!(o, [5.0])
         @fact nout(o) => 1
-
-        # grid = CoordInterpGrid(o)
     end
 end
 

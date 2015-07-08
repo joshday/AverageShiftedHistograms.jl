@@ -46,7 +46,7 @@ function fit(::Type{BivariateASH}, x::VecF, y::VecF, rngx::Range, rngy::Range;
     BivariateASH(x, y, rngx, rngy, mx = mx, my = my, kernelx = kernelx, kernely = kernely)
 end
 
-function update!(o::BivariateASH, x::VecF, y::VecF)
+function updatebin!(o::BivariateASH, x::VecF, y::VecF)
     length(x) == length(y) || error("data vectors must have equal length")
     δx = o.rngx.step / o.rngx.divisor
     δy = o.rngy.step / o.rngy.divisor
@@ -56,16 +56,21 @@ function update!(o::BivariateASH, x::VecF, y::VecF)
     nbiny = length(o.rngy)
 
     for i = 1:length(y)
-        kx = floor(Int, (x[i] - ax) / δx)
-        ky = floor(Int, (y[i] - ay) / δy)
+        kx = floor(Int, (x[i] - ax) / δx + 1.5)
+        ky = floor(Int, (y[i] - ay) / δy + 1.5)
         if 1 <= kx <= nbinx && 1 <= ky <= nbiny
             o.v[ky, kx] += 1
         end
     end
     o.n += length(y)
 end
-#
-#
+
+function update!(o::BivariateASH, x::VecF, y::VecF)
+    updatebin!(o, x, y)
+    update!(o)
+    o
+end
+
 function update!(o::BivariateASH, mx = o.mx, my = o.my, kernelx = o.kernelx, kernely = o.kernely; warnout = true)
     o.mx = mx
     o.my = my
@@ -103,8 +108,21 @@ function update!(o::BivariateASH, mx = o.mx, my = o.my, kernelx = o.kernelx, ker
     end
 end
 
+function Base.show(io::IO, o::BivariateASH)
+    println(io, typeof(o))
+    println(io, "*  kernel: ", (o.kernelx, o.kernely))
+    println(io, "*       m: ", (o.mx, o.my))
+    println(io, "*   edges: ", (o.rngx, o.rngy))
+    println(io, "*    nobs: ", nobs(o))
+end
+
 nobs(o::BivariateASH) = o.n
 xyz(o::BivariateASH) = ([o.rngx], [o.rngy], copy(o.z))
+function mean(o::BivariateASH)
+    meanx = mean([o.rngx], WeightVec(vec(sum(o.z, 1))))
+    meany = mean([o.rngy], WeightVec(vec(sum(o.z, 2))))
+    [meanx meany]
+end
 
 
 
