@@ -15,7 +15,6 @@ type UnivariateASH
     m::Int                      # smoothing parameter
     kernel::Symbol              # kernel
     n::Int                      # number of observations
-
     function UnivariateASH(rng::FloatRange{Float64}, m::Int = 5, kernel::Symbol = :biweight)
         l = length(rng)
         l >= 2 || error("need at least 2 bins!")
@@ -25,7 +24,8 @@ type UnivariateASH
     end
 end
 
-function UnivariateASH(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
+
+function ash(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
     @compat myrng = FloatRange(Float64(rng.start), Float64(rng.step), Float64(rng.len), Float64(rng.divisor))
     o = UnivariateASH(rng, m, kernel)
     updatebin!(o, y)
@@ -33,9 +33,15 @@ function UnivariateASH(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweig
     o
 end
 
-ash(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight) = UnivariateASH(y, rng, m = m, kernel = kernel)
-function fit(::Type{UnivariateASH}, y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
-    ash(y, rng, m = m, kernel = kernel)
+
+function ash(y::VecF; nbins::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)
+    r > 0 || error("r must be positive")
+    a, b = extrema(y)
+    rng = b - a
+    a -= r * rng
+    b += r * rng
+    step = (b - a) / nbins
+    ash(y, a:step:b, m = m, kernel = kernel)
 end
 
 

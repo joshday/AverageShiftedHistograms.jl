@@ -12,7 +12,6 @@ type BivariateASH
     kernelx::Symbol             # kernel: x direction
     kernely::Symbol             # smoothing parameter: x direction
     n::Int
-
     function BivariateASH(rngx::FloatRange{Float64}, mx::Int, kernelx::Symbol, rngy::FloatRange{Float64}, my::Int, kernely::Symbol)
         lx = length(rngx)
         ly = length(rngy)
@@ -26,25 +25,34 @@ type BivariateASH
     end
 end
 
-function BivariateASH(x::VecF, y::VecF, rngx::Range, rngy::Range;
-        mx::Int = 5, my::Int = 5, kernelx::Symbol = :biweight, kernely::Symbol = :biweight)
-    @compat myrngx = FloatRange(Float64(rngx.start), Float64(rngx.step), Float64(rngx.len), Float64(rngx.divisor))
-    @compat myrngy = FloatRange(Float64(rngy.start), Float64(rngy.step), Float64(rngy.len), Float64(rngy.divisor))
-    o = BivariateASH(myrngx, mx, kernelx, myrngy, my, kernely)
-    update!(o, x, y)
-    update!(o)
-    o
-end
 
 function ash(x::VecF, y::VecF, rngx::Range, rngy::Range;
              mx::Int = 5, my::Int = 5, kernelx::Symbol = :biweight, kernely::Symbol = :biweight)
-    BivariateASH(x, y, rngx, rngy, mx = mx, my = my, kernelx = kernelx, kernely = kernely)
+     @compat myrngx = FloatRange(Float64(rngx.start), Float64(rngx.step), Float64(rngx.len), Float64(rngx.divisor))
+     @compat myrngy = FloatRange(Float64(rngy.start), Float64(rngy.step), Float64(rngy.len), Float64(rngy.divisor))
+     o = BivariateASH(myrngx, mx, kernelx, myrngy, my, kernely)
+     update!(o, x, y)
+     update!(o)
+     o
+ end
+
+
+function ash(x::VecF, y::VecF;
+             nbinx::Int = 1000, nbiny::Int = 1000, r::Real = 0.2, mx = 5, my = 5, kernelx = :biweight, kernely = :biweight)
+    r > 0 || error("r must be positive")
+    ax, bx = extrema(x)
+    ay, by = extrema(y)
+    rngx = bx - ax
+    rngy = by - ay
+    ax -= rngx * r
+    bx += rngx * r
+    ay -= rngy * r
+    by += rngy * r
+    stepx = (bx - ax) / nbinx
+    stepy = (by - ay) / nbiny
+    ash(x, y, ax:stepx:bx, ay:stepy:by, mx = mx, my = my, kernelx = kernelx, kernely = kernely)
 end
 
-function fit(::Type{BivariateASH}, x::VecF, y::VecF, rngx::Range, rngy::Range;
-             mx::Int = 5, my::Int = 5, kernelx::Symbol = :biweight, kernely::Symbol = :biweight)
-    BivariateASH(x, y, rngx, rngy, mx = mx, my = my, kernelx = kernelx, kernely = kernely)
-end
 
 function updatebin!(o::BivariateASH, x::VecF, y::VecF)
     length(x) == length(y) || error("data vectors must have equal length")
@@ -103,7 +111,7 @@ function update!(o::BivariateASH, mx = o.mx, my = o.my, kernelx = o.kernelx, ker
 
     o.z /= sum(o.z) * δx * δy # make the density integrate to 1
 
-    if any(o.z[1, :]!=0) || any(o.z[:, 1]!=0) || any(o.z[:, end]!=0) || any(o.z[end, :]!=0)
+    if any(o.z[1, :] .!= 0) || any(o.z[:, 1] .!= 0) || any(o.z[:, end] .!= 0) || any(o.z[end, :] .!= 0)
         warn("nonzero density outside of bounds")
     end
 end

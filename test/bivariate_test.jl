@@ -6,9 +6,7 @@ facts("Bivariate") do
         n = rand(10_000:100_000)
         x = randn(n)
         y = sqrt(2)*randn(n) + 10
-        BivariateASH(x, y, -4:.1:4, -5:.1:5)
         o = ash(x, y, -4:.1:4, -5:.1:5)
-        fit(BivariateASH, x, y, -4:.1:4, -5:.1:5)
         show(o)
     end
 
@@ -16,7 +14,8 @@ facts("Bivariate") do
         n = rand(10_000:100_000)
         x = randn(n)
         y = sqrt(2)*randn(n) + 10
-        o = AverageShiftedHistograms.BivariateASH(x, y, -5:.1:5, 0:.1:20)
+        o = ash(x, y)
+        o = ash(x, y, -5:.1:5, 0:.1:20)
         @fact nobs(o) => n
         update!(o, x, y)
         @fact nobs(o) => 2n

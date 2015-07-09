@@ -20,12 +20,9 @@ This branch is a rewrite.  AverageShiftedHistograms will be (hopefully) faster a
 using AverageShiftedHistograms
 y = randn(10_000)
 
-# the following are equivalent
-# Each fits an average shifted histogram at the points in the range
+# This fits an average shifted histogram at the points in the range
 # -5:.1:5 using smoothing parameter m=5 and a gaussian kernel
-o = fit(UnivariateASH, y, -5:.1:5, m = 5, kernel = :gaussian)
 o = ash(y, -5:.1:5, m = 5, kernel = :gaussian)
-o = UnivariateASH(y, -5:.1:5, m = 5, kernel = :gaussian)
 ```
 
 A sketch of the `UnivariateASH` estimate displays in the terminal thanks to [TextPlots](https://github.com/sunetos/TextPlots.jl).  You can get estimates of mean, variance, and standard deviation from the object.  WARNING:  `std()` estimates are highly influenced by oversmoothing.  

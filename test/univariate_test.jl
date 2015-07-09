@@ -3,22 +3,16 @@ using AverageShiftedHistograms, FactCheck
 
 facts("Univariate") do
     context("Constructors") do
-        for i in 1:10 # hack to get this shown as covered?
-            ash(randn(100), -4:.01:4)
-            fit(UnivariateASH, randn(100), -4:.01:4)
-        end
         n = rand(10_000:100_000)
         y = randn(n)
-
-        o = fit(UnivariateASH, y, -4:.1:4)
-        o = UnivariateASH(y, -4:.1:4)
+        o = ash(y)
         o = ash(y, -4:.1:4, m = 3, kernel = :gaussian)
     end
 
     context("methods") do
         n = rand(10_000:100_000)
         y = randn(n)
-        o = AverageShiftedHistograms.UnivariateASH(y, -4:.1:4, m=3)
+        o = ash(y, -4:.1:4, m=3)
         o = ash(y, -4:.1:4)
         show(o)
         @fact mean(o) - mean(y) => roughly(0.0, .1)
