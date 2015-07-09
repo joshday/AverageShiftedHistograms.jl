@@ -1,4 +1,4 @@
-### Kernels
+# Kernels
 
 Kernels are provided by the [Smoothing Kernels](https://github.com/johnmyleswhite/SmoothingKernels.jl) package.
 
