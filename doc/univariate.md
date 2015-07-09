@@ -6,7 +6,7 @@ There are two methods for creating a `UnivariateASH` object.
 
 \* = keyword argument
 
-### `ash(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)`
+### `ash(y::Vector{Float64}, rng::Range; m::Int = 5, kernel::Symbol = :biweight)`
 
 | args       |  description  
 |------------|--------------------------------------------------
@@ -15,7 +15,7 @@ There are two methods for creating a `UnivariateASH` object.
 | `m`\*      | number of adjacent bins to smooth over
 | `kernel`\* | kernel used for smoothing
 
-### `ash(y::VecF; nbins::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)`
+### `ash(y::Vector{Float64}; nbins::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)`
 
 | args       |  description  
 |------------|--------------------------------------------------
