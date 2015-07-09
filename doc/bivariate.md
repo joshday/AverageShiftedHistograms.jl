@@ -18,7 +18,7 @@ There are two methods for creating a `BivariateASH` object.
 - `std(o)`
 - `xyz(o)`
     - return `(x, y, z)` where `x` and `y` are vectors and `z` is matrix of density values where
-    `f(x[i], y[j]) = z[j, i]`
+    `f(y[i], x[j]) = z[i, j]`
 
 
 ## Updating a `BivariateASH` object
