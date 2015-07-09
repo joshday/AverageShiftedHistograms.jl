@@ -125,6 +125,7 @@ function Base.show(io::IO, o::BivariateASH)
 end
 
 nobs(o::BivariateASH) = o.n
+nout(o::BivariateASH) = nobs(o) - sum(o.v)
 xyz(o::BivariateASH) = ([o.rngx], [o.rngy], copy(o.z))
 function mean(o::BivariateASH)
     meanx = mean([o.rngx], WeightVec(vec(sum(o.z, 1))))

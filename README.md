@@ -13,10 +13,11 @@ Pkg.clone("https://github.com/joshday/AverageShiftedHistograms.jl")
 ```
 Note:  master is quite a bit different from the version in Metadata.
 
+## [Docs](http://averageshiftedhistogramsjl.readthedocs.org)
 
 ## Differences from `R`'s `ash`:
 - TODO: timing comparison
 - update estimate with new data: `update!(o, newdata)`
 - Change smoothing parameter and kernel: `ash!(o, m [,kernel])`
-- Get approximate mean/var from `UnivariateASH` with `mean(o)`, `var(o)`
+- Get approximate summary statistics from `UnivariateASH` with `mean(o)`, `var(o)`, `std(o)`, `quantile(o, tau)`
 - More kernel options provided by the [`SmoothingKernels`](https://github.com/johnmyleswhite/SmoothingKernels.jl) package

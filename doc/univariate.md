@@ -32,6 +32,9 @@ A sketch of the `UnivariateASH` estimate displays in the terminal thanks to [Tex
 
 The following methods are available for a `UnivariateASH` object:
 
+- `nobs(o)`
+- `nout(o)`
+    - Number of observations that weren't caught in a histogram bin
 - `mean(o)`
 - `var(o)`
 - `std(o)`
@@ -41,7 +44,7 @@ The following methods are available for a `UnivariateASH` object:
 - `xy(o)`
     - return `(x, y)` where `y` is the density estimate yᵢ = f(xᵢ)
 
-WARNING:  `var()`, `std()`, and `quantile()` estimates are highly influenced by oversmoothing.  A little "noise" in the estimate is desirable.
+WARNING:  `var()`, `std()`, and `quantile()` estimates are highly influenced by oversmoothing (be mindful of the `m` argument).  A little noise in the estimate is desirable.
 
 
 ```julia
