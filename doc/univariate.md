@@ -1,12 +1,12 @@
 # `UnivariateASH`
 
 
-### Construction
+## Construction
 There are two methods for creating a `UnivariateASH` object.
 
 \* = keyword argument
 
-- `ash(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)`
+### `ash(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)`
 
 | args       |  description  
 |------------|--------------------------------------------------
@@ -15,7 +15,7 @@ There are two methods for creating a `UnivariateASH` object.
 | `m`\*      | number of adjacent bins to smooth over
 | `kernel`\* | kernel used for smoothing
 
-- `ash(y::VecF; nbins::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)`
+### `ash(y::VecF; nbins::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)`
 
 | args       |  description  
 |------------|--------------------------------------------------
@@ -27,7 +27,7 @@ There are two methods for creating a `UnivariateASH` object.
 
 
 
-### Summary Statistics
+## Summary Statistics
 A sketch of the `UnivariateASH` estimate displays in the terminal thanks to [TextPlots](https://github.com/sunetos/TextPlots.jl).  You can get estimates of mean, variance, and standard deviation from the object.  WARNING:  `var()` and `std()` estimates are highly influenced by oversmoothing.  
 
 ```julia
@@ -64,9 +64,10 @@ julia> std(o)
 1.0098092840552086
 ```
 
-### `update!()`
+## `update!()`
 
-- `update!(o, y)`
-    - include new data and recompute the density
-- `update!(o, m, kernel)`
-    - change the smoothing parameter and kernel
+### `update!(o, y)`
+- include new data and recompute the density
+
+### `update!(o, m, kernel)`
+- change the smoothing parameter and kernel
