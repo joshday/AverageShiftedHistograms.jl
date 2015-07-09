@@ -1,12 +1,3 @@
-# Docs
-"""
-`update!(o, y)`
-`update!(o, m, [, kernel])`
-
-Update a UnivariateASH object with new data or change the smoothing parameter and kernel
-"""
-:update!
-
 #---------------------------------------------------------------------# UnivariateASH
 type UnivariateASH
     rng::FloatRange{Float64}    # x values for which you want to find density y = f(x)
