@@ -9,9 +9,9 @@ Density estimation using **Average Shifted Histograms**.  A summary of ASH is [h
 ## Installation:
 
 ```julia
-Pkg.clone("https://github.com/joshday/AverageShiftedHistograms.jl")
+Pkg.add("https://github.com/joshday/AverageShiftedHistograms.jl")
 ```
-Note:  master is quite a bit different from the version in Metadata.
+Note:  Current version (v0.2) is quite a bit different from v0.1
 
 ## [Docs](http://averageshiftedhistogramsjl.readthedocs.org)
 
