@@ -52,7 +52,7 @@ function updatebin!(o::UnivariateASH, y::Vector{Float64})
     nothing
 end
 
-function update!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warnout = true)
+function update!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warnout::Bool = true)
     o.m = m
     o.kernel = kernel
     δ = o.rng.step / o.rng.divisor
@@ -66,13 +66,13 @@ function update!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warn
     end
 
     o.y /= sum(o.y) * δ  # make y integrate to 1
-    o.y[1] != 0 || o.y[end] != 0 && warn("nonzero density outside of bounds")
+    warnout && (o.y[1] != 0 || o.y[end] != 0) && warn("nonzero density outside of bounds")
     return
 end
 
-function update!(o::UnivariateASH, y::Vector{Float64})
+function update!(o::UnivariateASH, y::Vector{Float64}; warnout = true)
     updatebin!(o, y)
-    update!(o)
+    update!(o, warnout = warnout)
     o
 end
 
@@ -115,6 +115,10 @@ function quantile(o::UnivariateASH, τ::Real)
     else
         o.rng[i] + (o.rng[i+1] - o.rng[i]) * (τ - cdf[i]) / (cdf[i+1] - cdf[i])
     end
+end
+
+function quantile{T <: Real}(o::UnivariateASH, τ::Vector{T} = [.25, .5, .75])
+    [quantile(o, τi) for τi in τ]
 end
 
 

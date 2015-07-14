@@ -9,8 +9,9 @@ module AverageShiftedHistograms
     import Base: quantile, merge!, copy, mean, var, std, quantile, push!
     import TextPlots
     import StatsBase: fit, nobs, WeightVec
+    import Distributions: pdf
 
-    export Bin1, Bin2, UnivariateASH, BivariateASH, ash, nout, update!, xy, xyz, pdf
+    export Bin1, Bin2, UnivariateASH, BivariateASH, ash, nout, update!, xy, xyz
 
     typealias VecF Vector{Float64}
     typealias MatF Matrix{Float64}
