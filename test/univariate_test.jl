@@ -1,5 +1,5 @@
 module UnivariateTest
-using AverageShiftedHistograms, FactCheck
+using AverageShiftedHistograms, FactCheck, Distributions.pdf
 
 facts("Univariate") do
     context("Constructors") do
