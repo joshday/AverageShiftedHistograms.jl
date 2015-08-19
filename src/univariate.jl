@@ -93,16 +93,16 @@ function Base.show(io::IO, o::UnivariateASH)
     println(io, "*       m: ", o.m)
     println(io, "*   edges: ", o.rng)
     println(io, "*    nobs: ", nobs(o))
-    maximum(o.y) > 0 && TextPlots.plot([o.rng], o.y, title = false, cols=30, rows=10)
+    maximum(o.y) > 0 && show(UnicodePlots.lineplot(collect(o.rng), o.y))
 end
 
 nobs(o::UnivariateASH) = o.n
 
 nout(o::UnivariateASH) = o.n - sum(o.v)
-mean(o::UnivariateASH) = mean([o.rng], WeightVec(o.y))
-var(o::UnivariateASH) = var([o.rng], WeightVec(o.y))
+mean(o::UnivariateASH) = mean(collect(o.rng), WeightVec(o.y))
+var(o::UnivariateASH) = var(collect(o.rng), WeightVec(o.y))
 std(o::UnivariateASH) = sqrt(var(o))
-xy(o::UnivariateASH) = ([o.rng], copy(o.y))
+xy(o::UnivariateASH) = (collect(o.rng), copy(o.y))
 
 function quantile(o::UnivariateASH, τ::Real)
     0 < τ < 1 || error("τ must be in (0, 1)")

@@ -126,15 +126,15 @@ end
 
 nobs(o::BivariateASH) = o.n
 nout(o::BivariateASH) = nobs(o) - sum(o.v)
-xyz(o::BivariateASH) = ([o.rngx], [o.rngy], copy(o.z))
+xyz(o::BivariateASH) = (collect(o.rngx), collect(o.rngy), copy(o.z))
 function mean(o::BivariateASH)
-    meanx = mean([o.rngx], WeightVec(vec(sum(o.z, 1))))
-    meany = mean([o.rngy], WeightVec(vec(sum(o.z, 2))))
+    meanx = mean(collect(o.rngx), WeightVec(vec(sum(o.z, 1))))
+    meany = mean(collect(o.rngy), WeightVec(vec(sum(o.z, 2))))
     [meanx; meany]
 end
 function var(o::BivariateASH)
-    varx = var([o.rngx], WeightVec(vec(sum(o.z, 1))))
-    vary = var([o.rngy], WeightVec(vec(sum(o.z, 2))))
+    varx = var(collect(o.rngx), WeightVec(vec(sum(o.z, 1))))
+    vary = var(collect(o.rngy), WeightVec(vec(sum(o.z, 2))))
     [varx; vary]
 end
 std(o::BivariateASH) = sqrt(var(o))
