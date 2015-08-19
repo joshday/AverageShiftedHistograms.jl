@@ -1,6 +1,7 @@
 [![AverageShiftedHistograms](http://pkg.julialang.org/badges/AverageShiftedHistograms_release.svg)](http://pkg.julialang.org/?pkg=AverageShiftedHistograms&ver=release)
 [![Build Status](https://travis-ci.org/joshday/AverageShiftedHistograms.jl.svg?branch=master)](https://travis-ci.org/joshday/AverageShiftedHistograms.jl)
 [![Coverage Status](https://coveralls.io/repos/joshday/AverageShiftedHistograms.jl/badge.svg?branch=master)](https://coveralls.io/r/joshday/AverageShiftedHistograms.jl?branch=master)
+[![codecov.io](http://codecov.io/github/joshday/AverageShiftedHistograms.jl/coverage.svg?branch=master)](http://codecov.io/github/joshday/AverageShiftedHistograms.jl?branch=master)
 
 # AverageShiftedHistograms
 
@@ -9,7 +10,7 @@ Density estimation using **Average Shifted Histograms**.  A summary of ASH is [h
 ## Installation:
 
 ```julia
-Pkg.add("https://github.com/joshday/AverageShiftedHistograms.jl")
+Pkg.add("AverageShiftedHistograms")
 ```
 Note:  Current version (v0.2) is quite a bit different from v0.1
 
@@ -20,4 +21,4 @@ Note:  Current version (v0.2) is quite a bit different from v0.1
 - update estimate with new data: `update!(o, newdata)`
 - Change smoothing parameter and kernel: `ash!(o, m [,kernel])`
 - Get approximate summary statistics from `UnivariateASH` with `mean(o)`, `var(o)`, `std(o)`, `quantile(o, tau)`
-- More kernel options provided by the [`SmoothingKernels`](https://github.com/johnmyleswhite/SmoothingKernels.jl) package
+- More kernel options
