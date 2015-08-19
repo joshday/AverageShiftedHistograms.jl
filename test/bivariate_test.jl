@@ -31,6 +31,10 @@ facts("Bivariate") do
         @fact var(o)[2] - var(y) --> roughly(0.0, .1)
         @fact std(o)[1] - std(x) --> roughly(0.0, .1)
         @fact std(o)[2] - std(y) --> roughly(0.0, .1)
+        
+        o = ash(rand(100), rand(100))
+        update!(o, [-1.0], [-1.0])
+        @fact nout(o) --> 1
     end
 end
 

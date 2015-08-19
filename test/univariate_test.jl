@@ -19,6 +19,8 @@ facts("Univariate") do
         @fact var(o)  - var(y) --> roughly(0.0, .1)
         @fact std(o)  - std(y) --> roughly(0.0, .1)
         @fact quantile(o, 0.5)  - quantile(y, 0.5) --> roughly(0.0, .3)
+        @fact quantile(o, .0000001) --> o.rng[1]
+        @fact quantile(o, [.25, .5, .75]) - quantile(y, [.25, .5, .75]) --> roughly(zeros(3), .3)
         @fact typeof(xy(o)) <: Tuple --> true
         @fact xy(o)[1] --> collect(-4:.1:4)
         @fact maxabs(o.v - hist(y, (-4:.1:4.1) - .05)[2]) --> 0 "Check that histogram is correct"

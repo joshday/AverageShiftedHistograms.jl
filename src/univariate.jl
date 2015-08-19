@@ -108,9 +108,7 @@ function quantile(o::UnivariateASH, τ::Real)
     0 < τ < 1 || error("τ must be in (0, 1)")
     cdf = cumsum(o.y) * (o.rng.step / o.rng.divisor)
     i = searchsortedlast(cdf, τ)
-    if i >= length(o.rng)
-        o.rng[end]
-    elseif i < 1
+    if i == 0
         o.rng[1]
     else
         o.rng[i] + (o.rng[i+1] - o.rng[i]) * (τ - cdf[i]) / (cdf[i+1] - cdf[i])
