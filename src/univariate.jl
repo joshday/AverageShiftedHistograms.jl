@@ -15,7 +15,20 @@ type UnivariateASH
     end
 end
 
+"""
+# Average Shifted Histogram
 
+Univariate ASH estimator for data `y` with smoothing parameter `m` using kernel `kernel`.
+
+### `ash(y, rng; m = 5, kernel = :biweight)`
+
+- Density estimates will be returned for each point in `rng`.
+
+### `ash(y; nbins = 1000, r = 0.2, m = 5, kernel = :biweight)`
+
+- `nbins` bins will be used with endpoints calculated by extending the extrema of
+`y` by `r` times its range.  That is, `r * (maximum(y) - minimum(y))`.
+"""
 function ash(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
     @compat myrng = FloatRange(Float64(rng.start), Float64(rng.step), Float64(rng.len), Float64(rng.divisor))
     o = UnivariateASH(rng, m, kernel)
@@ -23,7 +36,6 @@ function ash(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
     update!(o)
     o
 end
-
 
 function ash(y::VecF; nbins::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)
     r > 0 || error("r must be positive")
