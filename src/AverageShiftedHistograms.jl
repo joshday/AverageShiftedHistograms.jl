@@ -2,6 +2,7 @@ module AverageShiftedHistograms
     using Compat
     using Reexport
     @reexport using StatsBase
+    @reexport using Distributions
     using Docile
     @document
 

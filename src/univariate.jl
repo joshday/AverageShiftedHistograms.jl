@@ -93,7 +93,7 @@ function Base.show(io::IO, o::UnivariateASH)
     println(io, "*       m: ", o.m)
     println(io, "*   edges: ", o.rng)
     println(io, "*    nobs: ", nobs(o))
-    maximum(o.y) > 0 && show(UnicodePlots.lineplot(collect(o.rng), o.y))
+    maximum(o.y) > 0 && show(UnicodePlots.lineplot(xy(o)...))
 end
 
 nobs(o::UnivariateASH) = o.n
