@@ -16,18 +16,25 @@ type UnivariateASH
 end
 
 """
-# Average Shifted Histogram
+Create a UnivariateASH or BivariateASH object from data.
 
-Univariate ASH estimator for data `y` with smoothing parameter `m` using kernel `kernel`.
+### UnivariateASH
 
-### `ash(y, rng; m = 5, kernel = :biweight)`
+    ash(y, rng; m = 5, kernel = :biweight)
+    ash(y; nbins = 1000, r = 0.2, ...)
 
-- Density estimates will be returned for each point in `rng`.
+Calculate the density at each element in `rng` using smoothing parameter `m` and
+kernel `kernel`.  Alternatively, supply the number of histogram bins `nbins` and
+a multiplier `r` to determine endpoints.  Endpoints extend the extrema of `y` by
+`r` times its range: `r * (maximum(y) - minimum(y))`.
 
-### `ash(y; nbins = 1000, r = 0.2, m = 5, kernel = :biweight)`
 
-- `nbins` bins will be used with endpoints calculated by extending the extrema of
-`y` by `r` times its range.  That is, `r * (maximum(y) - minimum(y))`.
+### BivariateASH
+
+    ash(x, y, rngx, rngy; mx = 5, my = 5, kernelx = :biweight, kernely = :biweight)
+    ash(x, y; nbinx = 1000, nbiny = 1000, r = 0.2, ...)
+
+Arguments work similarly to their univariate equivalents.
 """
 function ash(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
     @compat myrng = FloatRange(Float64(rng.start), Float64(rng.step), Float64(rng.len), Float64(rng.divisor))
@@ -64,6 +71,17 @@ function updatebin!(o::UnivariateASH, y::Vector{Float64})
     nothing
 end
 
+
+"""
+Update a UnivariateASH or BivariateASH estimate with new data OR smoothing parameter(s)
+and kernel(s).
+
+    update!(o::UnivariateASH, y)
+    update!(o::UnivariateASH, m, kernel)
+
+    update!(o::BivariateASH, x, y)
+    update!(o::BivariateASH, mx, my, kernelx, kernely)
+"""
 function update!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warnout::Bool = true)
     o.m = m
     o.kernel = kernel
