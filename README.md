@@ -67,7 +67,6 @@ mean(o)
 var(o)
 std(o)
 
-
 # get x, y, and z (density) values
 xyz(o)
 ```
