@@ -25,7 +25,7 @@ Pkg.add("AverageShiftedHistograms")
 
 #### Univariate
 ```julia
-o = ash(randn(1000), nbins = 1000)  # 1000 bins by default
+o = ash(randn(1000), nbin = 1000)  # 1000 bins by default
 o = ash(randn(1000), -4:.1:4)
 update!(o, 10, :gaussian)  # change smoothing parameter to 10 and kernel to gaussian
 update!(o, randn(123))  # include more data

@@ -15,12 +15,12 @@ There are two methods for creating a `UnivariateASH` object.
 | `m`\*      | number of adjacent bins to smooth over
 | `kernel`\* | kernel used for smoothing
 
-### `ash(y::Vector{Float64}; nbins::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)`
+### `ash(y::Vector{Float64}; nbin::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)`
 
 | args       |  description  
 |------------|--------------------------------------------------
 | `y`        | data
-| `nbins`\*  | number of bins to partition data into
+| `nbin`\*  | number of bins to partition data into
 | `r`\*      | extend extrema of data by r * (range of data)
 | `m`\*      | number of adjacent bins to smooth over
 | `kernel`\* | kernel used for smoothing

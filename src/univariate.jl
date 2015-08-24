@@ -21,10 +21,10 @@ Create a UnivariateASH or BivariateASH object from data.
 ### UnivariateASH
 
     ash(y, rng; m = 5, kernel = :biweight)
-    ash(y; nbins = 1000, r = 0.2, ...)
+    ash(y; nbin = 1000, r = 0.2, ...)
 
 Calculate the density at each element in `rng` using smoothing parameter `m` and
-kernel `kernel`.  Alternatively, supply the number of histogram bins `nbins` and
+kernel `kernel`.  Alternatively, supply the number of histogram bins `nbin` and
 a multiplier `r` to determine endpoints.  Endpoints extend the extrema of `y` by
 `r` times its range: `r * (maximum(y) - minimum(y))`.
 
@@ -44,13 +44,13 @@ function ash(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
     o
 end
 
-function ash(y::VecF; nbins::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)
+function ash(y::VecF; nbin::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)
     r > 0 || error("r must be positive")
     a, b = extrema(y)
     rng = b - a
     a -= r * rng
     b += r * rng
-    step = (b - a) / nbins
+    step = (b - a) / nbin
     ash(y, a:step:b, m = m, kernel = kernel)
 end
 
@@ -97,7 +97,7 @@ function update!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warn
 
     o.y /= sum(o.y) * δ  # make y integrate to 1
     warnout && (o.y[1] != 0 || o.y[end] != 0) && warn("nonzero density outside of bounds")
-    return
+    o
 end
 
 function update!(o::UnivariateASH, y::Vector{Float64}; warnout = true)

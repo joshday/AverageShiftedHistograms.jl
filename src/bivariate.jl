@@ -112,8 +112,9 @@ function update!(o::BivariateASH, mx = o.mx, my = o.my, kernelx = o.kernelx, ker
     o.z /= sum(o.z) * δx * δy # make the density integrate to 1
 
     if any(o.z[1, :] .!= 0) || any(o.z[:, 1] .!= 0) || any(o.z[:, end] .!= 0) || any(o.z[end, :] .!= 0)
-        warn("nonzero density outside of bounds")
+        warnout && warn("nonzero density outside of bounds")
     end
+    o
 end
 
 function Base.show(io::IO, o::BivariateASH)
