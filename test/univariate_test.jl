@@ -1,5 +1,7 @@
 module UnivariateTest
-using AverageShiftedHistograms, FactCheck, Distributions.pdf
+using AverageShiftedHistograms, FactCheck, Distributions.pdf, Plots
+
+gadfly!()
 
 facts("Univariate") do
     context("Constructors") do
@@ -29,6 +31,7 @@ facts("Univariate") do
         @fact quadgk(x -> pdf(o, x), -Inf, Inf)[1] --> roughly(1.0, .001) "pdf integrates to 1.0"
 
         @fact nobs(o) --> n
+        plot(o)
 
         # nobs and nout
         y2 = randn(n)

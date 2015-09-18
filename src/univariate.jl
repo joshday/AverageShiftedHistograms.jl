@@ -164,3 +164,5 @@ function pdf{T <: Real}(o::UnivariateASH, x::Array{T})
         pdf(o, xi)
     end
 end
+
+Plots.plot(o::UnivariateASH) = Plots.plot(xy(o)...)
