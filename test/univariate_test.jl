@@ -1,6 +1,5 @@
 module UnivariateTest
 using AverageShiftedHistograms, FactCheck, Distributions.pdf
-gadfly!()
 
 facts("Univariate") do
     context("Constructors") do
