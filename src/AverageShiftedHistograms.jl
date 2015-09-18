@@ -10,7 +10,6 @@ module AverageShiftedHistograms
     import StatsBase: fit, nobs, WeightVec
     import Distributions: pdf
     import UnicodePlots
-    import Plots
 
     export Bin1, Bin2, UnivariateASH, BivariateASH, ash, nout, update!, xy, xyz
 
