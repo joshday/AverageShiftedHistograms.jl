@@ -1,5 +1,5 @@
 module UnivariateTest
-using AverageShiftedHistograms, FactCheck, Distributions.pdf
+using AverageShiftedHistograms, StatsBase, FactCheck, Distributions, Plots
 
 facts("Univariate") do
     context("Constructors") do
@@ -19,7 +19,7 @@ facts("Univariate") do
         @fact var(o)  - var(y) --> roughly(0.0, .1)
         @fact std(o)  - std(y) --> roughly(0.0, .1)
         @fact quantile(o, 0.5)  - quantile(y, 0.5) --> roughly(0.0, .3)
-        @fact quantile(o, .0000001) --> o.rng[1]
+        @fact quantile(o, .00000001) --> o.rng[1]
         @fact quantile(o, [.25, .5, .75]) - quantile(y, [.25, .5, .75]) --> roughly(zeros(3), .3)
         @fact typeof(xy(o)) <: Tuple --> true
         @fact xy(o)[1] --> collect(-4:.1:4)
@@ -42,6 +42,9 @@ facts("Univariate") do
         @fact nout(o) --> 0
         update!(o, [5.0])
         @fact nout(o) --> 1
+
+        gadfly!()
+        plot(o)
     end
 end
 

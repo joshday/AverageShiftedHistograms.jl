@@ -1,5 +1,5 @@
 #---------------------------------------------------------------------# UnivariateASH
-type UnivariateASH
+type UnivariateASH <: ASH
     rng::FloatRange{Float64}    # x values for which you want to find density y = f(x)
     v::Vector{Int}              # Counts in each bin
     y::VecF                     # density y = f(x)
@@ -36,15 +36,15 @@ a multiplier `r` to determine endpoints.  Endpoints extend the extrema of `y` by
 
 Arguments work similarly to their univariate equivalents.
 """
-function ash(y::VecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
-    @compat myrng = FloatRange(Float64(rng.start), Float64(rng.step), Float64(rng.len), Float64(rng.divisor))
+function ash(y::AVecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
+     myrng = FloatRange(Float64(rng.start), Float64(rng.step), Float64(rng.len), Float64(rng.divisor))
     o = UnivariateASH(rng, m, kernel)
     updatebin!(o, y)
-    update!(o)
+    ash!(o)
     o
 end
 
-function ash(y::VecF; nbin::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)
+function ash(y::AVecF; nbin::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)
     r > 0 || error("r must be positive")
     a, b = extrema(y)
     rng = b - a
@@ -55,7 +55,7 @@ function ash(y::VecF; nbin::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbo
 end
 
 
-function updatebin!(o::UnivariateASH, y::Vector{Float64})
+function updatebin!(o::UnivariateASH, y::AVecF)
     δ = o.rng.step / o.rng.divisor
     a = o.rng[1]
     nbin = length(o.rng)
@@ -73,16 +73,17 @@ end
 
 
 """
-Update a UnivariateASH or BivariateASH estimate with new data OR smoothing parameter(s)
-and kernel(s).
+### Change UnivariateASH parameters
 
-    update!(o::UnivariateASH, y)
-    update!(o::UnivariateASH, m, kernel)
+`ash!(o; kwargs...)`
 
-    update!(o::BivariateASH, x, y)
-    update!(o::BivariateASH, mx, my, kernelx, kernely)
+Possible arguments are:
+
+- `m`: smoothing parameter
+- `kernel`: smoothing kernel
+- `warnout`: warn if there is nonzero density on the edge of the estimate
 """
-function update!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warnout::Bool = true)
+function ash!(o::UnivariateASH; m::Int = o.m, kernel::Symbol = o.kernel, warnout::Bool = true)
     o.m = m
     o.kernel = kernel
     δ = o.rng.step / o.rng.divisor
@@ -100,21 +101,35 @@ function update!(o::UnivariateASH, m::Int = o.m, kernel::Symbol = o.kernel; warn
     o
 end
 
-function update!(o::UnivariateASH, y::Vector{Float64}; warnout = true)
+
+"""
+Update a UnivariateASH or BivariateASH object with more data.
+
+UnivariateASH:
+```
+update!(o, y; warnout = true)
+```
+
+BivariateASH:
+```
+update!(o, x, y; warnout = true)
+```
+"""
+function update!(o::UnivariateASH, y::AVecF; warnout = true)
     updatebin!(o, y)
-    update!(o, warnout = warnout)
+    ash!(o, warnout = warnout)
     o
 end
 
-copy(o::UnivariateASH) = deepcopy(o)
+Base.copy(o::UnivariateASH) = deepcopy(o)
 
-function merge!(o1::UnivariateASH, o2::UnivariateASH)
+function Base.merge!(o1::UnivariateASH, o2::UnivariateASH)
     o1.rng == o2.rng || error("ranges do not match!")
     o1.m == o2.m || warn("smoothing parameters don't match.  Using m = $o1.m")
     o1.kernel == o2.kernel || warn("kernels don't match.  Using kernel = $o1.kernel")
     o1.n += o2.n
     o1.v += o2.v
-    update!(o1)
+    ash!(o1)
 end
 
 function Base.show(io::IO, o::UnivariateASH)
@@ -126,15 +141,15 @@ function Base.show(io::IO, o::UnivariateASH)
     maximum(o.y) > 0 && show(io, UnicodePlots.lineplot(xy(o)...))
 end
 
-nobs(o::UnivariateASH) = o.n
+StatsBase.nobs(o::ASH) = o.n
 
 nout(o::UnivariateASH) = o.n - sum(o.v)
-mean(o::UnivariateASH) = mean(collect(o.rng), WeightVec(o.y))
-var(o::UnivariateASH) = var(collect(o.rng), WeightVec(o.y))
-std(o::UnivariateASH) = sqrt(var(o))
+Base.mean(o::UnivariateASH) = mean(collect(o.rng), StatsBase.WeightVec(o.y))
+Base.var(o::UnivariateASH) = var(collect(o.rng), StatsBase.WeightVec(o.y))
+Base.std(o::UnivariateASH) = sqrt(var(o))
 xy(o::UnivariateASH) = (collect(o.rng), copy(o.y))
 
-function quantile(o::UnivariateASH, τ::Real)
+function Base.quantile(o::UnivariateASH, τ::Real)
     0 < τ < 1 || error("τ must be in (0, 1)")
     cdf = cumsum(o.y) * (o.rng.step / o.rng.divisor)
     i = searchsortedlast(cdf, τ)
@@ -145,12 +160,12 @@ function quantile(o::UnivariateASH, τ::Real)
     end
 end
 
-function quantile{T <: Real}(o::UnivariateASH, τ::Vector{T} = [.25, .5, .75])
+function Base.quantile{T <: Real}(o::UnivariateASH, τ::Vector{T} = [.25, .5, .75])
     [quantile(o, τi) for τi in τ]
 end
 
 
-function pdf(o::UnivariateASH, x::Real)
+function Distributions.pdf(o::UnivariateASH, x::Real)
     i = searchsortedlast(o.rng, x)
     if 1 <= i < length(o.rng)
         o.y[i] + (o.y[i+1] - o.y[i]) * (x - o.rng[i]) / (o.rng[i+1] - o.rng[i])
@@ -159,10 +174,8 @@ function pdf(o::UnivariateASH, x::Real)
     end
 end
 
-function pdf{T <: Real}(o::UnivariateASH, x::Array{T})
+function Distributions.pdf{T <: Real}(o::UnivariateASH, x::Array{T})
     for xi in x
         pdf(o, xi)
     end
 end
-
-# Plots.plot(o::UnivariateASH) = Plots.plot(xy(o)...)

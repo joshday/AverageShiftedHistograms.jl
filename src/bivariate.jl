@@ -2,7 +2,7 @@
 #
 # Pseudocode available in http://www.stat.rice.edu/%7Escottdw/stat550/HW/hw4/c05.pdf
 
-type BivariateASH
+type BivariateASH <: ASH
     rngx::FloatRange{Float64}   # range in x direction
     rngy::FloatRange{Float64}   # range in y direction
     v::Matrix{Int}              # bin counts
@@ -28,11 +28,11 @@ end
 
 function ash(x::VecF, y::VecF, rngx::Range, rngy::Range;
              mx::Int = 5, my::Int = 5, kernelx::Symbol = :biweight, kernely::Symbol = :biweight)
-     @compat myrngx = FloatRange(Float64(rngx.start), Float64(rngx.step), Float64(rngx.len), Float64(rngx.divisor))
-     @compat myrngy = FloatRange(Float64(rngy.start), Float64(rngy.step), Float64(rngy.len), Float64(rngy.divisor))
+      myrngx = FloatRange(Float64(rngx.start), Float64(rngx.step), Float64(rngx.len), Float64(rngx.divisor))
+      myrngy = FloatRange(Float64(rngy.start), Float64(rngy.step), Float64(rngy.len), Float64(rngy.divisor))
      o = BivariateASH(myrngx, mx, kernelx, myrngy, my, kernely)
      update!(o, x, y)
-     update!(o)
+     ash!(o)
      o
  end
 
@@ -75,11 +75,24 @@ end
 
 function update!(o::BivariateASH, x::VecF, y::VecF)
     updatebin!(o, x, y)
-    update!(o)
+    ash!(o)
     o
 end
 
-function update!(o::BivariateASH, mx = o.mx, my = o.my, kernelx = o.kernelx, kernely = o.kernely; warnout = true)
+"""
+### Change BivariateASH parameters
+
+`ash!(o; kwargs...)`
+
+Possible arguments are:
+
+- `mx`: smoothing parameter for x direction
+- `mx`: smoothing parameter for y direction
+- `kernelx`: smoothing kernel for x direction
+- `kernely`: smoothing kernel for y direction
+- `warnout`: warn if there is nonzero density on the edge of the estimate
+"""
+function ash!(o::BivariateASH; mx = o.mx, my = o.my, kernelx = o.kernelx, kernely = o.kernely, warnout = true)
     o.mx = mx
     o.my = my
     o.kernelx = kernelx
@@ -125,21 +138,16 @@ function Base.show(io::IO, o::BivariateASH)
     println(io, "*    nobs: ", nobs(o))
 end
 
-nobs(o::BivariateASH) = o.n
 nout(o::BivariateASH) = nobs(o) - sum(o.v)
 xyz(o::BivariateASH) = (collect(o.rngx), collect(o.rngy), copy(o.z))
-function mean(o::BivariateASH)
-    meanx = mean(collect(o.rngx), WeightVec(vec(sum(o.z, 1))))
-    meany = mean(collect(o.rngy), WeightVec(vec(sum(o.z, 2))))
+function Base.mean(o::BivariateASH)
+    meanx = mean(collect(o.rngx), StatsBase.WeightVec(vec(sum(o.z, 1))))
+    meany = mean(collect(o.rngy), StatsBase.WeightVec(vec(sum(o.z, 2))))
     [meanx; meany]
 end
-function var(o::BivariateASH)
-    varx = var(collect(o.rngx), WeightVec(vec(sum(o.z, 1))))
-    vary = var(collect(o.rngy), WeightVec(vec(sum(o.z, 2))))
+function Base.var(o::BivariateASH)
+    varx = var(collect(o.rngx), StatsBase.WeightVec(vec(sum(o.z, 1))))
+    vary = var(collect(o.rngy), StatsBase.WeightVec(vec(sum(o.z, 2))))
     [varx; vary]
 end
-std(o::BivariateASH) = sqrt(var(o))
-
-
-
-# o = AverageShiftedHistograms.BivariateASH(randn(1000), randn(1000), -4:.1:4, -4:.1:4)
+Base.std(o::BivariateASH) = sqrt(var(o))

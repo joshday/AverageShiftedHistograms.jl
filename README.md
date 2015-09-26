@@ -27,7 +27,7 @@ Pkg.add("AverageShiftedHistograms")
 ```julia
 o = ash(randn(1000), nbin = 1000)  # 1000 bins by default
 o = ash(randn(1000), -4:.1:4)
-update!(o, 10, :gaussian)  # change smoothing parameter to 10 and kernel to gaussian
+update!(o; m = 10, kernel = :gaussian)  # change smoothing parameter to 10 and kernel to gaussian
 update!(o, randn(123))  # include more data
 
 # Get approximate estimates
@@ -55,7 +55,7 @@ o = ash(x, y)
 # change smoothing parameter for y to 10
 # change kernel to x to guassian
 # change kernel for y to triweight
-update!(o, 5, 10, :gaussian, :triweight)
+update!(o; mx = 5, my = 10, kernelx = :gaussian, kernely = :triweight)
 
 # include more data
 x2, y2 = randn(123), randn(123) + 3

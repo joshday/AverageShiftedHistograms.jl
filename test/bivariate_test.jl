@@ -19,7 +19,7 @@ facts("Bivariate") do
         @fact nobs(o) --> n
         update!(o, x, y)
         @fact nobs(o) --> 2n
-        update!(o, 2, 3, :triweight, :logistic)
+        ash!(o; mx = 2, my = 3, kernelx = :triweight, kernely = :logistic)
         @fact o.mx --> 2
         @fact o.my --> 3
         @fact o.kernelx --> :triweight
@@ -31,7 +31,7 @@ facts("Bivariate") do
         @fact var(o)[2] - var(y) --> roughly(0.0, .1)
         @fact std(o)[1] - std(x) --> roughly(0.0, .1)
         @fact std(o)[2] - std(y) --> roughly(0.0, .1)
-        
+
         o = ash(rand(100), rand(100))
         update!(o, [-1.0], [-1.0])
         @fact nout(o) --> 1
