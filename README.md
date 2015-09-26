@@ -17,7 +17,8 @@ Pkg.add("AverageShiftedHistograms")
 ## Differences from `R`'s `ash`:
 - TODO: timing comparison
 - update estimate with new data: `update!(o, newdata)`
-- Change smoothing parameter and kernel: `ash!(o, m [,kernel])`
+- Change smoothing parameter and/or kernel: `ash!(o; m=10, kernel = :epanechnikov)`
+    - NOTE: API change.  Previous versions call this function `update!` and do not use keyword arguments.
 - Get approximate summary statistics from `UnivariateASH` with `mean(o)`, `var(o)`, `std(o)`, `quantile(o, tau)`
 - More kernel options
 

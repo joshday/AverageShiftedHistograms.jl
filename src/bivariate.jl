@@ -76,7 +76,6 @@ end
 function update!(o::BivariateASH, x::VecF, y::VecF)
     updatebin!(o, x, y)
     ash!(o)
-    o
 end
 
 """
