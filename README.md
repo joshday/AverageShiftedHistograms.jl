@@ -56,7 +56,7 @@ o = ash(x, y)
 # change smoothing parameter for y to 10
 # change kernel to x to guassian
 # change kernel for y to triweight
-update!(o; mx = 5, my = 10, kernelx = :gaussian, kernely = :triweight)
+ash!(o; mx = 5, my = 10, kernelx = :gaussian, kernely = :triweight)
 
 # include more data
 x2, y2 = randn(123), randn(123) + 3

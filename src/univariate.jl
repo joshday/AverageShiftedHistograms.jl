@@ -44,7 +44,7 @@ function ash(y::AVecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
     o
 end
 
-function ash(y::AVecF; nbin::Int = 1000, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)
+function ash(y::AVecF; nbin::Int = 200, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)
     r > 0 || error("r must be positive")
     a, b = extrema(y)
     rng = b - a
@@ -134,10 +134,10 @@ end
 
 function Base.show(io::IO, o::UnivariateASH)
     println(io, typeof(o))
-    println(io, "*  kernel: ", o.kernel)
-    println(io, "*       m: ", o.m)
-    println(io, "*   edges: ", o.rng)
-    println(io, "*    nobs: ", nobs(o))
+    println(io, "  >  kernel: ", o.kernel)
+    println(io, "  >       m: ", o.m)
+    println(io, "  >   edges: ", o.rng)
+    println(io, "  >    nobs: ", nobs(o))
     maximum(o.y) > 0 && show(io, UnicodePlots.lineplot(xy(o)...))
 end
 
