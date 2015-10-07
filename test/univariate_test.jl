@@ -43,7 +43,7 @@ facts("Univariate") do
         update!(o, [5.0])
         @fact nout(o) --> 1
 
-        gadfly!()
+        gadfly()
         plot(o)
     end
 end
