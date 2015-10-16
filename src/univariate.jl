@@ -138,7 +138,12 @@ function Base.show(io::IO, o::UnivariateASH)
     println(io, "  >       m: ", o.m)
     println(io, "  >   edges: ", o.rng)
     println(io, "  >    nobs: ", StatsBase.nobs(o))
-    maximum(o.y) > 0 && show(io, UnicodePlots.lineplot(xy(o)...))
+    if maximum(o.y) > 0
+      x, y = xy(o)
+      xlim = [minimum(x), maximum(x)]
+      ylim = [0, maximum(y)]
+      show(io, UnicodePlots.lineplot(x, y, xlim=xlim, ylim=ylim, height=10, width=40))
+    end
 end
 
 StatsBase.nobs(o::ASH) = o.n
