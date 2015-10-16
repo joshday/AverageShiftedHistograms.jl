@@ -7,6 +7,7 @@ module AverageShiftedHistograms
     import Distributions
     import UnicodePlots
     import Plots
+    import OnlineStats.update!
 
     export Bin1, Bin2, UnivariateASH, BivariateASH,
     ash, ash!, nout, update!, xy, xyz
