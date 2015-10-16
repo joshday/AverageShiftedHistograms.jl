@@ -1,5 +1,5 @@
 module BivariateTest
-using AverageShiftedHistograms, FactCheck
+using AverageShiftedHistograms, FactCheck, OnlineStats, StatsBase
 
 facts("Bivariate") do
     context("Constructors") do

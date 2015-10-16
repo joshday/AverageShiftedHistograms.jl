@@ -31,7 +31,7 @@ function ash(x::VecF, y::VecF, rngx::Range, rngy::Range;
       myrngx = FloatRange(Float64(rngx.start), Float64(rngx.step), Float64(rngx.len), Float64(rngx.divisor))
       myrngy = FloatRange(Float64(rngy.start), Float64(rngy.step), Float64(rngy.len), Float64(rngy.divisor))
      o = BivariateASH(myrngx, mx, kernelx, myrngy, my, kernely)
-     update!(o, x, y)
+     OnlineStats.update!(o, x, y)
      ash!(o)
      o
  end
@@ -73,7 +73,7 @@ function updatebin!(o::BivariateASH, x::VecF, y::VecF)
     o.n += length(y)
 end
 
-function update!(o::BivariateASH, x::VecF, y::VecF)
+function OnlineStats.update!(o::BivariateASH, x::VecF, y::VecF)
     updatebin!(o, x, y)
     ash!(o)
 end
@@ -134,10 +134,10 @@ function Base.show(io::IO, o::BivariateASH)
     println(io, "*  kernel: ", (o.kernelx, o.kernely))
     println(io, "*       m: ", (o.mx, o.my))
     println(io, "*   edges: ", (o.rngx, o.rngy))
-    println(io, "*    nobs: ", nobs(o))
+    println(io, "*    nobs: ", StatsBase.nobs(o))
 end
 
-nout(o::BivariateASH) = nobs(o) - sum(o.v)
+nout(o::BivariateASH) = StatsBase.nobs(o) - sum(o.v)
 xyz(o::BivariateASH) = (collect(o.rngx), collect(o.rngy), copy(o.z))
 function Base.mean(o::BivariateASH)
     meanx = mean(collect(o.rngx), StatsBase.WeightVec(vec(sum(o.z, 1))))

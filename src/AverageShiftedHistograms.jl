@@ -7,15 +7,10 @@ module AverageShiftedHistograms
     import Distributions
     import UnicodePlots
     import Plots
-    import OnlineStats.update!
+    import OnlineStats
 
     export Bin1, Bin2, UnivariateASH, BivariateASH,
     ash, ash!, nout, update!, xy, xyz
-
-    using Reexport
-    @reexport using StatsBase
-    @reexport using Plots
-    @reexport using Distributions
 
     typealias VecF Vector{Float64}
     typealias MatF Matrix{Float64}

@@ -103,7 +103,7 @@ end
 
 
 """
-Update a UnivariateASH or BivariateASH object with more data.
+### Update a UnivariateASH or BivariateASH object with more data.
 
 UnivariateASH:
 ```
@@ -115,7 +115,7 @@ BivariateASH:
 update!(o, x, y; warnout = true)
 ```
 """
-function update!(o::UnivariateASH, y::AVecF; warnout = true)
+function OnlineStats.update!(o::UnivariateASH, y::AVecF; warnout = true)
     updatebin!(o, y)
     ash!(o, warnout = warnout)
     o
@@ -137,7 +137,7 @@ function Base.show(io::IO, o::UnivariateASH)
     println(io, "  >  kernel: ", o.kernel)
     println(io, "  >       m: ", o.m)
     println(io, "  >   edges: ", o.rng)
-    println(io, "  >    nobs: ", nobs(o))
+    println(io, "  >    nobs: ", StatsBase.nobs(o))
     maximum(o.y) > 0 && show(io, UnicodePlots.lineplot(xy(o)...))
 end
 
@@ -176,6 +176,6 @@ end
 
 function Distributions.pdf{T <: Real}(o::UnivariateASH, x::Array{T})
     for xi in x
-        pdf(o, xi)
+        Distributions.pdf(o, xi)
     end
 end
