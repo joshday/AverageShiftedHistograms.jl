@@ -1,12 +1,8 @@
-"Univariate and bivariate average shifted histograms for large-scale density estimation"
 module AverageShiftedHistograms
-
-
     import Base: quantile, merge!, copy, mean, var, std, quantile, push!
     import StatsBase
     import Distributions
     import UnicodePlots
-    import Plots
     import OnlineStats
 
     export Bin1, Bin2, UnivariateASH, BivariateASH,
@@ -22,5 +18,7 @@ module AverageShiftedHistograms
     include("kernels.jl")
     include("univariate.jl")
     include("bivariate.jl")
-    include("plot.jl")
+
+    using Requires
+    @require Plots include("plot.jl")
 end
