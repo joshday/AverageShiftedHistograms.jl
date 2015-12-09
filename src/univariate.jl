@@ -107,15 +107,15 @@ end
 
 UnivariateASH:
 ```
-update!(o, y; warnout = true)
+fit!(o, y; warnout = true)
 ```
 
 BivariateASH:
 ```
-update!(o, x, y; warnout = true)
+fit!(o, x, y; warnout = true)
 ```
 """
-function OnlineStats.update!(o::UnivariateASH, y::AVecF; warnout = true)
+function StatsBase.fit!(o::UnivariateASH, y::AVecF; warnout = true)
     updatebin!(o, y)
     ash!(o, warnout = warnout)
     o

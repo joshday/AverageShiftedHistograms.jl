@@ -1,5 +1,5 @@
 module BivariateTest
-using AverageShiftedHistograms, FactCheck, OnlineStats, StatsBase
+using AverageShiftedHistograms, FactCheck, StatsBase
 
 facts("Bivariate") do
     context("Constructors") do
@@ -17,7 +17,7 @@ facts("Bivariate") do
         o = ash(x, y)
         o = ash(x, y, -5:.1:5, 0:.1:20)
         @fact nobs(o) --> n
-        update!(o, x, y)
+        fit!(o, x, y)
         @fact nobs(o) --> 2n
         ash!(o; mx = 2, my = 3, kernelx = :triweight, kernely = :logistic)
         @fact o.mx --> 2
@@ -33,7 +33,7 @@ facts("Bivariate") do
         @fact std(o)[2] - std(y) --> roughly(0.0, .1)
 
         o = ash(rand(100), rand(100))
-        update!(o, [-1.0], [-1.0])
+        fit!(o, [-1.0], [-1.0])
         @fact nout(o) --> 1
     end
 end

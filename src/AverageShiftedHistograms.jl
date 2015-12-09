@@ -1,12 +1,13 @@
 module AverageShiftedHistograms
     import Base: quantile, merge!, copy, mean, var, std, quantile, push!
     import StatsBase
+    import StatsBase: nobs, fit!
     import Distributions
+    import Distributions: pdf
     import UnicodePlots
-    import OnlineStats
 
     export Bin1, Bin2, UnivariateASH, BivariateASH,
-    ash, ash!, nout, update!, xy, xyz
+    ash, ash!, nout, xy, xyz, fit!, nobs, pdf
 
     typealias VecF Vector{Float64}
     typealias MatF Matrix{Float64}

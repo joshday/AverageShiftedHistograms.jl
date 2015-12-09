@@ -17,7 +17,7 @@ Pkg.add("AverageShiftedHistograms")
 ## Differences from `R`'s `ash`:
 - It's not written in Fortran
 - TODO: timing comparison
-- update estimate with new data: `update!(o, newdata)`
+- update estimate with new data: `fit!(o, newdata)`
 - Change smoothing parameter and/or kernel: `ash!(o; m=10, kernel = :epanechnikov)`
 - Get approximate summary statistics from `UnivariateASH` with `mean(o)`, `var(o)`, `std(o)`, `quantile(o, tau)`
 - More kernel options
@@ -29,7 +29,7 @@ Pkg.add("AverageShiftedHistograms")
 o = ash(randn(1000), nbin = 1000)  # 1000 bins by default
 o = ash(randn(1000), -4:.1:4)
 ash!(o; m = 10, kernel = :gaussian)  # change smoothing parameter to 10 and kernel to gaussian
-update!(o, randn(123))  # include more data
+fit!(o, randn(123))  # include more data
 
 # Get approximate estimates
 mean(o)
@@ -60,7 +60,7 @@ ash!(o; mx = 5, my = 10, kernelx = :gaussian, kernely = :triweight)
 
 # include more data
 x2, y2 = randn(123), randn(123) + 3
-update!(o, x2, y2)
+fit!(o, x2, y2)
 
 # Get approximate estimates
 nobs(o)

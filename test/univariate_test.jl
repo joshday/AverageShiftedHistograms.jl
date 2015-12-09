@@ -1,5 +1,5 @@
 module UnivariateTest
-using AverageShiftedHistograms, StatsBase, FactCheck, Distributions, Plots, OnlineStats
+using AverageShiftedHistograms, StatsBase, FactCheck, Distributions, Plots
 
 facts("Univariate") do
     context("Constructors") do
@@ -32,7 +32,7 @@ facts("Univariate") do
 
         # nobs and nout
         y2 = randn(n)
-        update!(o, y2)
+        fit!(o, y2)
         @fact nobs(o) --> 2n
         o2 = copy(o)
         @fact nobs(o2) - nobs(o) --> 0
@@ -40,7 +40,7 @@ facts("Univariate") do
         @fact nobs(o) --> 4n
         o = ash(rand(10), -1:.1:1)
         @fact nout(o) --> 0
-        update!(o, [5.0])
+        fit!(o, [5.0])
         @fact nout(o) --> 1
 
         gadfly()

@@ -31,7 +31,7 @@ function ash(x::VecF, y::VecF, rngx::Range, rngy::Range;
       myrngx = FloatRange(Float64(rngx.start), Float64(rngx.step), Float64(rngx.len), Float64(rngx.divisor))
       myrngy = FloatRange(Float64(rngy.start), Float64(rngy.step), Float64(rngy.len), Float64(rngy.divisor))
      o = BivariateASH(myrngx, mx, kernelx, myrngy, my, kernely)
-     OnlineStats.update!(o, x, y)
+     StatsBase.fit!(o, x, y)
      ash!(o)
      o
  end
@@ -73,7 +73,7 @@ function updatebin!(o::BivariateASH, x::VecF, y::VecF)
     o.n += length(y)
 end
 
-function OnlineStats.update!(o::BivariateASH, x::VecF, y::VecF)
+function StatsBase.fit!(o::BivariateASH, x::VecF, y::VecF)
     updatebin!(o, x, y)
     ash!(o)
 end
