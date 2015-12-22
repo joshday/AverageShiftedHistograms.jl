@@ -8,6 +8,10 @@
 
 Density estimation using [Average Shifted Histograms](http://www.stat.rice.edu/~scottdw/stat550/HW/hw4/c05.pdf).
 
+
+Made with the help of [Plots.jl](https://github.com/tbreloff/Plots.jl):
+![](ASH.gif)
+
 ## Installation:
 
 ```julia
