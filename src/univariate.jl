@@ -139,10 +139,12 @@ function Base.show(io::IO, o::UnivariateASH)
     println(io, "  >   edges: ", o.rng)
     println(io, "  >    nobs: ", StatsBase.nobs(o))
     if maximum(o.y) > 0
-      x, y = xy(o)
-      xlim = [minimum(x), maximum(x)]
-      ylim = [0, maximum(y)]
-      show(io, UnicodePlots.lineplot(x, y, xlim=xlim, ylim=ylim, height=10, width=40))
+        x, y = xy(o)
+        xlim = [minimum(x), maximum(x)]
+        ylim = [0, maximum(y)]
+        myplot = UnicodePlots.lineplot(x, y, xlim=xlim, ylim=ylim, height=20, width=50,
+            name = "density")
+        show(io, myplot)
     end
 end
 

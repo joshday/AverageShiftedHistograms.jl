@@ -42,9 +42,6 @@ facts("Univariate") do
         @fact nout(o) --> 0
         fit!(o, [5.0])
         @fact nout(o) --> 1
-
-        gadfly()
-        plot(o)
     end
 end
 

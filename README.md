@@ -23,7 +23,7 @@ Pkg.add("AverageShiftedHistograms")
 - It's not written in Fortran
 - TODO: timing comparison
 - update estimate with new data: `fit!(o, newdata)`
-- Change smoothing parameter and/or kernel: `ash!(o; m=10, kernel = :epanechnikov)`
+- Change smoothing parameter and/or kernel: `ash!(o; m = 10, kernel = :epanechnikov)`
 - Get approximate summary statistics from `UnivariateASH` with `mean(o)`, `var(o)`, `std(o)`, `quantile(o, tau)`
 - More kernel options
 
