@@ -4,9 +4,9 @@ using AverageShiftedHistograms, BenchmarkTools
 versioninfo()
 
 # compile function
-fit(UnivariateASH, randn(10), linrange(-4, 4, 100), 3)
+ash(randn(10), linspace(-4, 4, 100), m = 3)
 
 
 x = randn(1_000_000)
-@benchmark o = fit(UnivariateASH, x, linrange(-6, 6, 1000), 5)
+@benchmark ash(x, linspace(-6, 6, 1000), m = 5)
 end #module

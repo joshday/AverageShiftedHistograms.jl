@@ -37,7 +37,7 @@ a multiplier `r` to determine endpoints.  Endpoints extend the extrema of `y` by
 Arguments work similarly to their univariate equivalents.
 """
 function ash(y::AVecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
-     myrng = FloatRange(Float64(rng.start), Float64(rng.step), Float64(rng.len), Float64(rng.divisor))
+    myrng = FloatRange(first(rng), step(rng), length(rng), Float64(rng.divisor))
     o = UnivariateASH(rng, m, kernel)
     updatebin!(o, y)
     ash!(o)
@@ -56,19 +56,19 @@ end
 
 
 function updatebin!(o::UnivariateASH, y::AVecF)
-    δ = o.rng.step / o.rng.divisor
-    a = o.rng[1]
-    nbin = length(o.rng)
+    rng = o.rng
+    δinv = rng.divisor / rng.step
+    a = first(rng)
+    nbin = length(rng)
     o.n += length(y)
     for yi in y
         # This line below is different from the paper because the input to UnivariateASH
         # is the points where you want the estimate and not the bin edges.
-        ki::Int = floor(Int, (yi - a) / δ + 1.5)
+        ki = floor(Int, (yi - a) * δinv + 1.5)
         if 1 <= ki <= nbin
-            o.v[ki] += 1
+            @inbounds o.v[ki] += 1
         end
     end
-    nothing
 end
 
 

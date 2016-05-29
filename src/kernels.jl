@@ -1,5 +1,4 @@
 # unnormalized kernels
-
 inrange(u::Real) = abs(u) <= 1.0
 
 uniform(u::Real) = inrange(u) ? 0.5 : 0.0
@@ -28,9 +27,6 @@ cosine(u::Real) = inrange(u) ? cos(0.5 * π * Float64(u)) : 0.0
 
 logistic(u::Real) = 1.0 / (exp(Float64(u)) + 2.0 + exp(-Float64(u)))
 @vectorize_1arg Real logistic
-
-
-
 
 kernels = Dict(
     :uniform => uniform,
