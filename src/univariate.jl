@@ -142,8 +142,7 @@ function Base.show(io::IO, o::UnivariateASH)
         x, y = xy(o)
         xlim = [minimum(x), maximum(x)]
         ylim = [0, maximum(y)]
-        myplot = UnicodePlots.lineplot(x, y, xlim=xlim, ylim=ylim, height=20, width=50,
-            name = "density")
+        myplot = UnicodePlots.lineplot(x, y, xlim=xlim, ylim=ylim, name = "density")
         show(io, myplot)
     end
 end

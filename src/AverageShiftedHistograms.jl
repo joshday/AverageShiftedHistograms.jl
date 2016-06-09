@@ -4,6 +4,7 @@ module AverageShiftedHistograms
     import Distributions
     import Distributions: pdf
     import UnicodePlots
+    import RecipesBase
 
     export Bin1, Bin2, UnivariateASH, BivariateASH,
     ash, ash!, nout, xy, xyz, fit!, nobs, pdf, fit
@@ -18,7 +19,5 @@ module AverageShiftedHistograms
     include("kernels.jl")
     include("univariate.jl")
     include("bivariate.jl")
-
-    using Requires
-    @require Plots include("plot.jl")
+    include("plots.jl")
 end
