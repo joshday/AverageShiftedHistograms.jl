@@ -4,7 +4,7 @@ module AverageShiftedHistograms
     import Distributions
     import Distributions: pdf
     import UnicodePlots
-    import RecipesBase
+    using RecipesBase
 
     export Bin1, Bin2, UnivariateASH, BivariateASH,
     ash, ash!, nout, xy, xyz, fit!, nobs, pdf, fit
