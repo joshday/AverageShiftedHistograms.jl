@@ -76,10 +76,10 @@ function ash!(o::Ash; m::Int = o.m, kernel::Function = o.kernel, warnout::Bool =
     o.kernel = kernel
     δ = step(o.rng)
     nbin = length(o.rng)
-    for k = 1:nbin
+    @inbounds for k = 1:nbin
         if o.v[k] != 0
-            for i = maximum([1, k - o.m + 1]):minimum([nbin, k + o.m - 1])
-                o.y[i] += o.v[k] * o.kernel((i - k) / o.m)
+            for i = max(1, k - m + 1):min(nbin, k + m - 1)
+                o.y[i] += o.v[k] * kernel((i - k) / m)
             end
         end
     end
@@ -87,7 +87,7 @@ function ash!(o::Ash; m::Int = o.m, kernel::Function = o.kernel, warnout::Bool =
     y = o.y
     denom = 1.0 / (sum(y) * δ)
     for i in eachindex(y)
-        y[i] *= denom
+        @inbounds y[i] *= denom
     end
     warnout && (o.y[1] != 0 || o.y[end] != 0) && warn("nonzero density outside of bounds")
     o
