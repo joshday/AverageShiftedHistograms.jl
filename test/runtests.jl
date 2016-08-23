@@ -1,5 +1,5 @@
 module Tests
-using AverageShiftedHistograms, StatsBase, Base.Test
+using AverageShiftedHistograms, StatsBase, Base.Test, Distributions
 
 info("Messy Output")
 show(ash(randn(1000)))
@@ -26,6 +26,9 @@ end
 @testset "Ash" begin
     y = randn(10_000)
     o = ash(y, -4:.1:4; warnout = false)
+    @test pdf(o, -10) ≈ 0.0
+    @test cdf(o, -10) ≈ 0.0
+    @test cdf(o, 10) ≈ 1.0
 
     for f in [mean, var, std, x -> quantile(x, .4), x -> quantile(x, .4:.1:.6)]
         @test_approx_eq_eps f(o) f(y) .1
@@ -37,6 +40,8 @@ end
 
     fit!(o, y; warnout = false)
     @test nobs(o) == 20_000
+
+
 end
 
 end #module

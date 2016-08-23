@@ -65,6 +65,27 @@ end
 function Base.quantile{T<:Real}(o::Ash, τ::AbstractVector{T})
     [quantile(o, τi) for τi in τ]
 end
+function Distributions.pdf(o::Ash, x::Real)
+    rng = o.rng
+    y = o.y
+    i = searchsortedlast(rng, x)
+    if 1 <= i < length(rng)
+        y[i] + (y[i+1] - y[i]) * (x - rng[i]) / (rng[i+1] - rng[i])
+    else
+        0.0
+    end
+end
+function Distributions.cdf(o::Ash, x::Real)
+    cdf = cumsum(o.y) * step(o.rng)
+    i = searchsortedlast(o.rng, x)
+    if i == 0
+        return 0.0
+    else
+        return cdf[i]
+    end
+end
+
+
 
 # Add data
 function update!(o::Ash, x::Vector)
@@ -111,96 +132,3 @@ function StatsBase.fit!(o::Ash, x::AbstractVector; kw...)
     update!(o, x)
     ash!(o; kw...)
 end
-
-
-
-
-
-
-
-
-
-#
-# """
-# ### Update a UnivariateASH or BivariateASH object with more data.
-#
-# UnivariateASH:
-# ```
-# fit!(o, y; warnout = true)
-# ```
-#
-# BivariateASH:
-# ```
-# fit!(o, x, y; warnout = true)
-# ```
-# """
-# function StatsBase.fit!(o::UnivariateASH, y::AVecF; warnout = true)
-#     updatebin!(o, y)
-#     ash!(o, warnout = warnout)
-#     o
-# end
-#
-# Base.copy(o::UnivariateASH) = deepcopy(o)
-#
-# function Base.merge!(o1::UnivariateASH, o2::UnivariateASH)
-#     o1.rng == o2.rng || error("ranges do not match!")
-#     o1.m == o2.m || warn("smoothing parameters don't match.  Using m = $o1.m")
-#     o1.kernel == o2.kernel || warn("kernels don't match.  Using kernel = $o1.kernel")
-#     o1.n += o2.n
-#     o1.v += o2.v
-#     ash!(o1)
-# end
-#
-# function Base.show(io::IO, o::UnivariateASH)
-#     println(io, typeof(o))
-#     println(io, "  >  kernel: ", o.kernel)
-#     println(io, "  >       m: ", o.m)
-#     println(io, "  >   edges: ", o.rng)
-#     println(io, "  >    nobs: ", StatsBase.nobs(o))
-#     if maximum(o.y) > 0
-#         x, y = xy(o)
-#         xlim = [minimum(x), maximum(x)]
-#         ylim = [0, maximum(y)]
-#         myplot = UnicodePlots.lineplot(x, y, xlim=xlim, ylim=ylim, name = "density")
-#         show(io, myplot)
-#     end
-# end
-#
-# StatsBase.nobs(o::ASH) = o.n
-#
-# nout(o::UnivariateASH) = o.n - sum(o.v)
-# Base.mean(o::UnivariateASH) = mean(collect(o.rng), StatsBase.WeightVec(o.y))
-# Base.var(o::UnivariateASH) = var(collect(o.rng), StatsBase.WeightVec(o.y))
-# Base.std(o::UnivariateASH) = sqrt(var(o))
-# xy(o::UnivariateASH) = (collect(o.rng), copy(o.y))
-#
-# function Base.quantile(o::UnivariateASH, τ::Real)
-#     0 < τ < 1 || error("τ must be in (0, 1)")
-#     cdf = cumsum(o.y) * (o.rng.step / o.rng.divisor)
-#     i = searchsortedlast(cdf, τ)
-#     if i == 0
-#         o.rng[1]
-#     else
-#         o.rng[i] + (o.rng[i+1] - o.rng[i]) * (τ - cdf[i]) / (cdf[i+1] - cdf[i])
-#     end
-# end
-#
-# function Base.quantile{T <: Real}(o::UnivariateASH, τ::Vector{T} = [.25, .5, .75])
-#     [quantile(o, τi) for τi in τ]
-# end
-#
-#
-# function Distributions.pdf(o::UnivariateASH, x::Real)
-#     i = searchsortedlast(o.rng, x)
-#     if 1 <= i < length(o.rng)
-#         o.y[i] + (o.y[i+1] - o.y[i]) * (x - o.rng[i]) / (o.rng[i+1] - o.rng[i])
-#     else
-#         0.0
-#     end
-# end
-#
-# function Distributions.pdf{T <: Real}(o::UnivariateASH, x::Array{T})
-#     for xi in x
-#         Distributions.pdf(o, xi)
-#     end
-# end
