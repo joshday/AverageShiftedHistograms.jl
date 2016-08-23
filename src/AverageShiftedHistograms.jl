@@ -5,7 +5,7 @@ import UnicodePlots
 
 export
     ash,
-    #kernels
+    Kernels,
     biweight, cosine, epanechnikov, triangular, tricube, triweight, uniform,
     gaussian, logistic,
     # ASH

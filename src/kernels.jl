@@ -1,4 +1,5 @@
 # unnormalized kernels
+module Kernels
 inrange(u::Float64) = abs(u) <= 1.0
 
 biweight(u::Float64)        = inrange(u) ? (1.0 - u ^ 2) ^ 2 : 0.0
@@ -11,3 +12,4 @@ uniform(u::Float64)         = inrange(u) ? 0.5 : 0.0
 
 gaussian(u::Float64) = exp(-0.5 * u ^ 2)
 logistic(u::Float64) = 1.0 / (exp(u) + 2.0 + exp(-u))
+end

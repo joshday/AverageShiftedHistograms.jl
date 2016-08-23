@@ -29,7 +29,7 @@ end
 
 function ash(
         x::Vector, rng::Range = extendrange(x);
-        kernel::Function = biweight, m::Int64 = 5, warnout::Bool = true
+        kernel::Function = Kernels.biweight, m::Int64 = 5, warnout::Bool = true
     )
     d = length(rng)
     v = zeros(Int64, d)
