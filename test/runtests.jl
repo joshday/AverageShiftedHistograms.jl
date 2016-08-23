@@ -51,6 +51,7 @@ end
     mean(o)
     var(o)
     std(o)
+    fit!(o, x, y; mx = 3)
 end
 
 end #module

@@ -117,10 +117,6 @@ function ash!(o::MVAsh;
 end
 
 xyz(o::MVAsh) = (collect(o.rngx), collect(o.rngy), copy(o.z))
-function StatsBase.fit!(o::MVAsh, x::AbstractVector, y::AbstractVector; kw...)
-    updatebin!(o, x, y)
-    ash!(o; kw...)
-end
 function Base.mean(o::MVAsh)
     meanx = mean(o.rngx, StatsBase.WeightVec(vec(sum(o.z, 1))))
     meany = mean(o.rngy, StatsBase.WeightVec(vec(sum(o.z, 2))))
@@ -132,6 +128,11 @@ function Base.var(o::MVAsh)
     [varx; vary]
 end
 Base.std(o::MVAsh) = sqrt(var(o))
+function StatsBase.fit!(o::MVAsh, x::AbstractVector, y::AbstractVector; kw...)
+    update!(o, x, y)
+    ash!(o; kw...)
+end
+
 
 @recipe function f(o::MVAsh)
     seriestype --> :heatmap
