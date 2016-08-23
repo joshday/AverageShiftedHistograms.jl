@@ -1,8 +1,10 @@
 module AverageShiftedHistograms
+
 import StatsBase
 import Distributions
 import UnicodePlots
 using RecipesBase
+
 
 export
     ash, fit!,

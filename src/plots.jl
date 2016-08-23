@@ -1,7 +1,7 @@
-RecipesBase.@recipe function plot(o::UnivariateASH)
-    :linetype --> [:line :sticks]
-    :label --> ["ASH" "Histogram"]
-    :linewidth --> [2 1]
+@recipe function f(o::UnivariateASH)
+    seriestype --> [:line :sticks]
+    label --> ["ASH" "Histogram"]
+    linewidth --> [2 1]
     δ = o.rng.step / o.rng.divisor
     x1, y1 = xy(o)
     x2 = collect(o.rng)
