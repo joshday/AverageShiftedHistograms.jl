@@ -4,9 +4,10 @@ import Distributions
 import UnicodePlots
 
 export
+    ash,
     #kernels
     biweight, cosine, epanechnikov, triangular, tricube, triweight, uniform,
-    guassian, logistic,
+    gaussian, logistic,
     # ASH
     UnivariateASH
 

@@ -4,16 +4,17 @@ type Ash{F <: Function, R <: Range}
     v::Vector{Int64}            # v[i] is the count at x[i]
     y::Vector{Float64}          # y[i] is the density at x[i]
     m::Int64                    # smoothing parameter
+    nobs::Int64
 end
 function Ash(
         kernel::Function, rng::Range, v::Vector{Int64},
-        y::Vector{Float64}, m::Int64
+        y::Vector{Float64}, m::Int64, n::Int64
     )
     @assert kernel(0.1) > 0.0 && kernel(-0.1) > 0.0 "kernel must always be positive"
     @assert length(rng) > 1 "Need at least two bins"
     @assert length(v) == length(y) == length(rng)
     @assert m > 0 "Smoothing parameter must be positive"
-    Ash(kernel, rng, v, y, m)
+    Ash(kernel, rng, v, y, m, n)
 end
 function Base.show(io::IO, o::Ash)
     println(io, typeof(o))
@@ -27,25 +28,29 @@ function Base.show(io::IO, o::Ash)
 end
 
 function ash(
-        x::Vector, rng::Range = extendrange(y);
+        x::Vector, rng::Range = extendrange(x);
         kernel::Function = biweight, m::Int64 = 5, warnout::Bool = true
     )
     d = length(rng)
     v = zeros(Int64, d)
     y = zeros(d)
-    o = Ash(kernel, rng, v, y, m)
+    o = Ash(kernel, rng, v, y, m, 0)
     update!(o, x)
     ash!(o; warnout = warnout)
 end
 
-# Return the histogram density
+# Return the histogram (as density)
 histdensity(o::Ash) = o.v / step(o.rng) / StatsBase.nobs(o)
-StatsBase.nobs(o::Ash) = sum(o.v)
+StatsBase.nobs(o::Ash) = o.nobs
+nout(o::Ash) = nobs(o) - sum(o.v)
 xy(o::Ash) = collect(o.rng), o.y
 function extendrange(y::Vector)
     σ = std(y)
     linspace(minimum(y) - .5 * σ, maximum(y) + .5 * σ, 150)
 end
+Base.mean(o::Ash) = mean(o.rng, StatsBase.WeightVec(o.y))
+Base.var(o::Ash) = var(o.rng, StatsBase.WeightVec(o.y))
+Base.std(o::Ash) = sqrt(var(o))
 
 # Add data
 function update!(o::Ash, x::Vector)
@@ -53,10 +58,11 @@ function update!(o::Ash, x::Vector)
     δinv = 1.0 / step(rng)
     a = first(rng)
     nbin = length(rng)
-    for yi in y
+    o.nobs += length(x)
+    for xi in x
         # This line below is different from the paper because the input to UnivariateASH
         # is the points where you want the estimate, NOT the bin edges.
-        ki = floor(Int, (yi - a) * δinv + 1.5)
+        ki = floor(Int, (xi - a) * δinv + 1.5)
         if 1 <= ki <= nbin
             @inbounds o.v[ki] += 1
         end
@@ -92,10 +98,7 @@ end
 
 
 
-#TEST
-y = randn(100000)
-o = ash(y)
-show(o)
+
 
 
 # #---------------------------------------------------------------------# UnivariateASH
