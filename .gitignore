@@ -2,3 +2,4 @@
 *.jl.mem
 *.png
 *.Rhistory
+docs/site
