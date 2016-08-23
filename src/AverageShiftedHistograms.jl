@@ -26,5 +26,4 @@ end
 include("kernels.jl")
 include("univariate.jl")
 include("bivariate.jl")
-# include("plots.jl")
 end
