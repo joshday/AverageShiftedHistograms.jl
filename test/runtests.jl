@@ -1,13 +1,5 @@
 module Tests
-using AverageShiftedHistograms, StatsBase
-
-# necessary to support 0.4 and 0.5
-if VERSION >= v"0.5.0-dev+7720"
-    using Base.Test
-else
-    using BaseTestNext
-    const Test = BaseTestNext
-end
+using AverageShiftedHistograms, StatsBase, Base.Test
 
 info("Messy Output")
 show(ash(randn(1000)))
