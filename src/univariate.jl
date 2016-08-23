@@ -1,4 +1,4 @@
-type Ash{F <: Function, R <: Range{Float64}}
+type Ash{F <: Function, R <: Range}
     kernel::F
     rng::R                      # x values where you want density y = f(x)
     v::Vector{Int64}            # v[i] is the count at x[i]
@@ -6,7 +6,7 @@ type Ash{F <: Function, R <: Range{Float64}}
     m::Int64                    # smoothing parameter
 end
 function Ash(
-        kernel::Function, rng::FloatRange{Float64}, v::Vector{Int64},
+        kernel::Function, rng::Range, v::Vector{Int64},
         y::Vector{Float64}, m::Int64
     )
     @assert kernel(0.1) > 0.0 && kernel(-0.1) > 0.0 "kernel must always be positive"
@@ -17,29 +17,37 @@ function Ash(
 end
 function Base.show(io::IO, o::Ash)
     println(io, typeof(o))
-
+    println(io, "  > m         : ", o.m)
+    println(io, "  > kernel    : ", o.kernel)
+    println(io, "  > edges     : ", o.rng)
+    println(io, "  > nobs      : ", StatsBase.nobs(o))
     plt = UnicodePlots.lineplot(xy(o)...; grid=false)
     # UnicodePlots.lineplot!(plt, o.rng, histdensity(o))
     show(io, plt)
 end
 
 function ash(
-        x::Vector, rng::Range{Float64} = extendrange(y);
-        kernel::Function = biweight, m::Int64 = 5
+        x::Vector, rng::Range = extendrange(y);
+        kernel::Function = biweight, m::Int64 = 5, warnout::Bool = true
     )
     d = length(rng)
     v = zeros(Int64, d)
     y = zeros(d)
     o = Ash(kernel, rng, v, y, m)
     update!(o, x)
-    ash!(o)
+    ash!(o; warnout = warnout)
 end
 
+# Return the histogram density
 histdensity(o::Ash) = o.v / step(o.rng) / StatsBase.nobs(o)
 StatsBase.nobs(o::Ash) = sum(o.v)
 xy(o::Ash) = collect(o.rng), o.y
+function extendrange(y::Vector)
+    σ = std(y)
+    linspace(minimum(y) - .5 * σ, maximum(y) + .5 * σ, 150)
+end
 
-# Add data to the
+# Add data
 function update!(o::Ash, x::Vector)
     rng = o.rng
     δinv = 1.0 / step(rng)
@@ -56,7 +64,7 @@ function update!(o::Ash, x::Vector)
     o
 end
 
-# compute the density
+# Compute the density
 function ash!(o::Ash; m::Int = o.m, kernel::Function = o.kernel, warnout::Bool = true)
     o.m = m
     o.kernel = kernel
@@ -81,14 +89,11 @@ end
 
 
 
-function extendrange(y::Vector)
-    σ = std(y)
-    linspace(minimum(y) - σ, maximum(y) + σ, 200)
-end
+
 
 
 #TEST
-y = randn(1000)
+y = randn(100000)
 o = ash(y)
 show(o)
 
