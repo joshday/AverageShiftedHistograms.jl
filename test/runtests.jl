@@ -40,8 +40,13 @@ end
 
     fit!(o, y; warnout = false)
     @test nobs(o) == 20_000
+end
 
-
+@testset "MVAsh" begin
+    x = randn(1000)
+    y = x + randn(1000)
+    o = ash(x, y)
+    show(o)
 end
 
 end #module

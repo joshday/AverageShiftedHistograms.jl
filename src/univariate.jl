@@ -1,4 +1,4 @@
-type Ash{F <: Function, R <: Range}
+type Ash{F <: Function, R <: Range} <: AbstractAsh
     kernel::F
     rng::R                      # x values where you want density y = f(x)
     v::Vector{Int64}            # v[i] is the count at x[i]
@@ -41,8 +41,8 @@ end
 
 # Return the histogram (as density)
 histdensity(o::Ash) = o.v / step(o.rng) / StatsBase.nobs(o)
-StatsBase.nobs(o::Ash) = o.nobs
-nout(o::Ash) = nobs(o) - sum(o.v)
+# StatsBase.nobs(o::Ash) = o.nobs
+# nout(o::Ash) = nobs(o) - sum(o.v)
 xy(o::Ash) = collect(o.rng), o.y
 function extendrange(y::Vector)
     σ = std(y)
@@ -131,4 +131,13 @@ end
 function StatsBase.fit!(o::Ash, x::AbstractVector; kw...)
     update!(o, x)
     ash!(o; kw...)
+end
+
+
+@recipe function f(o::Ash)
+    label --> ["Histogram Density" "Ash Density"]
+    seriestype --> [:step :line]
+    linewidth --> [1 2]
+    alpha --> [.7 1]
+    o.rng, [histdensity(o) o.y]
 end
