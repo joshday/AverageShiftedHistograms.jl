@@ -34,6 +34,9 @@ end
     # check that histogram is correct
     h = fit(Histogram, y, (-4:.1:4.1)-.05)
     @test h.weights == o.v
+
+    fit!(o, y; warnout = false)
+    @test nobs(o) == 20_000
 end
 
 end #module

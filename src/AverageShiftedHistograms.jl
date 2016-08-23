@@ -4,7 +4,7 @@ import Distributions
 import UnicodePlots
 
 export
-    ash,
+    ash, fit!,
     # Kernels
     Kernels,
     biweight, cosine, epanechnikov, triangular, tricube, triweight, uniform,

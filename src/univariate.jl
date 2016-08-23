@@ -107,6 +107,10 @@ function ash!(o::Ash; m::Int = o.m, kernel::Function = o.kernel, warnout::Bool =
     o
 end
 
+function StatsBase.fit!(o::Ash, x::AbstractVector; kw...)
+    update!(o, x)
+    ash!(o; kw...)
+end
 
 
 
@@ -115,109 +119,7 @@ end
 
 
 
-# #---------------------------------------------------------------------# UnivariateASH
-# type UnivariateASH <: ASH
-#     rng::FloatRange{Float64}    # x values for which you want to find density y = f(x)
-#     v::Vector{Int}              # Counts in each bin
-#     y::VecF                     # density y = f(x)
-#     m::Int                      # smoothing parameter
-#     kernel::Symbol              # kernel
-#     n::Int                      # number of observations
-#     function UnivariateASH(rng::FloatRange{Float64}, m::Int = 5, kernel::Symbol = :biweight)
-#         l = length(rng)
-#         l >= 2 || error("need at least 2 bins!")
-#         m >= 0 || error("smoothing parameter must be nonnegative")
-#         kernel in kernellist || error("kernel not recognized")
-#         new(rng, zeros(Int, l), zeros(l), m, kernel, 0.0)
-#     end
-# end
-#
-# """
-# Create a UnivariateASH or BivariateASH object from data.
-#
-# ### UnivariateASH
-#
-#     ash(y, rng; m = 5, kernel = :biweight)
-#     ash(y; nbin = 1000, r = 0.2, ...)
-#
-# Calculate the density at each element in `rng` using smoothing parameter `m` and
-# kernel `kernel`.  Alternatively, supply the number of histogram bins `nbin` and
-# a multiplier `r` to determine endpoints.  Endpoints extend the extrema of `y` by
-# `r` times its range: `r * (maximum(y) - minimum(y))`.
-#
-#
-# ### BivariateASH
-#
-#     ash(x, y, rngx, rngy; mx = 5, my = 5, kernelx = :biweight, kernely = :biweight)
-#     ash(x, y; nbinx = 1000, nbiny = 1000, r = 0.2, ...)
-#
-# Arguments work similarly to their univariate equivalents.
-# """
-# function ash(y::AVecF, rng::Range; m::Int = 5, kernel::Symbol = :biweight)
-#     myrng = FloatRange(first(rng), step(rng), length(rng), Float64(rng.divisor))
-#     o = UnivariateASH(rng, m, kernel)
-#     updatebin!(o, y)
-#     ash!(o)
-#     o
-# end
-#
-# function ash(y::AVecF; nbin::Int = 200, r::Real = 0.2, m::Int = 5, kernel::Symbol = :biweight)
-#     r > 0 || error("r must be positive")
-#     a, b = extrema(y)
-#     rng = b - a
-#     a -= r * rng
-#     b += r * rng
-#     step = (b - a) / nbin
-#     ash(y, a:step:b, m = m, kernel = kernel)
-# end
-#
-#
-# function updatebin!(o::UnivariateASH, y::AVecF)
-#     rng = o.rng
-#     δinv = rng.divisor / rng.step
-#     a = first(rng)
-#     nbin = length(rng)
-#     o.n += length(y)
-#     for yi in y
-#         # This line below is different from the paper because the input to UnivariateASH
-#         # is the points where you want the estimate and not the bin edges.
-#         ki = floor(Int, (yi - a) * δinv + 1.5)
-#         if 1 <= ki <= nbin
-#             @inbounds o.v[ki] += 1
-#         end
-#     end
-# end
-#
-#
-# """
-# ### Change UnivariateASH parameters
-#
-# `ash!(o; kwargs...)`
-#
-# Possible arguments are:
-#
-# - `m`: smoothing parameter
-# - `kernel`: smoothing kernel
-# - `warnout`: warn if there is nonzero density on the edge of the estimate
-# """
-# function ash!(o::UnivariateASH; m::Int = o.m, kernel::Symbol = o.kernel, warnout::Bool = true)
-#     o.m = m
-#     o.kernel = kernel
-#     δ = o.rng.step / o.rng.divisor
-#     nbin = length(o.rng)
-#     for k = 1:nbin
-#         if o.v[k] != 0
-#             for i = maximum([1, k - o.m + 1]):minimum([nbin, k + o.m - 1])
-#                 o.y[i] += o.v[k] * kernels[o.kernel]((i - k) / o.m)
-#             end
-#         end
-#     end
-#
-#     o.y /= sum(o.y) * δ  # make y integrate to 1
-#     warnout && (o.y[1] != 0 || o.y[end] != 0) && warn("nonzero density outside of bounds")
-#     o
-# end
-#
+
 #
 # """
 # ### Update a UnivariateASH or BivariateASH object with more data.
