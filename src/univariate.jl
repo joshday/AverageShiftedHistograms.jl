@@ -135,7 +135,7 @@ end
 
 @recipe function f(o::Ash)
     label --> ["Histogram Density" "Ash Density"]
-    seriestype --> [:step :line]
+    seriestype --> [:sticks :line]
     linewidth --> [1 2]
     alpha --> [.7 1]
     o.rng, [histdensity(o) o.y]
