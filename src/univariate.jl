@@ -22,8 +22,7 @@ function Base.show(io::IO, o::Ash)
     println(io, "  > kernel    : ", o.kernel)
     println(io, "  > edges     : ", o.rng)
     println(io, "  > nobs      : ", StatsBase.nobs(o))
-    plt = UnicodePlots.lineplot(xy(o)...; grid=false)
-    # UnicodePlots.lineplot!(plt, o.rng, histdensity(o))
+    plt = UnicodePlots.lineplot(xy(o)...; grid = false)
     show(io, plt)
 end
 
