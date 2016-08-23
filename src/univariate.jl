@@ -51,6 +51,20 @@ end
 Base.mean(o::Ash) = mean(o.rng, StatsBase.WeightVec(o.y))
 Base.var(o::Ash) = var(o.rng, StatsBase.WeightVec(o.y))
 Base.std(o::Ash) = sqrt(var(o))
+function Base.quantile(o::Ash, τ::Real)
+    @assert 0 < τ < 1
+    rng = o.rng
+    cdf = cumsum(o.y) * step(rng)
+    i = searchsortedlast(cdf, τ)
+    if i == 0
+        rng[1]
+    else
+        rng[i] + (rng[i+1] - rng[i]) * (τ - cdf[i]) / (cdf[i+1] - cdf[i])
+    end
+end
+function Base.quantile{T<:Real}(o::Ash, τ::AbstractVector{T})
+    [quantile(o, τi) for τi in τ]
+end
 
 # Add data
 function update!(o::Ash, x::Vector)

@@ -9,12 +9,17 @@ else
     const Test = BaseTestNext
 end
 
+info("Messy Output")
+show(ash(randn(1000)))
+println("\n\n")
+info("Begin Tests")
+
 
 @testset "Kernels" begin
     for kernel in [Kernels.biweight,
                    Kernels.cosine,
                    Kernels.epanechnikov,
-                   Kernels.triangular, 
+                   Kernels.triangular,
                    Kernels.tricube,
                    Kernels.triweight,
                    Kernels.uniform,
@@ -29,12 +34,14 @@ end
 @testset "Ash" begin
     y = randn(10_000)
     o = ash(y, -4:.1:4; warnout = false)
-    show(o)
-    for f in [mean, var, std]
+
+    for f in [mean, var, std, x -> quantile(x, .4), x -> quantile(x, .4:.1:.6)]
         @test_approx_eq_eps f(o) f(y) .1
     end
 
-    h = fit(Histogram, y, (-4:.1:4)-.05)
+    # check that histogram is correct
+    h = fit(Histogram, y, (-4:.1:4.1)-.05)
+    @test h.weights == o.v
 end
 
 end #module
