@@ -47,6 +47,10 @@ end
     y = x + randn(1000)
     o = ash(x, y)
     show(o)
+
+    mean(o)
+    var(o)
+    std(o)
 end
 
 end #module
