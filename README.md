@@ -1,4 +1,4 @@
-[![AverageShiftedHistograms](http://pkg.julialang.org/badges/AverageShiftedHistograms_0.5.svg)](http://pkg.julialang.org/?pkg=AverageShiftedHistograms
+[![AverageShiftedHistograms](http://pkg.julialang.org/badges/AverageShiftedHistograms_0.5.svg)](http://pkg.julialang.org/?pkg=AverageShiftedHistograms)
 [![Build Status](https://travis-ci.org/joshday/AverageShiftedHistograms.jl.svg?branch=master)](https://travis-ci.org/joshday/AverageShiftedHistograms.jl)
 [![Build status](https://ci.appveyor.com/api/projects/status/287rsp7u4qf0y3tw/branch/master?svg=true)](https://ci.appveyor.com/project/joshday/averageshiftedhistograms-jl/branch/master)
 [![codecov.io](http://codecov.io/github/joshday/AverageShiftedHistograms.jl/coverage.svg?branch=master)](http://codecov.io/github/joshday/AverageShiftedHistograms.jl?branch=master)
