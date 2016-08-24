@@ -83,4 +83,4 @@ o = ash(x, y)
 plot(o)
 ```
 
-![](https://cloud.githubusercontent.com/assets/8075494/17917581/9739788e-6972-11e6-9071-e4eea233da56.png)
+![](https://cloud.githubusercontent.com/assets/8075494/17917649/3e36114c-6973-11e6-82e6-9a25d404547c.png)
