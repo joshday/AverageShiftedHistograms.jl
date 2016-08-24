@@ -17,7 +17,7 @@ ash(x, rng = extendrange(x); m = 5, kernel = Kernels.biweight, warnout = true)
     - Sample for which you want to calculate a density
 - `rng = extendrange(x)`
     - Range of points to calculate the density at (partition of the histogram)
-    - By default, uses `extendrange` to extend the maximum/minimum of the `x`
+    - By default, uses `extendrange` to extend the maximum/minimum of `x`
 - `m = 5`
     - Smoothing parameter (number of adjacent bins to smooth over)
 - `kernel = Kernels.biweight`
