@@ -94,7 +94,7 @@ Suppose `o = ash(x)`, `o2 = ash(x, y)`
 ```julia
 xy(o)  # Vector range x, Vector density y
 
-xyz(o) # Vector ranges x,y, Matrix density z
+xyz(o2) # Vector ranges x,y, Matrix density z
 ```
 
 
