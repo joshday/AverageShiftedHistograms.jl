@@ -90,6 +90,13 @@ plot(o)
 ## Methods
 Suppose `o = ash(x)`, `o2 = ash(x, y)`
 
+- Get range/density values as a Tuple
+```julia
+xy(o)  # Vector range x, Vector density y
+
+xyz(o) # Vector ranges x,y, Matrix density z
+```
+
 
 - Change smoothing parameter(s) and/or kernel(s)
 ```julia
@@ -104,4 +111,26 @@ ash!(o2; mx = 3, my = 1, kernely = Kernels.epanechnikov)
 fit!(o, x)
 
 fit!(o2, x, y)
+```
+
+- Calculate approximate mean/variance/quantiles
+```julia
+mean(o)
+var(o)
+std(o)
+quantile(o, .5)
+quantile(o. [.25, .5, .75])
+Distributions.pdf(o, .4)
+Distributions.cdf(o, .4)
+
+mean(o2)
+var(o2)
+std(o2)
+```
+
+
+- Diagnostics
+```julia
+nout(o)  # number of observations that fell outside the provided range
+nobs(o)  # number of observations passed to the Ash object
 ```
