@@ -14,7 +14,7 @@ function Ash(
     @assert length(rng) > 1 "Need at least two bins"
     @assert length(v) == length(y) == length(rng)
     @assert m > 0 "Smoothing parameter must be positive"
-    Ash(kernel, rng, v, y, m, n)
+    Ash{typeof(kernel), typeof(rng)}(kernel, rng, v, y, m, n)
 end
 function Base.show(io::IO, o::Ash)
     println(io, typeof(o))

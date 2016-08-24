@@ -1,13 +1,14 @@
 module AverageShiftedHistograms
 
 import StatsBase
+import StatsBase: nobs, fit!
 import Distributions
 import UnicodePlots
 using RecipesBase
 
 
 export
-    ash, fit!, extendrange,
+    ash, fit!, extendrange, xy, xyz, nout, nobs,
     # Kernels
     Kernels,
     biweight, cosine, epanechnikov, triangular, tricube, triweight, uniform,

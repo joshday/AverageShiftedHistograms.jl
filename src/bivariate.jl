@@ -24,7 +24,9 @@ function MVAsh(
     @assert length(rngy) == size(v, 1) == size(z, 1)
     @assert mx > 0 "Smoothing parameter mx must be positive"
     @assert my > 0 "Smoothing parameter my must be positive"
-    MVAsh(kernelx, kernely, rngx, rngy, mx, my, v, z, nobs)
+    MVAsh{typeof(kernelx), typeof(kernely), typeof(rngx), typeof(rngy)}(
+        kernelx, kernely, rngx, rngy, mx, my, v, z, nobs
+    )
 end
 function Base.show(io::IO, o::MVAsh)
     println(io, typeof(o))
