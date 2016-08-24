@@ -136,5 +136,5 @@ end
 
 @recipe function f(o::MVAsh)
     seriestype --> :heatmap
-    o.z
+    o.rngx, o.rngy, o.z
 end
