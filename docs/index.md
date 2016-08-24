@@ -84,3 +84,24 @@ plot(o)
 ```
 
 ![](https://cloud.githubusercontent.com/assets/8075494/17917725/df56f456-6973-11e6-9347-abc82e262a82.png)
+
+
+---
+## Methods
+Suppose `o = ash(x)`, `o2 = ash(x, y)`
+
+
+- Change smoothing parameter(s) and/or kernel(s)
+```julia
+ash!(o; m = 2, kernel = Kernels.epanechnikov)
+
+ash!(o2; mx = 3, my = 1, kernely = Kernels.epanechnikov)
+```
+
+
+- Update the estimate by adding more data
+```julia
+fit!(o, x)
+
+fit!(o2, x, y)
+```
