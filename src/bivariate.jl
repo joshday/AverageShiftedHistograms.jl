@@ -1,6 +1,6 @@
 # Pseudocode: http://www.stat.rice.edu/%7Escottdw/stat550/HW/hw4/c05.pdf
 
-type MVAsh{F1 <: Function, F2 <: Function, R1 <: Range, R2 <: Range} <: AbstractAsh
+type BivariateAsh{F1 <: Function, F2 <: Function, R1 <: Range, R2 <: Range} <: AbstractAsh
     kernelx::F1
     kernely::F2
     rngx::R1
@@ -12,7 +12,7 @@ type MVAsh{F1 <: Function, F2 <: Function, R1 <: Range, R2 <: Range} <: Abstract
     nobs::Int64
 end
 
-function MVAsh(
+function BivariateAsh(
         kernelx::Function, kernely::Function, rngx::Range, rngy::Range,
         mx::Int64, my::Int64, v::Matrix{Int}, z::Matrix{Float64}, nobs::Int64
         )
@@ -24,11 +24,11 @@ function MVAsh(
     @assert length(rngy) == size(v, 1) == size(z, 1)
     @assert mx > 0 "Smoothing parameter mx must be positive"
     @assert my > 0 "Smoothing parameter my must be positive"
-    MVAsh{typeof(kernelx), typeof(kernely), typeof(rngx), typeof(rngy)}(
+    BivariateAsh{typeof(kernelx), typeof(kernely), typeof(rngx), typeof(rngy)}(
         kernelx, kernely, rngx, rngy, mx, my, v, z, nobs
     )
 end
-function Base.show(io::IO, o::MVAsh)
+function Base.show(io::IO, o::BivariateAsh)
     println(io, typeof(o))
     println(io, "  > X")
     println(io, "    - m      : ", o.mx)
@@ -48,7 +48,7 @@ function ash(
         warnout::Bool = true
     )
     ncol, nrow = length(rngx), length(rngy)
-    o = MVAsh(
+    o = BivariateAsh(
         kernelx, kernely, rngx, rngy, mx, my,
         zeros(Int64, nrow, ncol), zeros(nrow, ncol), 0
     )
@@ -56,7 +56,7 @@ function ash(
     ash!(o; warnout = warnout)
  end
 
-function update!(o::MVAsh, x::AbstractVector, y::AbstractVector)
+function update!(o::BivariateAsh, x::AbstractVector, y::AbstractVector)
     n = length(x)
     @assert n == length(y)
     δx, δy = step(o.rngx), step(o.rngy)
@@ -74,7 +74,7 @@ function update!(o::MVAsh, x::AbstractVector, y::AbstractVector)
     o
 end
 
-function ash!(o::MVAsh;
+function ash!(o::BivariateAsh;
         mx::Int64 = o.mx, my::Int64 = o.my,
         kernelx::Function = o.kernelx, kernely::Function = o.kernely,
         warnout::Bool = true
@@ -118,25 +118,25 @@ function ash!(o::MVAsh;
     o
 end
 
-xyz(o::MVAsh) = (collect(o.rngx), collect(o.rngy), copy(o.z))
-function Base.mean(o::MVAsh)
+xyz(o::BivariateAsh) = (collect(o.rngx), collect(o.rngy), copy(o.z))
+function Base.mean(o::BivariateAsh)
     meanx = mean(o.rngx, StatsBase.WeightVec(vec(sum(o.z, 1))))
     meany = mean(o.rngy, StatsBase.WeightVec(vec(sum(o.z, 2))))
     [meanx; meany]
 end
-function Base.var(o::MVAsh)
+function Base.var(o::BivariateAsh)
     varx = var(o.rngx, StatsBase.WeightVec(vec(sum(o.z, 1))))
     vary = var(o.rngy, StatsBase.WeightVec(vec(sum(o.z, 2))))
     [varx; vary]
 end
-Base.std(o::MVAsh) = sqrt(var(o))
-function StatsBase.fit!(o::MVAsh, x::AbstractVector, y::AbstractVector; kw...)
+Base.std(o::BivariateAsh) = sqrt(var(o))
+function StatsBase.fit!(o::BivariateAsh, x::AbstractVector, y::AbstractVector; kw...)
     update!(o, x, y)
     ash!(o; kw...)
 end
 
 
-@recipe function f(o::MVAsh)
+@recipe function f(o::BivariateAsh)
     seriestype --> :heatmap
     o.rngx, o.rngy, o.z
 end

@@ -49,7 +49,7 @@ end
     @test nout(o) == 0
 end
 
-@testset "MVAsh" begin
+@testset "BivariateAsh" begin
     x = randn(1000)
     y = x + randn(1000)
     o = ash(x, y)
