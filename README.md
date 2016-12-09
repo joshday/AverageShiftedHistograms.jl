@@ -5,7 +5,7 @@
 
 # AverageShiftedHistograms
 
-Density estimation using [Average Shifted Histograms](http://www.stat.rice.edu/~scottdw/stat550/HW/hw4/c05.pdf).
+Density estimation using Average Shifted Histograms
 
 ![](https://cloud.githubusercontent.com/assets/8075494/17938441/ce8815e4-69da-11e6-8f19-33052e2ef21e.gif)
 
