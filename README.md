@@ -15,5 +15,4 @@ Density estimation using Average Shifted Histograms.  ASH is essentially Kernel 
 Pkg.add("AverageShiftedHistograms")
 ```
 
-# [0.4 Docs](https://github.com/joshday/AverageShiftedHistograms.jl/blob/4211846341513d0ba818945e33064b56d63255a7/README.md)
-# [0.5 Docs](http://joshday.github.io/AverageShiftedHistograms.jl/)
+## [Docs](http://joshday.github.io/AverageShiftedHistograms.jl/)
