@@ -5,7 +5,7 @@
 
 # AverageShiftedHistograms
 
-Density estimation using Average Shifted Histograms
+Density estimation using Average Shifted Histograms.  ASH is essentially Kernel Density Estimation using a fine-partition histogram.  ASH requires O(1) storage and can be used on datasets larger than computer memory.
 
 ![](https://cloud.githubusercontent.com/assets/8075494/17938441/ce8815e4-69da-11e6-8f19-33052e2ef21e.gif)
 
