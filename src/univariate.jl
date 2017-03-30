@@ -1,21 +1,20 @@
-type Ash{F <: Function, R <: Range} <: AbstractAsh
+mutable struct Ash{F <: Function, R <: Range} <: AbstractAsh
     kernel::F
     rng::R                      # x values where you want density y = f(x)
     v::Vector{Int64}            # v[i] is the count at x[i]
     y::Vector{Float64}          # y[i] is the density at x[i]
     m::Int64                    # smoothing parameter
     nobs::Int64
+    function Ash(kernel::F, rng::R, v::Vector{Int64}, y::VecF, m::Int64, n::Int64) where
+            {F <: Function, R <: Range}
+        @assert kernel(0.1) > 0.0 && kernel(-0.1) > 0.0 "kernel must always be positive"
+        @assert length(rng) > 1 "Need at least two bins"
+        @assert length(v) == length(y) == length(rng)
+        @assert m > 0 "Smoothing parameter must be positive"
+        new{F, R}(kernel, rng, v, y, m, n)
+    end
 end
-function Ash(
-        kernel::Function, rng::Range, v::Vector{Int64},
-        y::Vector{Float64}, m::Int64, n::Int64
-    )
-    @assert kernel(0.1) > 0.0 && kernel(-0.1) > 0.0 "kernel must always be positive"
-    @assert length(rng) > 1 "Need at least two bins"
-    @assert length(v) == length(y) == length(rng)
-    @assert m > 0 "Smoothing parameter must be positive"
-    Ash{typeof(kernel), typeof(rng)}(kernel, rng, v, y, m, n)
-end
+
 function Base.show(io::IO, o::Ash)
     println(io, typeof(o))
     println(io, "  > m         : ", o.m)
@@ -40,8 +39,6 @@ end
 
 # Return the histogram (as density)
 histdensity(o::Ash) = o.v / step(o.rng) / StatsBase.nobs(o)
-# StatsBase.nobs(o::Ash) = o.nobs
-# nout(o::Ash) = nobs(o) - sum(o.v)
 xy(o::Ash) = collect(o.rng), o.y
 function extendrange(y::Vector)
     σ = std(y)

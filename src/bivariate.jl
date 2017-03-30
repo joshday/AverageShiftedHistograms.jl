@@ -1,6 +1,6 @@
 # Pseudocode: http://www.stat.rice.edu/%7Escottdw/stat550/HW/hw4/c05.pdf
 
-type BivariateAsh{F1 <: Function, F2 <: Function, R1 <: Range, R2 <: Range} <: AbstractAsh
+mutable struct BivariateAsh{F1 <: Function, F2 <: Function, R1 <: Range, R2 <: Range} <: AbstractAsh
     kernelx::F1
     kernely::F2
     rngx::R1
@@ -10,24 +10,23 @@ type BivariateAsh{F1 <: Function, F2 <: Function, R1 <: Range, R2 <: Range} <: A
     v::Matrix{Int}
     z::Matrix{Float64}
     nobs::Int64
+    function BivariateAsh(kernelx::F1, kernely::F2, rngx::R1, rngy::R2,
+            mx::Int64, my::Int64, v::Matrix{Int}, z::Matrix{Float64}, nobs::Int64
+            ) where
+            {F1 <: Function, F2 <: Function, R1 <: Range, R2 <: Range}
+        @assert kernelx(0.1) > 0.0 && kernelx(-0.1) > 0.0 "kernelx must always be positive"
+        @assert kernely(0.1) > 0.0 && kernely(-0.1) > 0.0 "kernely must always be positive"
+        @assert length(rngx) > 1 "Need at least two bins"
+        @assert length(rngy) > 1 "Need at least two bins"
+        @assert length(rngx) == size(v, 2) == size(z, 2)
+        @assert length(rngy) == size(v, 1) == size(z, 1)
+        @assert mx > 0 "Smoothing parameter mx must be positive"
+        @assert my > 0 "Smoothing parameter my must be positive"
+        new{F1, F2, R1, R2}(kernelx, kernely, rngx, rngy, mx, my, v, z, nobs)
+    end
 end
 
-function BivariateAsh(
-        kernelx::Function, kernely::Function, rngx::Range, rngy::Range,
-        mx::Int64, my::Int64, v::Matrix{Int}, z::Matrix{Float64}, nobs::Int64
-        )
-    @assert kernelx(0.1) > 0.0 && kernelx(-0.1) > 0.0 "kernelx must always be positive"
-    @assert kernely(0.1) > 0.0 && kernely(-0.1) > 0.0 "kernely must always be positive"
-    @assert length(rngx) > 1 "Need at least two bins"
-    @assert length(rngy) > 1 "Need at least two bins"
-    @assert length(rngx) == size(v, 2) == size(z, 2)
-    @assert length(rngy) == size(v, 1) == size(z, 1)
-    @assert mx > 0 "Smoothing parameter mx must be positive"
-    @assert my > 0 "Smoothing parameter my must be positive"
-    BivariateAsh{typeof(kernelx), typeof(kernely), typeof(rngx), typeof(rngy)}(
-        kernelx, kernely, rngx, rngy, mx, my, v, z, nobs
-    )
-end
+
 function Base.show(io::IO, o::BivariateAsh)
     println(io, typeof(o))
     println(io, "  > X")
@@ -129,7 +128,7 @@ function Base.var(o::BivariateAsh)
     vary = var(o.rngy, StatsBase.WeightVec(vec(sum(o.z, 2))))
     [varx; vary]
 end
-Base.std(o::BivariateAsh) = sqrt(var(o))
+Base.std(o::BivariateAsh) = sqrt.(var(o))
 function StatsBase.fit!(o::BivariateAsh, x::AbstractVector, y::AbstractVector; kw...)
     update!(o, x, y)
     ash!(o; kw...)

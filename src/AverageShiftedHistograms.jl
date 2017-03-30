@@ -14,9 +14,10 @@ export
     biweight, cosine, epanechnikov, triangular, tricube, triweight, uniform,
     gaussian, logistic
 
+const VecF = Vector{Float64}
 
 # common
-abstract AbstractAsh
+abstract type AbstractAsh end
 StatsBase.nobs(o::AbstractAsh) = o.nobs
 nout(o::AbstractAsh) = nobs(o) - sum(o.v)
 

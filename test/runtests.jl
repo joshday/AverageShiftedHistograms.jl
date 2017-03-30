@@ -33,7 +33,7 @@ end
 
 
     for f in [mean, var, std, x -> quantile(x, .4), x -> quantile(x, .4:.1:.6)]
-        @test_approx_eq_eps f(o) f(y) .1
+        @test f(o) ≈ f(y) atol=.1
     end
     AverageShiftedHistograms.histdensity(o)
     @test quantile(o, 1e-20) ≈ o.rng[1]
