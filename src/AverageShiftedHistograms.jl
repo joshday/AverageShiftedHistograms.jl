@@ -8,7 +8,7 @@ using RecipesBase
 
 
 export
-    ash, fit!, extendrange, xy, xyz, nout, nobs,
+    ash, ash!, fit!, extendrange, xy, xyz, nout, nobs,
     # Kernels
     Kernels,
     biweight, cosine, epanechnikov, triangular, tricube, triweight, uniform,
