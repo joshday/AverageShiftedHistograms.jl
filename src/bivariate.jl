@@ -136,6 +136,6 @@ end
 
 
 @recipe function f(o::BivariateAsh)
-    seriestype --> :heatmap
+    seriestype --> :contour
     o.rngx, o.rngy, o.z
 end
