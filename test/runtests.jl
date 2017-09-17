@@ -1,5 +1,5 @@
 module Tests
-using AverageShiftedHistograms, StatsBase, Base.Test, Distributions
+using AverageShiftedHistograms, StatsBase, Base.Test
 
 info("Messy Output")
 show(ash(randn(1000)))
@@ -39,7 +39,7 @@ end
     @test quantile(o, 1e-20) ≈ o.x[1]
 
     # check that histogram is correct
-    h = fit(Histogram, y, (-4:.1:4.1)-.05)
+    h = fit(Histogram, y, (-4:.1:4.1)-.05; closed = :left)
     @test h.weights == o.counts
 
     ash!(o, y)

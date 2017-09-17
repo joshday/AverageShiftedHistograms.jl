@@ -85,8 +85,8 @@ nobs(o::Ash) = o.nobs
 nout(o::Ash) = nobs(o) - sum(o.counts)
 histdensity(o::Ash) = o.counts / (step(o.x) / StatsBase.nobs(o))
 
-Base.mean(o::Ash) = mean(o.x, StatsBase.Weights(o.density))
-Base.var(o::Ash) = var(o.x, StatsBase.Weights(o.density))
+Base.mean(o::Ash) = mean(o.x, StatsBase.AnalyticWeights(o.density))
+Base.var(o::Ash) = var(o.x, StatsBase.AnalyticWeights(o.density); corrected=true)
 Base.std(o::Ash) = sqrt(var(o))
 
 

@@ -10,24 +10,9 @@ with a fine-partition histogram.
 
 The main function exported by AverageShiftedHistograms is `ash`.
 
-```julia
-ash(x, rng = extendrange(x); m = 5, kernel = Kernels.biweight, warnout = true)
+```@docs
+ash
 ```
-- `x`
-    - Sample for which you want to calculate a density
-- `rng = extendrange(x)`
-    - Range of points to calculate the density at (partition of the histogram)
-    - By default, uses `extendrange` to extend the maximum/minimum of `x`
-- `m = 5`
-    - Smoothing parameter (number of adjacent bins to smooth over)
-- `kernel = Kernels.biweight`
-    - Smoothing kernel to use.  Kernels provided by AverageShiftedHistograms are within
-    a `Kernels` module to help avoid potential name conflicts.  
-    - Users can provide their own function to use.  The function should be strictly
-     nonnegative, symmetric around 0, but not necessarily integrate to 1
-        - `gaussian(u) = exp(-0.5 * u ^ 2)` (already in `Kernels`) is a valid kernel.
-- `warnout = true`
-    - print a warning if the estimated density is nonzero outside of `rng`
 
 ---
 ## Univariate Toy Example
@@ -50,6 +35,7 @@ o = ash(y, -5:.1:5, m = 20)
 plot(o)
 ```
 ![](https://cloud.githubusercontent.com/assets/8075494/17917468/bfd17c2a-6971-11e6-9ffd-93baee75f5a7.png)
+
 
 ---
 ## Bivariate Usage
