@@ -37,7 +37,7 @@ plot(o)
 
 ## Kernel Functions
 
-Any function can be provided to `ash` to be use
+Any nonnegative symmetric function can be provided to `ash` to be used as a kernel.  The function does not need to be normalized (integrate to 1) as the fitting procedure takes care of this.
 
 ```@docs
 Kernels
@@ -45,5 +45,5 @@ Kernels
 
 
 ```@raw html
-<img width = 200 src = "https://user-images.githubusercontent.com/8075494/30523575-acd48de2-9bb1-11e7-8f0f-3ce2ab09c713.png">
+<img width = 700 src = "https://user-images.githubusercontent.com/8075494/30523575-acd48de2-9bb1-11e7-8f0f-3ce2ab09c713.png">
 ```

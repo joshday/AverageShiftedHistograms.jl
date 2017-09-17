@@ -57,10 +57,11 @@ end
     ash(y, x::Range = extendrange(y); m = 5, kernel = Kernels.biweight)
 
 Fit an average shifted histogram where:
-    - `y` is the data
-    - `x` is a range of values where the density should be estimated
-    - `m` is a smoothing parameter.  It is the number of adjacent histogram bins on either side used to estimate the density.
-    - `kernel` is the kernel used to smooth the estimate
+
+- `y` is the data
+- `x` is a range of values where the density should be estimated
+- `m` is a smoothing parameter.  It is the number of adjacent histogram bins on either side used to estimate the density.
+- `kernel` is the kernel used to smooth the estimate
 
 Make changes to the estimate (add more data, change kernel, or change smoothing parameter):
 
