@@ -92,7 +92,7 @@ end
 xy(o::Ash) = o.x, o.density
 nobs(o::Ash) = o.nobs
 nout(o::Ash) = nobs(o) - sum(o.counts)
-histdensity(o::Ash) = o.counts / (step(o.x) / StatsBase.nobs(o))
+histdensity(o::Ash) = o.counts ./ StatsBase.nobs(o) ./ step(o.x)
 
 Base.mean(o::Ash) = mean(o.x, StatsBase.AnalyticWeights(o.density))
 Base.var(o::Ash) = var(o.x, StatsBase.AnalyticWeights(o.density); corrected=true)
