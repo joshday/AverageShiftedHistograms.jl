@@ -1,29 +1,16 @@
 module AverageShiftedHistograms
 
 import StatsBase: nobs
+import StatsBase
 import UnicodePlots
 using RecipesBase
 
 
-export
-    ash, ash!, fit!, extendrange, xy, xyz, nout, nobs,
-    # Kernels
-    Kernels,
-    biweight, cosine, epanechnikov, triangular, tricube, triweight, uniform,
-    gaussian, logistic
+export ash, ash!, fit!, extendrange, xy, xyz, nout, nobs, Kernels
 
-const AVec = AbstractVector
-
-abstract type AbstractAsh{N} end
 
 #-----------------------------------------------------------------------# common
-name(o) = replace(string(typeof(o)), "AverageShiftedHistograms.", "")
-# StatsBase.nobs(o::AbstractAsh) = o.n
-# nout(h::FastHistogram) =
-# nout(o::AbstractAsh) = nobs(o) - sum(o.v)
-# name(o) = replace(string(typeof(o)), "AverageShiftedHistograms.", "")
-#
-#
+
 """
 `extendrange(x, s = .5, n = 200)`
 
@@ -37,5 +24,4 @@ end
 
 include("kernels.jl")
 include("univariate.jl")
-# include("bivariate.jl")
 end
