@@ -21,7 +21,7 @@ var documenterSearchIndex = {"docs": [
     "page": "AverageShiftedHistograms.jl",
     "title": "AverageShiftedHistograms.ash",
     "category": "Function",
-    "text": "ash(y, x::Range = extendrange(y); m = 5, kernel = Kernels.biweight)\n\nFit an average shifted histogram where:     - y is the data     - x is a range of values where the density should be estimated     - m is a smoothing parameter.  It is the number of adjacent histogram bins on either side used to estimate the density.     - kernel is the kernel used to smooth the estimate\n\nMake changes to the estimate (add more data, change kernel, or change smoothing parameter):\n\nash!(o::Ash; kernel = newkernel, m = newm)\nash!(o::Ash, y; kernel = newkernel, m = newm)\n\n\n\n"
+    "text": "ash(y, x::Range = extendrange(y); m = 5, kernel = Kernels.biweight)\n\nFit an average shifted histogram where:\n\ny is the data\nx is a range of values where the density should be estimated\nm is a smoothing parameter.  It is the number of adjacent histogram bins on either side used to estimate the density.\nkernel is the kernel used to smooth the estimate\n\nMake changes to the estimate (add more data, change kernel, or change smoothing parameter):\n\nash!(o::Ash; kernel = newkernel, m = newm)\nash!(o::Ash, y; kernel = newkernel, m = newm)\n\n\n\n"
 },
 
 {
@@ -53,7 +53,7 @@ var documenterSearchIndex = {"docs": [
     "page": "AverageShiftedHistograms.jl",
     "title": "Kernel Functions",
     "category": "section",
-    "text": "Any function can be provided to ash to be useKernels<img width = 200 src = \"https://user-images.githubusercontent.com/8075494/30523575-acd48de2-9bb1-11e7-8f0f-3ce2ab09c713.png\">"
+    "text": "Any nonnegative symmetric function can be provided to ash to be used as a kernel.  The function does not need to be normalized (integrate to 1) as the fitting procedure takes care of this.Kernels<img width = 700 src = \"https://user-images.githubusercontent.com/8075494/30523575-acd48de2-9bb1-11e7-8f0f-3ce2ab09c713.png\">"
 },
 
 ]}
