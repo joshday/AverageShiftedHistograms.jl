@@ -1,5 +1,5 @@
 """
-The Kernels module defines a collection of (unnormalized) kernels.  Available kernels are
+The Kernels module defines a collection of kernels to avoid namespace collisions:
 
 - `biweight`
 - `cosine`

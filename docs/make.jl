@@ -6,7 +6,8 @@ makedocs(
     authors = "Josh Day",
     clean = true,
     pages = [
-        "index.md"
+        "index.md",
+        "api.md"
     ]
 )
 

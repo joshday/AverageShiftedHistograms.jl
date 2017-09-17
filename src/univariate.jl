@@ -74,13 +74,18 @@ function ash(y::AbstractArray, x = extendrange(y); m = 5, kernel = Kernels.biwei
     _ash!(o)
 end
 
-# change smoothing parameter and/or kernel
+
+"""
+    ash!(o::Ash; kw...)
+    ash!(o::Ash, newdata; kw...)
+
+Update an Ash estimate with new data, smoothing parameter (keyword `m`), or kernel (keyword `kernel`):
+"""
 function ash!(o::Ash; m = o.m, kernel = o.kernel)
     o.m = m
     o.kernel = o.kernel
     _ash!(o)
 end
-# add data, change smoothing parameter and/or kernel
 function ash!(o::Ash, y::AbstractArray; m = o.m, kernel = o.kernel)
     o.m = m
     o.kernel = o.kernel
@@ -89,17 +94,27 @@ function ash!(o::Ash, y::AbstractArray; m = o.m, kernel = o.kernel)
 end
 
 
-
+"return the range and density as a tuple"
 xy(o::Ash) = o.x, o.density
+
+"return the number of observations"
 nobs(o::Ash) = o.nobs
+
+"return the number of observations that fell outside of the histogram range"
 nout(o::Ash) = nobs(o) - sum(o.counts)
+
+"return the histogram values as a density (intergrates to 1)"
 histdensity(o::Ash) = o.counts ./ StatsBase.nobs(o) ./ step(o.x)
 
 Base.mean(o::Ash) = mean(o.x, StatsBase.AnalyticWeights(o.density))
 Base.var(o::Ash) = var(o.x, StatsBase.AnalyticWeights(o.density); corrected=true)
 Base.std(o::Ash) = sqrt(var(o))
 
+"""
+    quantile(o::Ash, q::Real)
 
+Return the approximate `q`-th quantile from the Ash density.
+"""
 function Base.quantile(o::Ash, τ::Real)
     0 < τ < 1 || throw(ArgumentError("τ must be in (0, 1)"))
     x = o.x
