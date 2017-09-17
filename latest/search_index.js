@@ -41,27 +41,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#Bivariate-Usage-1",
+    "location": "index.html#AverageShiftedHistograms.Kernels",
     "page": "AverageShiftedHistograms.jl",
-    "title": "Bivariate Usage",
-    "category": "section",
-    "text": "ash(x, y; kw...)\nash(x, y, rngx, rngy; kw...)x, y\nThe bivariate data series (each is an AbstractVector)\nrngx, rngy\nThe histogram partition for x and y, respectively\nkw... Keyword arguments are\nmx = 5, my = 5\nSmoothing parameters for x and y\nkernelx = Kernels.biweight, kernely = Kernels.biweight\nSmoothing kernels for x and y\nwarnout = true\nPrint warning if density is nonzero on the edge of rngx or rngy"
+    "title": "AverageShiftedHistograms.Kernels",
+    "category": "Module",
+    "text": "The Kernels module defines a collection of (unnormalized) kernels.  Available kernels are\n\nbiweight\ncosine\nepanechnikov\ntriangular\ntricube\ntriweight\nuniform\ngaussian\nlogistic\n\n\n\n"
 },
 
 {
-    "location": "index.html#Bivariate-Toy-Example-1",
+    "location": "index.html#Kernel-Functions-1",
     "page": "AverageShiftedHistograms.jl",
-    "title": "Bivariate Toy Example",
+    "title": "Kernel Functions",
     "category": "section",
-    "text": "using AverageShiftedHistograms\nusing Plots; pyplot()\n\nx = randn(10_000)\ny = x + randn(10_000)\n\no = ash(x, y)\n\nplot(o)(Image: )"
-},
-
-{
-    "location": "index.html#Methods-1",
-    "page": "AverageShiftedHistograms.jl",
-    "title": "Methods",
-    "category": "section",
-    "text": "Suppose o = ash(x), o2 = ash(x, y)Get range/density values as a Tuplexy(o)  # Vector range x, Vector density y\n\nxyz(o2) # Vector ranges x,y, Matrix density zChange smoothing parameter(s) and/or kernel(s)ash!(o; m = 2, kernel = Kernels.epanechnikov)\n\nash!(o2; mx = 3, my = 1, kernely = Kernels.epanechnikov)Update the estimate by adding more datafit!(o, x)\n\nfit!(o2, x, y)Calculate approximate mean/variance/quantilesmean(o)\nvar(o)\nstd(o)\nquantile(o, .5)\nquantile(o. [.25, .5, .75])\nDistributions.pdf(o, .4)\nDistributions.cdf(o, .4)\n\nmean(o2)\nvar(o2)\nstd(o2)Diagnosticsnout(o)  # number of observations that fell outside the provided range\nnobs(o)  # number of observations passed to the Ash object"
+    "text": "Any function can be provided to ash to be useKernels<img width = 200 src = \"https://user-images.githubusercontent.com/8075494/30523575-acd48de2-9bb1-11e7-8f0f-3ce2ab09c713.png\">"
 },
 
 ]}
