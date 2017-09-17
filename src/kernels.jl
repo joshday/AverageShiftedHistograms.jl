@@ -1,4 +1,16 @@
-# unnormalized kernels
+"""
+The Kernels module defines a collection of (unnormalized) kernels.  Available kernels are
+
+- `biweight`
+- `cosine`
+- `epanechnikov`
+- `triangular`
+- `tricube`
+- `triweight`
+- `uniform`
+- `gaussian`
+- `logistic`
+"""
 module Kernels
 inrange(u::Float64) = abs(u) <= 1.0
 
