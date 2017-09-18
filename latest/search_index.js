@@ -13,7 +13,7 @@ var documenterSearchIndex = {"docs": [
     "page": "AverageShiftedHistograms.jl",
     "title": "AverageShiftedHistograms.jl",
     "category": "section",
-    "text": "An Average Shifted Histogram (ASH) estimator is essentially a kernel density calculated with a fine-partition histogram.<img width = 700 src = \"https://cloud.githubusercontent.com/assets/8075494/17938441/ce8815e4-69da-11e6-8f19-33052e2ef21e.gif)\">"
+    "text": "An Average Shifted Histogram (ASH) estimator is essentially a kernel density calculated with a fine-partition histogram.<img width = 700 src = \"https://cloud.githubusercontent.com/assets/8075494/17938441/ce8815e4-69da-11e6-8f19-33052e2ef21e.gif\">"
 },
 
 {
