@@ -92,8 +92,8 @@ function ash!(o::Ash2; mx = o.mx, my = o.my, kernelx = o.kernelx, kernely = o.ke
     o.mx, o.my, o.kernelx, o.kernely = mx, my, kernelx, kernely
     _ash!(o)
 end
-function ash!(o::Ash2, x::AbstractArray, y::AbstractArray; mx = o.mx, my = o.my, kernelx = o.kernelx,
-        kernely = o.kernely)
+function ash!(o::Ash2, x::AbstractArray, y::AbstractArray; mx = o.mx, my = o.my,
+        kernelx = o.kernelx, kernely = o.kernely)
     o.mx, o.my, o.kernelx, o.kernely = mx, my, kernelx, kernely
     _histogram!(o, x, y)
     _ash!(o)
@@ -103,8 +103,8 @@ end
 "return ranges and density of biviariate ASH"
 
 xyz(o::Ash2) = (o.rngx, o.rngy, copy(o.z))
-nobs(o::Ash2) = o.nobs
-nout(o::Ash2) = nobs(o) - sum(o.v)
+StatsBase.nobs(o::Ash2) = o.nobs
+nout(o::Ash2) = StatsBase.nobs(o) - sum(o.v)
 function Base.mean(o::Ash2)
     meanx = mean(o.rngx, StatsBase.AnalyticWeights(vec(sum(o.z, 1))))
     meany = mean(o.rngy, StatsBase.AnalyticWeights(vec(sum(o.z, 2))))
@@ -117,7 +117,7 @@ function Base.var(o::Ash2)
 end
 Base.std(o::Ash2) = sqrt.(var(o))
 
-@recipe function f(o::Ash2)
+@RecipesBase.recipe function f(o::Ash2)
     seriestype --> :heatmap
     o.rngx, o.rngy, o.z
 end

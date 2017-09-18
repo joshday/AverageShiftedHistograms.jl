@@ -1,5 +1,5 @@
 module Tests
-using AverageShiftedHistograms, StatsBase, Base.Test
+using AverageShiftedHistograms, StatsBase, Base.Test, Distributions
 
 info("Messy Output")
 show(ash(randn(1000)))
@@ -41,9 +41,16 @@ end
 
     ash!(o, x)
     @test nobs(o) == 20_000
+    @test pdf(o, -5) == 0
+    @test pdf(o, 5) == 0
+    @test pdf(o, 0) > 0
+    @test cdf(o, -5) == 0
+    @test cdf(o, 0) ≈ .5 atol=.05
+    @test cdf(o, 5) ≈ 1
 
     o = ash([.1, .1]; rng = -1:.1:1)
     @test nout(o) == 0
+
 end
 
 @testset "Ash2" begin

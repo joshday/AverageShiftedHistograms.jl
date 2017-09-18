@@ -117,10 +117,10 @@ end
 xy(o::Ash) = o.rng, o.density
 
 "return the number of observations"
-nobs(o::Ash) = o.nobs
+StatsBase.nobs(o::Ash) = o.nobs
 
 "return the number of observations that fell outside of the histogram range"
-nout(o::Ash) = nobs(o) - sum(o.counts)
+nout(o::Ash) = StatsBase.nobs(o) - sum(o.counts)
 
 "return the histogram values as a density (intergrates to 1)"
 histdensity(o::Ash) = o.counts ./ StatsBase.nobs(o) ./ step(o.rng)
@@ -149,28 +149,27 @@ function Base.quantile{T<:Real}(o::Ash, τ::AbstractVector{T})
     [quantile(o, τi) for τi in τ]
 end
 
-# TODO: re-add Distributions dependency for these two functions?
-# function Distributions.pdf(o::Ash, x::Real)
-#     rng = o.rng
-#     y = o.y
-#     i = searchsortedlast(rng, x)
-#     if 1 <= i < length(rng)
-#         y[i] + (y[i+1] - y[i]) * (x - rng[i]) / (rng[i+1] - rng[i])
-#     else
-#         0.0
-#     end
-# end
-# function Distributions.cdf(o::Ash, x::Real)
-#     cdf = cumsum(o.y) * step(o.rng)
-#     i = searchsortedlast(o.rng, x)
-#     if i == 0
-#         return 0.0
-#     else
-#         return cdf[i]
-#     end
-# end
+function Distributions.pdf(o::Ash, x::Real)
+    rng = o.rng
+    y = o.density
+    i = searchsortedlast(rng, x)
+    if 1 <= i < length(rng)
+        y[i] + (y[i+1] - y[i]) * (x - rng[i]) / (rng[i+1] - rng[i])
+    else
+        0.0
+    end
+end
+function Distributions.cdf(o::Ash, x::Real)
+    cdf = cumsum(o.density) * step(o.rng)
+    i = searchsortedlast(o.rng, x)
+    if i == 0
+        return 0.0
+    else
+        return cdf[i]
+    end
+end
 
-@recipe function f(o::Ash)
+@RecipesBase.recipe function f(o::Ash)
     label --> ["Histogram Density" "Ash Density"]
     seriestype --> [:sticks :line]
     linewidth --> [1 2]
