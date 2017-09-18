@@ -92,10 +92,10 @@ function ash!(o::Ash2; mx = o.mx, my = o.my, kernelx = o.kernelx, kernely = o.ke
     o.mx, o.my, o.kernelx, o.kernely = mx, my, kernelx, kernely
     _ash!(o)
 end
-function ash!(o::Ash2, y::AbstractArray; mx = o.mx, my = o.my, kernelx = o.kernelx,
+function ash!(o::Ash2, x::AbstractArray, y::AbstractArray; mx = o.mx, my = o.my, kernelx = o.kernelx,
         kernely = o.kernely)
     o.mx, o.my, o.kernelx, o.kernely = mx, my, kernelx, kernely
-    _histogram!(o, y)
+    _histogram!(o, x, y)
     _ash!(o)
 end
 

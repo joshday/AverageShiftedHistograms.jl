@@ -78,7 +78,14 @@ Fit a bivariate averaged shifted histogram to data vectors `x` and `y`.  Keyword
 # Mutating an Ash object
 Ash objectes can be updated with new data, smoothing parameter(s), or kernel(s).  They cannot, however, change the ranges over which the density is estimated.  It is therefore suggested to err on the side of caution when choosing data endpoints.
 
+    # univariate
     ash!(obj; kw...)
+    ash!(obj, newx, kw...)
+
+    # bivariate
+    ash!(obj; kw...)
+    ash!(obj, newx, newy; kw...)
+
 """
 function ash(x::AbstractArray; rng::Range = extendrange(x), m = 5, kernel = Kernels.biweight)
     o = Ash(rng, kernel, m)
