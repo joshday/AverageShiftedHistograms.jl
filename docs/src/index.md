@@ -9,7 +9,7 @@ with a fine-partition histogram.
 ```
 
 
-## Univariate Usage
+## Usage
 
 The main function exported by AverageShiftedHistograms is `ash`.
 
@@ -17,14 +17,14 @@ The main function exported by AverageShiftedHistograms is `ash`.
 ash
 ```
 
-## Univariate Toy Example
+## Univariate Example
 ```julia
 using AverageShiftedHistograms
 using Plots; gr()
 
 y = randn(100_000)
 
-o = ash(y, -5:.1:5)
+o = ash(y; rng = -5:.1:5)
 
 plot(o)
 ```
@@ -33,31 +33,13 @@ plot(o)
 
 ```julia
 # BEWARE OVERSMOOTHING!
-o = ash(y, -5:.1:5, m = 20)
+o = ash(y; rng = -5:.1:5, m = 20)
 plot(o)
 ```
 ![](https://cloud.githubusercontent.com/assets/8075494/17917468/bfd17c2a-6971-11e6-9ffd-93baee75f5a7.png)
 
 
-## Bivariate Usage
-```julia
-ash(x, y; kw...)
-ash(x, y, rngx, rngy; kw...)
-```
-- `x`, `y`
-    - The bivariate data series (each is an AbstractVector)
-- `rngx`, `rngy`
-    - The histogram partition for `x` and `y`, respectively
-- `kw...` Keyword arguments are
-    - `mx = 5`, `my = 5`
-        - Smoothing parameters for `x` and `y`
-    - `kernelx = Kernels.biweight`, `kernely = Kernels.biweight`
-        - Smoothing kernels for `x` and `y`
-    - `warnout = true`
-        - Print warning if density is nonzero on the edge of `rngx` or `rngy`
-
-
-## Bivariate Toy Example
+## Bivariate Example
 ```julia
 using AverageShiftedHistograms
 using Plots; pyplot()
