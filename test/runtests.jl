@@ -33,7 +33,7 @@ end
         @test f(o) ≈ f(x) atol=.1
     end
     AverageShiftedHistograms.histdensity(o)
-    @test quantile(o, 1e-20) ≈ first(o.rngx) atol = .2
+    @test quantile(o, 1e-20) ≈ first(o.rng) atol = .2
 
     # check that histogram is correct
     h = fit(Histogram, x, (-4:.1:4.1)-.05; closed = :left)
@@ -42,7 +42,7 @@ end
     ash!(o, x)
     @test nobs(o) == 20_000
 
-    o = ash([.1, .1]; rngx = -1:.1:1)
+    o = ash([.1, .1]; rng = -1:.1:1)
     @test nout(o) == 0
 end
 
