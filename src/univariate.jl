@@ -1,18 +1,18 @@
 mutable struct Ash{R <: Range, F <: Function}
     density::Vector{Float64}    # ash estimate
-    x::R                        # range of x values
+    rngx::R                     # range of x values
     counts::Vector{Int}         # histogram estimate
     kernel::F                   # kernel function
     m::Int                      # smoothing parameter
     nobs::Int                   # number of observations
-    function Ash(x::R, kernel::F, m::Int) where {R<:Range, F<:Function}
+    function Ash(rngx::R, kernel::F, m::Int) where {R<:Range, F<:Function}
         m > 0 || throw(ArgumentError("Smoothing parameter must be > 0"))
-        new{R, F}(zeros(Float64, length(x)), x, zeros(Int, length(x)), kernel, m, 0)
+        new{R, F}(zeros(Float64, length(rngx)), rngx, zeros(Int, length(rngx)), kernel, m, 0)
     end
 end
 function Base.show(io::IO, o::Ash)
     println(io, "Ash")
-    f, l, s = round.((first(o.x), last(o.x), step(o.x)), 4)
+    f, l, s = round.((first(o.rngx), last(o.rngx), step(o.rngx)), 4)
     println(io, "  > edges  | $f : $s : $l")
     println(io, "  > kernel | $(o.kernel)")
     println(io, "  > m      | $(o.m)")
@@ -22,9 +22,9 @@ end
 
 # add data to the histogram
 function _histogram!{T <: Real}(o::Ash, y::AbstractArray{T})
-    b = length(o.x)
-    a = first(o.x)
-    δinv = inv(step(o.x))
+    b = length(o.rngx)
+    a = first(o.rngx)
+    δinv = inv(step(o.rngx))
     c = o.counts
     for yi in y
         ki = floor(Int, (yi - a) * δinv + 1.5)
@@ -38,24 +38,24 @@ end
 
 # recalculate the ash density
 function _ash!(o::Ash)
-    b = length(o.x)
+    b = length(o.rngx)
     kernel = o.kernel
     density = o.density
     m = o.m
-    for k in eachindex(o.x)
+    for k in eachindex(o.rngx)
         if o.counts[k] != 0
             for i in max(1, k - m + 1):min(b, k + m - 1)
                 @inbounds density[i] += o.counts[k] * kernel((i - k) / m)
             end
         end
     end
-    denom = 1 / (sum(density) * step(o.x))
+    denom = 1 / (sum(density) * step(o.rngx))
     scale!(density, denom)
     return o
 end
 
 """
-    ash(y, x::Range = extendrange(y); m = 5, kernel = Kernels.biweight)
+    ash(x; rngx::Range = extendrange(y), m = 5, kernel = Kernels.biweight)
 
 Fit an average shifted histogram where:
 
@@ -69,9 +69,9 @@ Make changes to the estimate (add more data, change kernel, or change smoothing 
     ash!(o::Ash; kernel = newkernel, m = newm)
     ash!(o::Ash, y; kernel = newkernel, m = newm)
 """
-function ash(y::AbstractArray, x = extendrange(y); m = 5, kernel = Kernels.biweight)
-    o = Ash(x, kernel, m)
-    _histogram!(o, y)
+function ash(x::AbstractArray; rngx::Range = extendrange(x), m = 5, kernel = Kernels.biweight)
+    o = Ash(rngx, kernel, m)
+    _histogram!(o, x)
     _ash!(o)
 end
 
@@ -96,7 +96,7 @@ end
 
 
 "return the range and density as a tuple"
-xy(o::Ash) = o.x, o.density
+xy(o::Ash) = o.rngx, o.density
 
 "return the number of observations"
 nobs(o::Ash) = o.nobs
@@ -105,10 +105,10 @@ nobs(o::Ash) = o.nobs
 nout(o::Ash) = nobs(o) - sum(o.counts)
 
 "return the histogram values as a density (intergrates to 1)"
-histdensity(o::Ash) = o.counts ./ StatsBase.nobs(o) ./ step(o.x)
+histdensity(o::Ash) = o.counts ./ StatsBase.nobs(o) ./ step(o.rngx)
 
-Base.mean(o::Ash) = mean(o.x, StatsBase.AnalyticWeights(o.density))
-Base.var(o::Ash) = var(o.x, StatsBase.AnalyticWeights(o.density); corrected=true)
+Base.mean(o::Ash) = mean(o.rngx, StatsBase.AnalyticWeights(o.density))
+Base.var(o::Ash) = var(o.rngx, StatsBase.AnalyticWeights(o.density); corrected=true)
 Base.std(o::Ash) = sqrt(var(o))
 
 """
@@ -118,7 +118,7 @@ Return the approximate `q`-th quantile from the Ash density.
 """
 function Base.quantile(o::Ash, τ::Real)
     0 < τ < 1 || throw(ArgumentError("τ must be in (0, 1)"))
-    x = o.x
+    x = o.rngx
     cdf = cumsum(o.density) * step(x)
     i = searchsortedlast(cdf, τ)
     if i == 0
@@ -157,5 +157,5 @@ end
     seriestype --> [:sticks :line]
     linewidth --> [1 2]
     alpha --> [.7 1]
-    o.x, [histdensity(o) o.density]
+    o.rngx, [histdensity(o) o.density]
 end

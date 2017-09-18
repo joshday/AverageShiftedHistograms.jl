@@ -79,7 +79,8 @@ function _ash!(o::Ash2)
 end
 
 
-function ash(x::AbstractVector, y::AbstractVector, rngx = extendrange(x), rngy = extendrange(y);
+function ash(x::AbstractVector, y::AbstractVector;
+        rngx::Range = extendrange(x), rngy::Range = extendrange(y),
         mx = 5, my = 5, kernelx = Kernels.biweight, kernely = Kernels.biweight)
     o = Ash2(kernelx, kernely, rngx, rngy, mx, my)
     _histogram!(o, x, y)
@@ -101,14 +102,16 @@ end
 
 
 xyz(o::Ash2) = (o.rngx, o.rngy, copy(o.z))
+nobs(o::Ash2) = o.nobs
+nout(o::Ash2) = nobs(o) - sum(o.v)
 function Base.mean(o::Ash2)
-    meanx = mean(o.rngx, StatsBase.WeightVec(vec(sum(o.z, 1))))
-    meany = mean(o.rngy, StatsBase.WeightVec(vec(sum(o.z, 2))))
+    meanx = mean(o.rngx, StatsBase.AnalyticWeights(vec(sum(o.z, 1))))
+    meany = mean(o.rngy, StatsBase.AnalyticWeights(vec(sum(o.z, 2))))
     [meanx; meany]
 end
 function Base.var(o::Ash2)
-    varx = var(o.rngx, StatsBase.WeightVec(vec(sum(o.z, 1))); corrected=true)
-    vary = var(o.rngy, StatsBase.WeightVec(vec(sum(o.z, 2))); corrected=true)
+    varx = var(o.rngx, StatsBase.AnalyticWeights(vec(sum(o.z, 1))); corrected=true)
+    vary = var(o.rngy, StatsBase.AnalyticWeights(vec(sum(o.z, 2))); corrected=true)
     [varx; vary]
 end
 Base.std(o::Ash2) = sqrt.(var(o))
