@@ -13,7 +13,7 @@ var documenterSearchIndex = {"docs": [
     "page": "AverageShiftedHistograms.jl",
     "title": "AverageShiftedHistograms.jl",
     "category": "section",
-    "text": "An Average Shifted Histogram (ASH) estimator is essentially a kernel density calculated with a fine-partition histogram."
+    "text": "An Average Shifted Histogram (ASH) estimator is essentially a kernel density calculated with a fine-partition histogram.<img width = 700 src = \"https://cloud.githubusercontent.com/assets/8075494/17938441/ce8815e4-69da-11e6-8f19-33052e2ef21e.gif)\">"
 },
 
 {
@@ -21,7 +21,7 @@ var documenterSearchIndex = {"docs": [
     "page": "AverageShiftedHistograms.jl",
     "title": "AverageShiftedHistograms.ash",
     "category": "Function",
-    "text": "ash(x; rngx::Range = extendrange(y), m = 5, kernel = Kernels.biweight)\n\nFit an average shifted histogram where:\n\ny is the data\nx is a range of values where the density should be estimated\nm is a smoothing parameter.  It is the number of adjacent histogram bins on either side used to estimate the density.\nkernel is the kernel used to smooth the estimate\n\nMake changes to the estimate (add more data, change kernel, or change smoothing parameter):\n\nash!(o::Ash; kernel = newkernel, m = newm)\nash!(o::Ash, y; kernel = newkernel, m = newm)\n\n\n\n"
+    "text": "Univariate Ash\n\nash(x; kw...)\n\nFit an average shifted histogram to data x.  Keyword options are:\n\nrng    : values over which the density will be estimated\nm      : Number of adjacent histograms to smooth over\nkernel : kernel used to smooth the estimate\n\nBivariate Ash\n\nash(x, y; kw...)\n\nFit a bivariate averaged shifted histogram to data vectors x and y.  Keyword options are:\n\nrngx    : x values where density will be estimated\nrngy    : y values where density will be estimated\nmx      : smoothing parameter in x direction\nmy      : smoothing parameter in y direction\nkernelx : kernel in x direction\nkernely : kernel in y direction\n\nMutating an Ash object\n\nAsh objectes can be updated with new data, smoothing parameter(s), or kernel(s).  They cannot, however, change the ranges over which the density is estimated.  It is therefore suggested to err on the side of caution when choosing data endpoints.\n\nash!(obj; kw...)\n\n\n\n"
 },
 
 {
@@ -41,6 +41,22 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#Bivariate-Usage-1",
+    "page": "AverageShiftedHistograms.jl",
+    "title": "Bivariate Usage",
+    "category": "section",
+    "text": "ash(x, y; kw...)\nash(x, y, rngx, rngy; kw...)x, y\nThe bivariate data series (each is an AbstractVector)\nrngx, rngy\nThe histogram partition for x and y, respectively\nkw... Keyword arguments are\nmx = 5, my = 5\nSmoothing parameters for x and y\nkernelx = Kernels.biweight, kernely = Kernels.biweight\nSmoothing kernels for x and y\nwarnout = true\nPrint warning if density is nonzero on the edge of rngx or rngy"
+},
+
+{
+    "location": "index.html#Bivariate-Toy-Example-1",
+    "page": "AverageShiftedHistograms.jl",
+    "title": "Bivariate Toy Example",
+    "category": "section",
+    "text": "using AverageShiftedHistograms\nusing Plots; pyplot()\n\nx = randn(10_000)\ny = x + randn(10_000)\n\no = ash(x, y)\n\nplot(o)(Image: )"
+},
+
+{
     "location": "index.html#AverageShiftedHistograms.Kernels",
     "page": "AverageShiftedHistograms.jl",
     "title": "AverageShiftedHistograms.Kernels",
@@ -53,7 +69,7 @@ var documenterSearchIndex = {"docs": [
     "page": "AverageShiftedHistograms.jl",
     "title": "Kernel Functions",
     "category": "section",
-    "text": "Any nonnegative symmetric function can be provided to ash to be used as a kernel.  The function does not need to be normalized (integrate to 1) as the fitting procedure takes care of this.Kernels<img width = 700 src = \"https://user-images.githubusercontent.com/8075494/30523575-acd48de2-9bb1-11e7-8f0f-3ce2ab09c713.png\">"
+    "text": "Any nonnegative symmetric function can be provided to ash to be used as a kernel.  The function does not need to be normalized (integrate to 1) as the fitting procedure takes care of this.Kernels(Image: )"
 },
 
 {
@@ -77,7 +93,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "AverageShiftedHistograms.ash",
     "category": "Method",
-    "text": "ash(x; rngx::Range = extendrange(y), m = 5, kernel = Kernels.biweight)\n\nFit an average shifted histogram where:\n\ny is the data\nx is a range of values where the density should be estimated\nm is a smoothing parameter.  It is the number of adjacent histogram bins on either side used to estimate the density.\nkernel is the kernel used to smooth the estimate\n\nMake changes to the estimate (add more data, change kernel, or change smoothing parameter):\n\nash!(o::Ash; kernel = newkernel, m = newm)\nash!(o::Ash, y; kernel = newkernel, m = newm)\n\n\n\n"
+    "text": "Univariate Ash\n\nash(x; kw...)\n\nFit an average shifted histogram to data x.  Keyword options are:\n\nrng    : values over which the density will be estimated\nm      : Number of adjacent histograms to smooth over\nkernel : kernel used to smooth the estimate\n\nBivariate Ash\n\nash(x, y; kw...)\n\nFit a bivariate averaged shifted histogram to data vectors x and y.  Keyword options are:\n\nrngx    : x values where density will be estimated\nrngy    : y values where density will be estimated\nmx      : smoothing parameter in x direction\nmy      : smoothing parameter in y direction\nkernelx : kernel in x direction\nkernely : kernel in y direction\n\nMutating an Ash object\n\nAsh objectes can be updated with new data, smoothing parameter(s), or kernel(s).  They cannot, however, change the ranges over which the density is estimated.  It is therefore suggested to err on the side of caution when choosing data endpoints.\n\nash!(obj; kw...)\n\n\n\n"
 },
 
 {
@@ -101,7 +117,15 @@ var documenterSearchIndex = {"docs": [
     "page": "API",
     "title": "AverageShiftedHistograms.xy",
     "category": "Method",
-    "text": "return the range and density as a tuple\n\n\n\n"
+    "text": "return the range and density of a univariate ASH\n\n\n\n"
+},
+
+{
+    "location": "api.html#AverageShiftedHistograms.xyz-Tuple{AverageShiftedHistograms.Ash2}",
+    "page": "API",
+    "title": "AverageShiftedHistograms.xyz",
+    "category": "Method",
+    "text": "return ranges and density of biviariate ASH\n\n\n\n"
 },
 
 {
