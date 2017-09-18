@@ -24,4 +24,5 @@ end
 
 include("kernels.jl")
 include("univariate.jl")
+include("bivariate.jl")
 end

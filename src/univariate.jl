@@ -11,11 +11,12 @@ mutable struct Ash{R <: Range, F <: Function}
     end
 end
 function Base.show(io::IO, o::Ash)
+    println(io, "Ash")
     f, l, s = round.((first(o.x), last(o.x), step(o.x)), 4)
-    println(io, "  > edges  : first=$f, last=$l, step=$s")
-    println(io, "  > kernel : $(o.kernel)")
-    println(io, "  > m      : $(o.m)")
-    println(io, "  > nobs   : $(o.nobs)")
+    println(io, "  > edges  | $f : $s : $l")
+    println(io, "  > kernel | $(o.kernel)")
+    println(io, "  > m      | $(o.m)")
+    println(io, "  > nobs   | $(o.nobs)")
     print(io, UnicodePlots.lineplot(xy(o)...; grid = false))
 end
 
@@ -129,6 +130,8 @@ end
 function Base.quantile{T<:Real}(o::Ash, τ::AbstractVector{T})
     [quantile(o, τi) for τi in τ]
 end
+
+# TODO: re-add Distributions dependency for these two functions?
 # function Distributions.pdf(o::Ash, x::Real)
 #     rng = o.rng
 #     y = o.y
@@ -148,8 +151,7 @@ end
 #         return cdf[i]
 #     end
 # end
-#
-#
+
 @recipe function f(o::Ash)
     label --> ["Histogram Density" "Ash Density"]
     seriestype --> [:sticks :line]
