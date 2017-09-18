@@ -26,7 +26,7 @@ end
 
 @testset "Ash" begin
     x = randn(10_000)
-    o = ash(x, rngx = -4:.1:4)
+    o = ash(x, rng = -4:.1:4)
 
 
     for f in [mean, var, std, x -> quantile(x, .4), x -> quantile(x, .4:.1:.6)]
