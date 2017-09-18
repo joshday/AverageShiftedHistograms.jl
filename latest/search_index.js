@@ -25,33 +25,25 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#Univariate-Usage-1",
+    "location": "index.html#Usage-1",
     "page": "AverageShiftedHistograms.jl",
-    "title": "Univariate Usage",
+    "title": "Usage",
     "category": "section",
     "text": "The main function exported by AverageShiftedHistograms is ash.ash"
 },
 
 {
-    "location": "index.html#Univariate-Toy-Example-1",
+    "location": "index.html#Univariate-Example-1",
     "page": "AverageShiftedHistograms.jl",
-    "title": "Univariate Toy Example",
+    "title": "Univariate Example",
     "category": "section",
-    "text": "using AverageShiftedHistograms\nusing Plots; gr()\n\ny = randn(100_000)\n\no = ash(y, -5:.1:5)\n\nplot(o)(Image: )# BEWARE OVERSMOOTHING!\no = ash(y, -5:.1:5, m = 20)\nplot(o)(Image: )"
+    "text": "using AverageShiftedHistograms\nusing Plots; gr()\n\ny = randn(100_000)\n\no = ash(y; rng = -5:.1:5)\n\nplot(o)(Image: )# BEWARE OVERSMOOTHING!\no = ash(y; rng = -5:.1:5, m = 20)\nplot(o)(Image: )"
 },
 
 {
-    "location": "index.html#Bivariate-Usage-1",
+    "location": "index.html#Bivariate-Example-1",
     "page": "AverageShiftedHistograms.jl",
-    "title": "Bivariate Usage",
-    "category": "section",
-    "text": "ash(x, y; kw...)\nash(x, y, rngx, rngy; kw...)x, y\nThe bivariate data series (each is an AbstractVector)\nrngx, rngy\nThe histogram partition for x and y, respectively\nkw... Keyword arguments are\nmx = 5, my = 5\nSmoothing parameters for x and y\nkernelx = Kernels.biweight, kernely = Kernels.biweight\nSmoothing kernels for x and y\nwarnout = true\nPrint warning if density is nonzero on the edge of rngx or rngy"
-},
-
-{
-    "location": "index.html#Bivariate-Toy-Example-1",
-    "page": "AverageShiftedHistograms.jl",
-    "title": "Bivariate Toy Example",
+    "title": "Bivariate Example",
     "category": "section",
     "text": "using AverageShiftedHistograms\nusing Plots; pyplot()\n\nx = randn(10_000)\ny = x + randn(10_000)\n\no = ash(x, y)\n\nplot(o)(Image: )"
 },
