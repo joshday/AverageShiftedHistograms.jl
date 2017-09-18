@@ -5,7 +5,7 @@ An Average Shifted Histogram (ASH) estimator is essentially a kernel density cal
 with a fine-partition histogram.
 
 ```@raw html
-<img width = 700 src = "https://cloud.githubusercontent.com/assets/8075494/17938441/ce8815e4-69da-11e6-8f19-33052e2ef21e.gif)">
+<img width = 700 src = "https://cloud.githubusercontent.com/assets/8075494/17938441/ce8815e4-69da-11e6-8f19-33052e2ef21e.gif">
 ```
 
 
