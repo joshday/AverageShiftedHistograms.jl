@@ -21,7 +21,7 @@ var documenterSearchIndex = {"docs": [
     "page": "AverageShiftedHistograms.jl",
     "title": "AverageShiftedHistograms.ash",
     "category": "Function",
-    "text": "ash(y, x::Range = extendrange(y); m = 5, kernel = Kernels.biweight)\n\nFit an average shifted histogram where:\n\ny is the data\nx is a range of values where the density should be estimated\nm is a smoothing parameter.  It is the number of adjacent histogram bins on either side used to estimate the density.\nkernel is the kernel used to smooth the estimate\n\nMake changes to the estimate (add more data, change kernel, or change smoothing parameter):\n\nash!(o::Ash; kernel = newkernel, m = newm)\nash!(o::Ash, y; kernel = newkernel, m = newm)\n\n\n\n"
+    "text": "ash(x; rngx::Range = extendrange(y), m = 5, kernel = Kernels.biweight)\n\nFit an average shifted histogram where:\n\ny is the data\nx is a range of values where the density should be estimated\nm is a smoothing parameter.  It is the number of adjacent histogram bins on either side used to estimate the density.\nkernel is the kernel used to smooth the estimate\n\nMake changes to the estimate (add more data, change kernel, or change smoothing parameter):\n\nash!(o::Ash; kernel = newkernel, m = newm)\nash!(o::Ash, y; kernel = newkernel, m = newm)\n\n\n\n"
 },
 
 {
@@ -65,19 +65,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#AverageShiftedHistograms.ash",
-    "page": "API",
-    "title": "AverageShiftedHistograms.ash",
-    "category": "Function",
-    "text": "ash(y, x::Range = extendrange(y); m = 5, kernel = Kernels.biweight)\n\nFit an average shifted histogram where:\n\ny is the data\nx is a range of values where the density should be estimated\nm is a smoothing parameter.  It is the number of adjacent histogram bins on either side used to estimate the density.\nkernel is the kernel used to smooth the estimate\n\nMake changes to the estimate (add more data, change kernel, or change smoothing parameter):\n\nash!(o::Ash; kernel = newkernel, m = newm)\nash!(o::Ash, y; kernel = newkernel, m = newm)\n\n\n\n"
-},
-
-{
     "location": "api.html#AverageShiftedHistograms.ash!-Tuple{AverageShiftedHistograms.Ash}",
     "page": "API",
     "title": "AverageShiftedHistograms.ash!",
     "category": "Method",
     "text": "ash!(o::Ash; kw...)\nash!(o::Ash, newdata; kw...)\n\nUpdate an Ash estimate with new data, smoothing parameter (keyword m), or kernel (keyword kernel):\n\n\n\n"
+},
+
+{
+    "location": "api.html#AverageShiftedHistograms.ash-Tuple{AbstractArray}",
+    "page": "API",
+    "title": "AverageShiftedHistograms.ash",
+    "category": "Method",
+    "text": "ash(x; rngx::Range = extendrange(y), m = 5, kernel = Kernels.biweight)\n\nFit an average shifted histogram where:\n\ny is the data\nx is a range of values where the density should be estimated\nm is a smoothing parameter.  It is the number of adjacent histogram bins on either side used to estimate the density.\nkernel is the kernel used to smooth the estimate\n\nMake changes to the estimate (add more data, change kernel, or change smoothing parameter):\n\nash!(o::Ash; kernel = newkernel, m = newm)\nash!(o::Ash, y; kernel = newkernel, m = newm)\n\n\n\n"
 },
 
 {
