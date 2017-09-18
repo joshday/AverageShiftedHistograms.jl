@@ -100,6 +100,7 @@ function ash!(o::Ash2, y::AbstractArray; mx = o.mx, my = o.my, kernelx = o.kerne
 end
 
 
+"return ranges and density of biviariate ASH"
 
 xyz(o::Ash2) = (o.rngx, o.rngy, copy(o.z))
 nobs(o::Ash2) = o.nobs
