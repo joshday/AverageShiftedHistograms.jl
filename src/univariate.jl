@@ -169,10 +169,18 @@ function Distributions.cdf(o::Ash, x::Real)
     end
 end
 
-@RecipesBase.recipe function f(o::Ash)
-    label --> ["Histogram Density" "Ash Density"]
-    seriestype --> [:sticks :line]
-    linewidth --> [1 2]
-    alpha --> [.7 1]
-    o.rng, [histdensity(o) o.density]
+@RecipesBase.recipe function f(o::Ash; hist = true)
+    h(arr, hist) = hist ? arr : last(arr)
+
+    l = h(["Histogram Density" "Ash Density"], hist)
+    s = h([:sticks :line], hist)
+    lw = h([1 2], hist)
+    a = h([.7 1], hist)
+    v = hist ? [histdensity(o) o.density] : o.density
+
+    label --> l
+    seriestype --> s
+    linewidth --> lw
+    alpha --> a
+    o.rng, v
 end
