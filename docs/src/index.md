@@ -26,10 +26,17 @@ y = randn(100_000)
 
 o = ash(y; rng = -5:.1:5)
 
+xy(o)  # return (rng, density)
+
 plot(o)
 ```
 ![](https://cloud.githubusercontent.com/assets/8075494/17912630/9267e1c0-6949-11e6-92d8-c2d93f96707b.png)
 
+```julia
+plot(o; hist = false)
+```
+
+~[](https://user-images.githubusercontent.com/8075494/30670071-1fafb288-9e1e-11e7-81d2-e93be96209c8.png)
 
 ```julia
 # BEWARE OVERSMOOTHING!
