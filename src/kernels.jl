@@ -1,43 +1,27 @@
-# unnormalized kernels
-inrange(u::Real) = abs(u) <= 1.0
+"""
+The Kernels module defines a collection of kernels to avoid namespace collisions:
 
-uniform(u::Real) = inrange(u) ? 0.5 : 0.0
-@vectorize_1arg Real uniform
+- `biweight`
+- `cosine`
+- `epanechnikov`
+- `triangular`
+- `tricube`
+- `triweight`
+- `uniform`
+- `gaussian`
+- `logistic`
+"""
+module Kernels
+inrange(u::Float64) = abs(u) <= 1.0
 
-triangular(u::Real) = inrange(u) ? 1.0 - abs(Float64(u)) : 0.0
-@vectorize_1arg Real triangular
+biweight(u::Float64)        = inrange(u) ? (1.0 - u ^ 2) ^ 2 : 0.0
+cosine(u::Float64)          = inrange(u) ? cos(0.5 * π * u) : 0.0
+epanechnikov(u::Float64)    = inrange(u) ? 1.0 - u ^ 2 : 0.0
+triangular(u::Float64)      = inrange(u) ? 1.0 - abs(u) : 0.0
+tricube(u::Float64)         = inrange(u) ? (1.0 - abs(u) ^ 3) ^ 3 : 0.0
+triweight(u::Float64)       = inrange(u) ? (1.0 - u ^ 2) ^ 3 : 0.0
+uniform(u::Float64)         = inrange(u) ? 0.5 : 0.0
 
-epanechnikov(u::Real) = inrange(u) ? 1.0 - Float64(u)^2 : 0.0
-@vectorize_1arg Real epanechnikov
-
-biweight(u::Real) = inrange(u) ? (1.0 - Float64(u) ^ 2) ^ 2 : 0.0
-@vectorize_1arg Real biweight
-
-triweight(u::Real) = inrange(u) ? (1.0 - Float64(u)^2)^3 : 0.0
-@vectorize_1arg Real triweight
-
-tricube(u::Real) = inrange(u) ? (1.0 - abs(Float64(u))^3)^3 : 0.0
-@vectorize_1arg Real tricube
-
-gaussian(u::Real) = exp(-0.5 * Float64(u) ^ 2)
-@vectorize_1arg Real gaussian
-
-cosine(u::Real) = inrange(u) ? cos(0.5 * π * Float64(u)) : 0.0
-@vectorize_1arg Real cosine
-
-logistic(u::Real) = 1.0 / (exp(Float64(u)) + 2.0 + exp(-Float64(u)))
-@vectorize_1arg Real logistic
-
-kernels = Dict(
-    :uniform => uniform,
-    :triangular => triangular,
-    :epanechnikov => epanechnikov,
-    :biweight => biweight,
-    :triweight => triweight,
-    :tricube => tricube,
-    :gaussian => gaussian,
-    :cosine => cosine,
-    :logistic => logistic
-)
-
-const kernellist = keys(kernels)
+gaussian(u::Float64) = exp(-0.5 * u ^ 2)
+logistic(u::Float64) = 1.0 / (exp(u) + 2.0 + exp(-u))
+end

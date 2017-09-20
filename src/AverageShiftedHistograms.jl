@@ -1,23 +1,25 @@
 module AverageShiftedHistograms
-    import StatsBase
-    import StatsBase: nobs, fit!, fit
-    import Distributions
-    import Distributions: pdf
-    import UnicodePlots
-    import RecipesBase
 
-    export Bin1, Bin2, UnivariateASH, BivariateASH,
-    ash, ash!, nout, xy, xyz, fit!, nobs, pdf, fit
+import StatsBase, UnicodePlots, Distributions, RecipesBase
+using StatsBase: nobs
+using Distributions: pdf, cdf
+export ash, ash!, fit!, extendrange, xy, xyz, nout, nobs, pdf, cdf, Kernels
 
-    typealias VecF Vector{Float64}
-    typealias MatF Matrix{Float64}
-    typealias AVecF AbstractVector{Float64}
-    typealias AMatF AbstractMatrix{Float64}
 
-    abstract ASH
+#-----------------------------------------------------------------------# common
 
-    include("kernels.jl")
-    include("univariate.jl")
-    include("bivariate.jl")
-    include("plots.jl")
+"""
+`extendrange(x, s = .5, n = 200)`
+
+Create a `LinSpace` of length `n` starting at `s` standard deviations below
+`minimum(x)` and ending at `s` standard deviations above `maximum(x)`
+"""
+function extendrange(y::AbstractVector, s = 0.5, n = 200)
+    σ = std(y)
+    linspace(minimum(y) - s * σ, maximum(y) + s * σ, n)
+end
+
+include("kernels.jl")
+include("univariate.jl")
+include("bivariate.jl")
 end

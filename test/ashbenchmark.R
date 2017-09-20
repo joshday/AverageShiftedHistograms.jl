@@ -1,6 +1,6 @@
 rm(list=ls())
 
-setwd(".julia/v0.3/AverageShiftedHistograms/test/")
+setwd(".julia/v0.5/AverageShiftedHistograms/test/")
 library(ash)
 library(lineprof)
 sessionInfo()
@@ -11,5 +11,5 @@ f <- function() {
   b = bin1(x, c(-6, 6), 1000)
   a = ash1(b, 5)
 }
-  
+
 lineprof(f())
