@@ -3,8 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/287rsp7u4qf0y3tw/branch/master?svg=true)](https://ci.appveyor.com/project/joshday/averageshiftedhistograms-jl/branch/master)
 [![codecov.io](http://codecov.io/github/joshday/AverageShiftedHistograms.jl/coverage.svg?branch=master)](http://codecov.io/github/joshday/AverageShiftedHistograms.jl?branch=master)
 
-# Documentation
-
+### Documentation
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://joshday.github.io/AverageShiftedHistograms.jl/stable)
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://joshday.github.io/AverageShiftedHistograms.jl/latest)
 
