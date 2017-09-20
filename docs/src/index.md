@@ -36,7 +36,7 @@ plot(o)
 plot(o; hist = false)
 ```
 
-~[](https://user-images.githubusercontent.com/8075494/30670071-1fafb288-9e1e-11e7-81d2-e93be96209c8.png)
+![](https://user-images.githubusercontent.com/8075494/30670071-1fafb288-9e1e-11e7-81d2-e93be96209c8.png)
 
 ```julia
 # BEWARE OVERSMOOTHING!
