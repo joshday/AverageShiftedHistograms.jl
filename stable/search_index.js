@@ -37,7 +37,7 @@ var documenterSearchIndex = {"docs": [
     "page": "AverageShiftedHistograms.jl",
     "title": "Univariate Example",
     "category": "section",
-    "text": "using AverageShiftedHistograms\nusing Plots; gr()\n\ny = randn(100_000)\n\no = ash(y; rng = -5:.1:5)\n\nplot(o)(Image: )# BEWARE OVERSMOOTHING!\no = ash(y; rng = -5:.1:5, m = 20)\nplot(o)(Image: )"
+    "text": "using AverageShiftedHistograms\nusing Plots; gr()\n\ny = randn(100_000)\n\no = ash(y; rng = -5:.1:5)\n\nxy(o)  # return (rng, density)\n\nplot(o)(Image: )plot(o; hist = false)(Image: )# BEWARE OVERSMOOTHING!\no = ash(y; rng = -5:.1:5, m = 20)\nplot(o)(Image: )"
 },
 
 {
