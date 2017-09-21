@@ -117,7 +117,4 @@ function Base.var(o::Ash2)
 end
 Base.std(o::Ash2) = sqrt.(var(o))
 
-@RecipesBase.recipe function f(o::Ash2)
-    seriestype --> :heatmap
-    o.rngx, o.rngy, o.z
-end
+@RecipesBase.recipe f(o::Ash2) = o.rngx, o.rngy, o.z
