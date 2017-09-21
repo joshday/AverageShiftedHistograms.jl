@@ -101,7 +101,6 @@ end
 
 
 "return ranges and density of biviariate ASH"
-
 xyz(o::Ash2) = (o.rngx, o.rngy, copy(o.z))
 StatsBase.nobs(o::Ash2) = o.nobs
 nout(o::Ash2) = StatsBase.nobs(o) - sum(o.v)
