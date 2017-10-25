@@ -3,7 +3,7 @@ module AverageShiftedHistograms
 import StatsBase, UnicodePlots, Distributions, RecipesBase
 using StatsBase: nobs
 using Distributions: pdf, cdf
-export ash, ash!, fit!, extendrange, xy, xyz, nout, nobs, pdf, cdf, Kernels
+export ash, ash!, extendrange, xy, xyz, nout, nobs, pdf, cdf, Kernels
 
 
 #-----------------------------------------------------------------------# common

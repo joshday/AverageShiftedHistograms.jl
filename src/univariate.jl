@@ -21,7 +21,7 @@ function Base.show(io::IO, o::Ash)
 end
 
 # add data to the histogram
-function _histogram!{T <: Real}(o::Ash, y::AbstractArray{T})
+function _histogram!(o::Ash, y::AbstractArray{<:Real})
     b = length(o.rng)
     a = first(o.rng)
     δinv = inv(step(o.rng))
@@ -145,7 +145,7 @@ function Base.quantile(o::Ash, τ::Real)
         x[i] + (x[i+1] - x[i]) * (τ - cdf[i]) / (cdf[i + 1] - cdf[i])
     end
 end
-function Base.quantile{T<:Real}(o::Ash, τ::AbstractVector{T})
+function Base.quantile(o::Ash, τ::AbstractVector{<:Real})
     [quantile(o, τi) for τi in τ]
 end
 
@@ -169,14 +169,14 @@ function Distributions.cdf(o::Ash, x::Real)
     end
 end
 
-@RecipesBase.recipe function f(o::Ash; hist = true)
-    @RecipesBase.series begin
+RecipesBase.@recipe function f(o::Ash; hist = true)
+    RecipesBase.@series begin
         label --> "Ash Density"
         seriestype --> :line
         linewidth --> 2
         o.rng, o.density
     end
-    hist && @RecipesBase.series begin
+    hist && RecipesBase.@series begin
         label --> "Histogram Density"
         seriestype --> :sticks
         alpha --> .6
