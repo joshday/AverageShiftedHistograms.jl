@@ -121,6 +121,22 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "api.html#Distributions.cdf-Tuple{AverageShiftedHistograms.Ash,Real}",
+    "page": "API",
+    "title": "Distributions.cdf",
+    "category": "Method",
+    "text": "cdf(o::Ash, x::Real)\n\nReturn the estimated cumulative density at the point x.\n\n\n\n"
+},
+
+{
+    "location": "api.html#Distributions.pdf-Tuple{AverageShiftedHistograms.Ash,Real}",
+    "page": "API",
+    "title": "Distributions.pdf",
+    "category": "Method",
+    "text": "pdf(o::Ash, x::Real)\n\nReturn the estimated density at the point x.\n\n\n\n"
+},
+
+{
     "location": "api.html#StatsBase.nobs-Tuple{AverageShiftedHistograms.Ash}",
     "page": "API",
     "title": "StatsBase.nobs",
