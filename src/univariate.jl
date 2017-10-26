@@ -1,6 +1,6 @@
 mutable struct Ash{R <: Range, F <: Function}
     density::Vector{Float64}    # ash estimate
-    rng::R                     # range of x values
+    rng::R                      # range of x values
     counts::Vector{Int}         # histogram estimate
     kernel::F                   # kernel function
     m::Int                      # smoothing parameter
@@ -41,6 +41,7 @@ function _ash!(o::Ash)
     b = length(o.rng)
     kernel = o.kernel
     density = o.density
+    fill!(density, 0.0)
     m = o.m
     for k in eachindex(o.rng)
         if o.counts[k] != 0
@@ -49,8 +50,7 @@ function _ash!(o::Ash)
             end
         end
     end
-    denom = 1 / (sum(density) * step(o.rng))
-    scale!(density, denom)
+    scale!(density, 1 / (sum(density) * step(o.rng)))
     return o
 end
 
@@ -102,16 +102,31 @@ Update an Ash estimate with new data, smoothing parameter (keyword `m`), or kern
 """
 function ash!(o::Ash; m = o.m, kernel = o.kernel)
     o.m = m
-    o.kernel = o.kernel
+    o.kernel = kernel
     _ash!(o)
 end
 function ash!(o::Ash, y::AbstractArray; m = o.m, kernel = o.kernel)
     o.m = m
-    o.kernel = o.kernel
+    o.kernel = kernel
     _histogram!(o, y)
     _ash!(o)
 end
 
+function Base.merge!(o::Ash, o2::Ash)
+    o.kernel == o2.kernel || error("Merge failed.  Ash objects use different kernels.")
+    o.rng == o2.rng || error("Merge failed.  Ash objects use different bins.")
+    for j in eachindex(o.counts)
+        o.counts[j] += o2.counts[j]
+    end
+    o.nobs += o2.nobs
+    _ash!(o)
+end
+Base.merge(o::Ash, o2::Ash) = merge!(copy(o), o2)
+Base.copy(o::Ash) = deepcopy(o)
+function Base.:(==)(o::Ash, o2::Ash) 
+    fns = fieldnames(o)
+    all(getfield.(o, fns) .== getfield.(o2, fns))
+end
 
 "return the range and density of a univariate ASH"
 xy(o::Ash) = o.rng, o.density
