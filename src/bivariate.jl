@@ -31,6 +31,11 @@ function Base.show(io::IO, o::Ash2)
     println(io, "  > m      | $(o.my)")
 end
 
+function Base.:(==)(o::Ash2, o2::Ash2) 
+    fns = fieldnames(o)
+    all(getfield.(o, fns) .== getfield.(o2, fns))
+end
+
 function _histogram!(o::Ash2, x::AbstractVector, y::AbstractVector)
     length(x) == length(y) || throw(ArgumentError("data lengths differ"))
     δx, δy = step(o.rngx), step(o.rngy)
@@ -57,6 +62,7 @@ function _ash!(o::Ash2)
         w[i + my, j + mx] = kernely(i / my) * kernelx(i / mx)
     end
     v, z = o.v, o.z
+    fill!(z, 0.0)
     for k = 1:ny
        for l = 1:nx
            if v[k, l] == 0

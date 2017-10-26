@@ -54,7 +54,7 @@ end
     y = randn(100)
     y2 = randn(100)
 
-    @test ash(y) == ash(y)
+    @test ash(y) == ash!(ash(y))
 
     a = ash(y; rng = -5:.1:5)
     ash!(a, y2)
@@ -87,6 +87,8 @@ end
     x = randn(1000)
     y = x + randn(1000)
     o = ash(x, y)
+
+    @test ash(x, y) == ash!(ash(x, y))
 
     @test nobs(o) == 1000
 
