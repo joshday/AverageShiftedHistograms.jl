@@ -164,6 +164,12 @@ function Base.quantile(o::Ash, τ::AbstractVector{<:Real})
     [quantile(o, τi) for τi in τ]
 end
 
+
+"""
+    pdf(o::Ash, x::Real)
+
+Return the estimated density at the point `x`.
+"""
 function Distributions.pdf(o::Ash, x::Real)
     rng = o.rng
     y = o.density
@@ -174,6 +180,12 @@ function Distributions.pdf(o::Ash, x::Real)
         0.0
     end
 end
+
+"""
+    cdf(o::Ash, x::Real)
+
+Return the estimated cumulative density at the point `x`.
+"""
 function Distributions.cdf(o::Ash, x::Real)
     cdf = cumsum(o.density) * step(o.rng)
     i = searchsortedlast(o.rng, x)
