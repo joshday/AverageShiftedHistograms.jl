@@ -20,6 +20,8 @@ function Base.show(io::IO, o::Ash)
     print(io, UnicodePlots.lineplot(xy(o)...; grid = false))
 end
 
+Base.push!(o::Ash, y::Real) = _histogram!(o::Ash, [y])
+
 # add data to the histogram
 function _histogram!(o::Ash, y::AbstractArray{<:Real})
     b = length(o.rng)

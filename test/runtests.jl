@@ -51,6 +51,7 @@ end
     o = ash([.1, .1]; rng = -1:.1:1)
     @test nout(o) == 0
 
+    # merging
     y = randn(100)
     y2 = randn(100)
 
@@ -62,26 +63,17 @@ end
     @test a == a2
     a3 = merge(ash(y, rng=-5:.1:5), ash(y2, rng=-5:.1:5))
     @test a == a3
+
+    # push!
+    a = ash(y; rng = -5:.1:5)
+    a2 = ash([y[1]]; rng = -5:.1:5)
+    for i in 2:length(y)
+        push!(a2, y[i])
+    end
+    ash!(a2)
+    @test a == a2
 end
 
-# @testset "Ash merge" begin
-#     y, y2 = randn(100), randn(100)
-#     o1 = ash(y; rng = -4:.1:4)
-#     o2 = ash(y2; rng = -4:.1:4)
-#     merge!(o1, o2)
-#     ash!(o2, y)
-
-#     o3 = ash(vcat(y, y2); rng = -4:.1:4)
-
-#     @test nobs(o1)      == nobs(o3)
-#     @test o1.counts     == o3.counts
-#     @test o1.m          == o3.m
-#     @test o1.kernel     == o3.kernel
-#     @test o1.rng        == o3.rng
-#     for j in 1:length(o1.density)
-#         @test o1.density[j] == o3.density[j]
-#     end
-# end
 
 @testset "Ash2" begin
     x = randn(1000)
