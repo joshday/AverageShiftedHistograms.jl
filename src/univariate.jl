@@ -134,37 +134,38 @@ end
 xy(o::Ash) = o.rng, o.density
 
 "return the number of observations"
-StatsBase.nobs(o::Ash) = o.nobs
+nobs(o::Ash) = o.nobs
 
 "return the number of observations that fell outside of the histogram range"
-nout(o::Ash) = StatsBase.nobs(o) - sum(o.counts)
+nout(o::Ash) = nobs(o) - sum(o.counts)
 
 "return the histogram values as a density (intergrates to 1)"
-histdensity(o::Ash) = o.counts ./ StatsBase.nobs(o) ./ step(o.rng)
+histdensity(o::Ash) = o.counts ./ nobs(o) ./ step(o.rng)
 
-Base.mean(o::Ash) = mean(o.rng, StatsBase.AnalyticWeights(o.density))
-Base.var(o::Ash) = var(o.rng, StatsBase.AnalyticWeights(o.density); corrected=true)
+Base.mean(o::Ash) = mean(o.rng, fweights(o.counts))
+Base.var(o::Ash) = var(o.rng, fweights(o.counts); corrected=true)
+Base.quantile(o::Ash, p = [0, .25, .5, .75, 1]) = quantile(o.rng, fweights(o.counts), p)
 Base.std(o::Ash) = sqrt(var(o))
 
-"""
-    quantile(o::Ash, q::Real)
+# """
+#     quantile(o::Ash, q::Real)
 
-Return the approximate `q`-th quantile from the Ash density.
-"""
-function Base.quantile(o::Ash, τ::Real)
-    0 < τ < 1 || throw(ArgumentError("τ must be in (0, 1)"))
-    x = o.rng
-    cdf = cumsum(o.density) * step(x)
-    i = searchsortedlast(cdf, τ)
-    if i == 0
-        x[1]
-    else
-        x[i] + (x[i+1] - x[i]) * (τ - cdf[i]) / (cdf[i + 1] - cdf[i])
-    end
-end
-function Base.quantile(o::Ash, τ::AbstractVector{<:Real})
-    [quantile(o, τi) for τi in τ]
-end
+# Return the approximate `q`-th quantile from the Ash density.
+# """
+# function Base.quantile(o::Ash, τ::Real)
+#     0 < τ < 1 || throw(ArgumentError("τ must be in (0, 1)"))
+#     x = o.rng
+#     cdf = cumsum(o.density) * step(x)
+#     i = searchsortedlast(cdf, τ)
+#     if i == 0
+#         x[1]
+#     else
+#         x[i] + (x[i+1] - x[i]) * (τ - cdf[i]) / (cdf[i + 1] - cdf[i])
+#     end
+# end
+# function Base.quantile(o::Ash, τ::AbstractVector{<:Real})
+#     [quantile(o, τi) for τi in τ]
+# end
 
 
 """

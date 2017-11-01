@@ -1,7 +1,7 @@
 module AverageShiftedHistograms
 
-import StatsBase, UnicodePlots, Distributions, RecipesBase
-using StatsBase: nobs
+import UnicodePlots, Distributions, RecipesBase
+import StatsBase: nobs, fweights
 using Distributions: pdf, cdf
 export ash, ash!, extendrange, xy, xyz, nout, nobs, pdf, cdf, Kernels
 

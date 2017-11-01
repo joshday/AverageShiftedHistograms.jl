@@ -108,16 +108,16 @@ end
 
 "return ranges and density of biviariate ASH"
 xyz(o::Ash2) = (o.rngx, o.rngy, copy(o.z))
-StatsBase.nobs(o::Ash2) = o.nobs
-nout(o::Ash2) = StatsBase.nobs(o) - sum(o.v)
+nobs(o::Ash2) = o.nobs
+nout(o::Ash2) = nobs(o) - sum(o.v)
 function Base.mean(o::Ash2)
-    meanx = mean(o.rngx, StatsBase.AnalyticWeights(vec(sum(o.z, 1))))
-    meany = mean(o.rngy, StatsBase.AnalyticWeights(vec(sum(o.z, 2))))
+    meanx = mean(o.rngx, fweights(vec(sum(o.v, 1))))
+    meany = mean(o.rngy, fweights(vec(sum(o.v, 2))))
     [meanx; meany]
 end
 function Base.var(o::Ash2)
-    varx = var(o.rngx, StatsBase.AnalyticWeights(vec(sum(o.z, 1))); corrected=true)
-    vary = var(o.rngy, StatsBase.AnalyticWeights(vec(sum(o.z, 2))); corrected=true)
+    varx = var(o.rngx, fweights(vec(sum(o.v, 1))); corrected=true)
+    vary = var(o.rngy, fweights(vec(sum(o.v, 2))); corrected=true)
     [varx; vary]
 end
 Base.std(o::Ash2) = sqrt.(var(o))
