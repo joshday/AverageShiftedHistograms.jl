@@ -153,14 +153,6 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#Base.quantile-Tuple{AverageShiftedHistograms.Ash,Real}",
-    "page": "API",
-    "title": "Base.quantile",
-    "category": "Method",
-    "text": "quantile(o::Ash, q::Real)\n\nReturn the approximate q-th quantile from the Ash density.\n\n\n\n"
-},
-
-{
     "location": "api.html#API-1",
     "page": "API",
     "title": "API",
