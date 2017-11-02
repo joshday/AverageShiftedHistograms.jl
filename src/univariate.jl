@@ -147,6 +147,13 @@ Base.var(o::Ash) = var(o.rng, fweights(o.counts); corrected=true)
 Base.quantile(o::Ash, p = [0, .25, .5, .75, 1]) = quantile(o.rng, fweights(o.counts), p)
 Base.std(o::Ash) = sqrt(var(o))
 
+function Base.extrema(o::Ash)
+    imin = findfirst(x -> x>0, o.counts)
+    imax = findlast(x -> x>0, o.counts)
+    o.rng[imin], o.rng[imax]
+end
+
+
 # """
 #     quantile(o::Ash, q::Real)
 
