@@ -153,28 +153,6 @@ function Base.extrema(o::Ash)
     o.rng[imin], o.rng[imax]
 end
 
-
-# """
-#     quantile(o::Ash, q::Real)
-
-# Return the approximate `q`-th quantile from the Ash density.
-# """
-# function Base.quantile(o::Ash, τ::Real)
-#     0 < τ < 1 || throw(ArgumentError("τ must be in (0, 1)"))
-#     x = o.rng
-#     cdf = cumsum(o.density) * step(x)
-#     i = searchsortedlast(cdf, τ)
-#     if i == 0
-#         x[1]
-#     else
-#         x[i] + (x[i+1] - x[i]) * (τ - cdf[i]) / (cdf[i + 1] - cdf[i])
-#     end
-# end
-# function Base.quantile(o::Ash, τ::AbstractVector{<:Real})
-#     [quantile(o, τi) for τi in τ]
-# end
-
-
 """
     pdf(o::Ash, x::Real)
 
