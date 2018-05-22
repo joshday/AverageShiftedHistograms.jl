@@ -33,7 +33,7 @@ end
         @test f(o) ≈ f(x) atol=.1
     end
     AverageShiftedHistograms.histdensity(o)
-    @test quantile(o, 0) ≈ first(o.rng)
+    @test quantile(o, 0) ≈ o.rng[findfirst(o.counts)]
 
     # check that histogram is correct
     h = fit(Histogram, x, (-4:.1:4.1)-.05; closed = :left)
