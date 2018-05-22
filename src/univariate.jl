@@ -17,7 +17,9 @@ function Base.show(io::IO, o::Ash)
     println(io, "  > kernel | $(o.kernel)")
     println(io, "  > m      | $(o.m)")
     println(io, "  > nobs   | $(o.nobs)")
-    print(io, UnicodePlots.lineplot(xy(o)...; grid = false))
+    x, y = xy(o)
+    inds = find(y)
+    print(io, UnicodePlots.lineplot(x[inds], y[inds]; grid = false))
 end
 
 Base.push!(o::Ash, y::Real) = _histogram!(o::Ash, [y])
@@ -89,7 +91,7 @@ Ash objectes can be updated with new data, smoothing parameter(s), or kernel(s).
     ash!(obj, newx, newy; kw...)
 
 """
-function ash(x::AbstractArray; rng::Range = extendrange(x), m = 5, kernel = Kernels.biweight)
+function ash(x::AbstractArray; rng::Range = extendrange(x), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
     o = Ash(rng, kernel, m)
     _histogram!(o, x)
     _ash!(o)
