@@ -29,7 +29,7 @@ function Base.show(io::IO, o::Ash2)
     println(io, "  > edges  | $f : $s : $l")
     println(io, "    > kernel | $(o.kernely)")
     println(io, "    > m      | $(o.my)")
-    print(io, UnicodePlots.spy(o.z))
+    print(io, UnicodePlots.spy(o.z).graphics)
 end
 
 function Base.:(==)(o::Ash2, o2::Ash2) 
