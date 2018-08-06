@@ -54,7 +54,7 @@ function _ash!(o::Ash)
             end
         end
     end
-    scale!(density, 1 / (sum(density) * step(o.rng)))
+    rmul!(density, 1 / (sum(density) * step(o.rng)))
     return o
 end
 
@@ -144,10 +144,10 @@ nout(o::Ash) = nobs(o) - sum(o.counts)
 "return the histogram values as a density (intergrates to 1)"
 histdensity(o::Ash) = o.counts ./ nobs(o) ./ step(o.rng)
 
-Base.mean(o::Ash) = mean(o.rng, fweights(o.counts))
-Base.var(o::Ash) = var(o.rng, fweights(o.counts); corrected=true)
-Base.quantile(o::Ash, p = [0, .25, .5, .75, 1]) = quantile(o.rng, fweights(o.counts), p)
-Base.std(o::Ash) = sqrt(var(o))
+Statistics.mean(o::Ash) = mean(o.rng, fweights(o.counts))
+Statistics.var(o::Ash) = var(o.rng, fweights(o.counts); corrected=true)
+Statistics.quantile(o::Ash, p = [0, .25, .5, .75, 1]) = quantile(o.rng, fweights(o.counts), p)
+Statistics.std(o::Ash) = sqrt(var(o))
 
 function Base.extrema(o::Ash)
     imin = findfirst(x -> x>0, o.counts)
