@@ -1,24 +1,24 @@
-mutable struct Ash{R <: Range, F <: Function}
+mutable struct Ash{R <: AbstractRange, F <: Function}
     density::Vector{Float64}    # ash estimate
     rng::R                      # range of x values
     counts::Vector{Int}         # histogram estimate
     kernel::F                   # kernel function
     m::Int                      # smoothing parameter
     nobs::Int                   # number of observations
-    function Ash(rng::R, kernel::F, m::Int) where {R<:Range, F<:Function}
+    function Ash(rng::R, kernel::F, m::Int) where {R<:AbstractRange, F<:Function}
         m > 0 || throw(ArgumentError("Smoothing parameter must be > 0"))
         new{R, F}(zeros(Float64, length(rng)), rng, zeros(Int, length(rng)), kernel, m, 0)
     end
 end
 function Base.show(io::IO, o::Ash)
     println(io, "Ash")
-    f, l, s = round.((first(o.rng), last(o.rng), step(o.rng)), 4)
+    f, l, s = round.((first(o.rng), last(o.rng), step(o.rng)), digits=4)
     println(io, "  > edges  | $f : $s : $l")
     println(io, "  > kernel | $(o.kernel)")
     println(io, "  > m      | $(o.m)")
     println(io, "  > nobs   | $(o.nobs)")
     x, y = xy(o)
-    inds = find(y)
+    inds = findall(x -> x != 0, y)
     print(io, UnicodePlots.lineplot(x[inds], y[inds]; grid = false))
 end
 
@@ -91,7 +91,7 @@ Ash objectes can be updated with new data, smoothing parameter(s), or kernel(s).
     ash!(obj, newx, newy; kw...)
 
 """
-function ash(x::AbstractArray; rng::Range = extendrange(x), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
+function ash(x::AbstractArray; rng::AbstractRange = extendrange(x), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
     o = Ash(rng, kernel, m)
     _histogram!(o, x)
     _ash!(o)
@@ -128,8 +128,8 @@ end
 Base.merge(o::Ash, o2::Ash) = merge!(copy(o), o2)
 Base.copy(o::Ash) = deepcopy(o)
 function Base.:(==)(o::Ash, o2::Ash) 
-    fns = fieldnames(o)
-    all(getfield.(o, fns) .== getfield.(o2, fns))
+    fns = fieldnames(typeof(o))
+    all(getfield.(Ref(o), fns) .== getfield.(Ref(o2), fns))
 end
 
 "return the range and density of a univariate ASH"
@@ -150,8 +150,8 @@ Statistics.quantile(o::Ash, p = [0, .25, .5, .75, 1]) = quantile(o.rng, fweights
 Statistics.std(o::Ash) = sqrt(var(o))
 
 function Base.extrema(o::Ash)
-    imin = findfirst(x -> x>0, o.counts)
-    imax = findlast(x -> x>0, o.counts)
+    imin = findnext(x -> x > 0, o.counts, 1)
+    imax = findlast(x -> x > 0, o.counts)
     o.rng[imin], o.rng[imax]
 end
 
@@ -160,7 +160,7 @@ end
 
 Return the estimated density at the point `x`.
 """
-function Distributions.pdf(o::Ash, x::Real)
+function pdf(o::Ash, x::Real)
     rng = o.rng
     y = o.density
     i = searchsortedlast(rng, x)
@@ -176,7 +176,7 @@ end
 
 Return the estimated cumulative density at the point `x`.
 """
-function Distributions.cdf(o::Ash, x::Real)
+function cdf(o::Ash, x::Real)
     cdf = cumsum(o.density) * step(o.rng)
     i = searchsortedlast(o.rng, x)
     if i == 0

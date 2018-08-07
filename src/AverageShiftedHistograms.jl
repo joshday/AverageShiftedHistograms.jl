@@ -1,6 +1,7 @@
 module AverageShiftedHistograms
 
-import UnicodePlots, Distributions, RecipesBase
+import UnicodePlots, RecipesBase
+using LinearAlgebra, Statistics
 import StatsBase: nobs, fweights
 export ash, ash!, extendrange, xy, xyz, nout, nobs, Kernels
 
@@ -15,7 +16,7 @@ Create a `LinSpace` of length `n` starting at `s` standard deviations below
 """
 function extendrange(y::AbstractVector, s = 0.5, n = 500)
     σ = std(y)
-    linspace(minimum(y) - s * σ, maximum(y) + s * σ, n)
+    range(minimum(y) - s * σ, stop = maximum(y) + s * σ, length = n)
 end
 
 include("kernels.jl")

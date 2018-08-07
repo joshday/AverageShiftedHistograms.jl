@@ -1,4 +1,4 @@
-mutable struct Ash2{R1 <: Range, R2 <: Range, F1 <: Function, F2 <: Function}
+mutable struct Ash2{R1 <: AbstractRange, R2 <: AbstractRange, F1 <: Function, F2 <: Function}
     kernelx::F1
     kernely::F2
     rngx::R1               # rng for x
@@ -10,7 +10,7 @@ mutable struct Ash2{R1 <: Range, R2 <: Range, F1 <: Function, F2 <: Function}
     nobs::Int64
 
     function Ash2(kx::F1, ky::F2, rngx::R1, rngy::R2, mx::Int, my::Int) where
-            {F1 <: Function, F2 <: Function, R1 <: Range, R2 <: Range}
+            {F1 <: Function, F2 <: Function, R1 <: AbstractRange, R2 <: AbstractRange}
 
         v = zeros(Int, length(rngy), length(rngx))
         z = zeros(Float64, length(rngy), length(rngx))
@@ -19,12 +19,12 @@ mutable struct Ash2{R1 <: Range, R2 <: Range, F1 <: Function, F2 <: Function}
 end
 function Base.show(io::IO, o::Ash2)
     println(io, "Ash2")
-    f, l, s = round.((first(o.rngx), last(o.rngx), step(o.rngx)), 4)
+    f, l, s = round.((first(o.rngx), last(o.rngx), step(o.rngx)), digits=4)
     print(io, "X:")
     println(io, "  > edges  | $f : $s : $l")
     println(io, "    > kernel | $(o.kernelx)")
     println(io, "    > m      | $(o.mx)")
-    f, l, s = round.((first(o.rngy), last(o.rngy), step(o.rngy)), 4)
+    f, l, s = round.((first(o.rngy), last(o.rngy), step(o.rngy)), digits=4)
     print(io, "Y:")
     println(io, "  > edges  | $f : $s : $l")
     println(io, "    > kernel | $(o.kernely)")
@@ -33,8 +33,8 @@ function Base.show(io::IO, o::Ash2)
 end
 
 function Base.:(==)(o::Ash2, o2::Ash2) 
-    fns = fieldnames(o)
-    all(getfield.(o, fns) .== getfield.(o2, fns))
+    fns = fieldnames(typeof(o))
+    all(getfield.(Ref(o), fns) .== getfield.(Ref(o2), fns))
 end
 
 function _histogram!(o::Ash2, x::AbstractVector, y::AbstractVector)
@@ -87,7 +87,7 @@ end
 
 
 function ash(x::AbstractVector, y::AbstractVector;
-        rngx::Range = extendrange(x), rngy::Range = extendrange(y),
+        rngx::AbstractRange = extendrange(x), rngy::AbstractRange = extendrange(y),
         mx = 5, my = 5, kernelx = Kernels.biweight, kernely = Kernels.biweight)
     o = Ash2(kernelx, kernely, rngx, rngy, mx, my)
     _histogram!(o, x, y)
@@ -111,16 +111,16 @@ end
 xyz(o::Ash2) = (o.rngx, o.rngy, copy(o.z))
 nobs(o::Ash2) = o.nobs
 nout(o::Ash2) = nobs(o) - sum(o.v)
-function Base.mean(o::Ash2)
-    meanx = mean(o.rngx, fweights(vec(sum(o.v, 1))))
-    meany = mean(o.rngy, fweights(vec(sum(o.v, 2))))
+function Statistics.mean(o::Ash2)
+    meanx = mean(o.rngx, fweights(vec(sum(o.v, dims=1))))
+    meany = mean(o.rngy, fweights(vec(sum(o.v, dims=2))))
     [meanx; meany]
 end
-function Base.var(o::Ash2)
-    varx = var(o.rngx, fweights(vec(sum(o.v, 1))); corrected=true)
-    vary = var(o.rngy, fweights(vec(sum(o.v, 2))); corrected=true)
+function Statistics.var(o::Ash2)
+    varx = var(o.rngx, fweights(vec(sum(o.v, dims=1))); corrected=true)
+    vary = var(o.rngy, fweights(vec(sum(o.v, dims=2))); corrected=true)
     [varx; vary]
 end
-Base.std(o::Ash2) = sqrt.(var(o))
+Statistics.std(o::Ash2) = sqrt.(var(o))
 
 RecipesBase.@recipe f(o::Ash2) = o.rngx, o.rngy, o.z

@@ -1,11 +1,11 @@
 module Tests
-using AverageShiftedHistograms, StatsBase, Base.Test, Distributions
+using AverageShiftedHistograms, Test, StatsBase, Statistics, LinearAlgebra
 
-info("Messy Output")
+@info("Messy Output")
 show(ash(randn(1000)))
 show(ash(randn(100), randn(100)))
 println("\n\n")
-info("Begin Tests")
+@info("Begin Tests")
 
 
 @testset "Kernels" begin
@@ -33,20 +33,20 @@ end
         @test f(o) ≈ f(x) atol=.1
     end
     AverageShiftedHistograms.histdensity(o)
-    @test quantile(o, 0) ≈ o.rng[findfirst(o.counts)]
+    @test quantile(o, 0) ≈ o.rng[findnext(x -> x != 0, o.counts, 1)]
 
     # check that histogram is correct
-    h = fit(Histogram, x, (-4:.1:4.1)-.05; closed = :left)
+    h = fit(Histogram, x, (-4:.1:4.1) .- .05; closed = :left)
     @test h.weights == o.counts
 
     ash!(o, x)
     @test nobs(o) == 20_000
-    @test pdf(o, -5) == 0
-    @test pdf(o, 5) == 0
-    @test pdf(o, 0) > 0
-    @test cdf(o, -5) == 0
-    @test cdf(o, 0) ≈ .5 atol=.05
-    @test cdf(o, 5) ≈ 1
+    @test AverageShiftedHistograms.pdf(o, -5) == 0
+    @test AverageShiftedHistograms.pdf(o, 5) == 0
+    @test AverageShiftedHistograms.pdf(o, 0) > 0
+    @test AverageShiftedHistograms.cdf(o, -5) == 0
+    @test AverageShiftedHistograms.cdf(o, 0) ≈ .5 atol=.05
+    @test AverageShiftedHistograms.cdf(o, 5) ≈ 1
 
     o = ash([.1, .1]; rng = -1:.1:1)
     @test nout(o) == 0
