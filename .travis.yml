@@ -1,19 +1,16 @@
 language: julia
 os:
   - linux
-  # - osx
+  - osx
 julia:
-  - 0.7
+  - 0.7-beta
   - nightly
-matrix:
-  allow_failures:
-    - julia: nightly
 notifications:
   email: false
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("AverageShiftedHistograms"); Pkg.test("AverageShiftedHistograms"; coverage=true)'
+  - julia --check-bounds=yes -e 'import Pkg; Pkg.clone(pwd()); Pkg.build("AverageShiftedHistograms"); Pkg.test("AverageShiftedHistograms"; coverage=true)'
 after_success:
-  - julia -e 'Pkg.add("Documenter")'
-  - julia -e 'cd(Pkg.dir("AverageShiftedHistograms")); include(joinpath("docs", "make.jl"))'
-  - julia -e 'cd(Pkg.dir("AverageShiftedHistograms")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Coveralls.process_folder())'
+  - julia -e 'import Pkg; Pkg.add("Documenter")'
+  - julia -e 'import Pkg; cd(Pkg.dir("AverageShiftedHistograms")); include(joinpath("docs", "make.jl"))'
+  - julia -e 'import Pkg; cd(Pkg.dir("AverageShiftedHistograms")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Coveralls.process_folder())'
