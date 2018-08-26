@@ -11,7 +11,7 @@ export ash, ash!, extendrange, xy, xyz, nout, nobs, Kernels
 """
 `extendrange(x, s = .5, n = 200)`
 
-Create a `LinSpace` of length `n` starting at `s` standard deviations below
+Create a range of length `n` starting at `s` standard deviations below
 `minimum(x)` and ending at `s` standard deviations above `maximum(x)`
 """
 function extendrange(y::AbstractVector, s = 0.5, n = 500)
