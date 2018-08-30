@@ -11,5 +11,6 @@ Density estimation using Average Shifted Histograms.  ASH is essentially Kernel 
 ## Installation:
 
 ```julia
+import Pkg
 Pkg.add("AverageShiftedHistograms")
 ```
