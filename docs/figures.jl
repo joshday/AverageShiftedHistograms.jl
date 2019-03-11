@@ -3,11 +3,12 @@ using AverageShiftedHistograms, Distributions, Plots
 gr()
 
 
-# o = ash(rand(Gamma(5, 1), 0), 0:.05:20, m = 15)
-# sz = 20
+# sz = 1000
+# o = ash(rand(Gamma(5, 1), sz), rng=0:.05:20, m = 15)
+
 # anim = @animate for i in 1:50
-#     fit!(o, rand(Gamma(5, 1), sz); warnout = false)
-#     plot(o, title = "Nobs = $(10 * i)", ylim = (0, .5))
+#     plot(o, title = "Nobs = $(sz * i)", ylim = (0, .5))
+#     ash!(o, rand(Gamma(5, 1), sz))
 # end
 # gif(anim, "animation.gif", fps = 10)
 
