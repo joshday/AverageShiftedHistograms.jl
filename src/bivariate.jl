@@ -29,10 +29,10 @@ function Base.show(io::IO, o::Ash2)
     println(io, "  > edges  | $f : $s : $l")
     println(io, "    > kernel | $(o.kernely)")
     println(io, "    > m      | $(o.my)")
-    print(io, UnicodePlots.spy(o.z).graphics)
+    print(io, UnicodePlots.spy(reverse(o.z, dims=1)).graphics)
 end
 
-function Base.:(==)(o::Ash2, o2::Ash2) 
+function Base.:(==)(o::Ash2, o2::Ash2)
     fns = fieldnames(typeof(o))
     all(getfield.(Ref(o), fns) .== getfield.(Ref(o2), fns))
 end
@@ -123,4 +123,7 @@ function Statistics.var(o::Ash2)
 end
 Statistics.std(o::Ash2) = sqrt.(var(o))
 
-RecipesBase.@recipe f(o::Ash2) = o.rngx, o.rngy, o.z
+RecipesBase.@recipe function f(o::Ash2; hist=false)
+    seriestype --> :heatmap
+    o.rngx, o.rngy, (hist ? o.v : o.z)
+end
