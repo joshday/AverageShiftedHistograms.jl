@@ -141,7 +141,7 @@ nobs(o::Ash) = o.nobs
 "return the number of observations that fell outside of the histogram range"
 nout(o::Ash) = nobs(o) - sum(o.counts)
 
-"return the histogram values as a density (intergrates to 1)"
+"return the histogram values as a density (integrates to 1)"
 histdensity(o::Ash) = o.counts ./ nobs(o) ./ step(o.rng)
 
 Statistics.mean(o::Ash) = mean(o.rng, fweights(o.counts))
