@@ -4,3 +4,4 @@
 *.Rhistory
 *.gif
 docs/site
+*Manifest.toml
