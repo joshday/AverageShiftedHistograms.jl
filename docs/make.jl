@@ -1,7 +1,7 @@
 using Documenter, AverageShiftedHistograms
 
 makedocs(
-    format = :html,
+    format = Documenter.HTML(),
     sitename = "AverageShiftedHistograms.jl",
     authors = "Josh Day",
     clean = true,
@@ -13,9 +13,4 @@ makedocs(
 
 deploydocs(
     repo   = "github.com/joshday/AverageShiftedHistograms.jl.git",
-    target = "build",
-    osname = "linux",
-    julia  = "0.6",
-    deps   = nothing,
-    make   = nothing
 )
