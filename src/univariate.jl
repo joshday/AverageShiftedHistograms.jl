@@ -127,7 +127,7 @@ function Base.merge!(o::Ash, o2::Ash)
 end
 Base.merge(o::Ash, o2::Ash) = merge!(copy(o), o2)
 Base.copy(o::Ash) = deepcopy(o)
-function Base.:(==)(o::Ash, o2::Ash) 
+function Base.:(==)(o::Ash, o2::Ash)
     fns = fieldnames(typeof(o))
     all(getfield.(Ref(o), fns) .== getfield.(Ref(o2), fns))
 end
@@ -150,9 +150,9 @@ Statistics.quantile(o::Ash, p = [0, .25, .5, .75, 1]) = quantile(o.rng, fweights
 Statistics.std(o::Ash) = sqrt(var(o))
 
 function Base.extrema(o::Ash)
-    imin = findnext(x -> x > 0, o.counts, 1)
-    imax = findlast(x -> x > 0, o.counts)
-    o.rng[imin], o.rng[imax]
+    i = findfirst(x -> x > 0, o.counts)
+    j = findlast(x -> x > 0, o.counts)
+    o.rng[i], o.rng[j]
 end
 
 """

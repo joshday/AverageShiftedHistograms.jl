@@ -26,7 +26,7 @@ end
 
 @testset "Ash" begin
     x = randn(10_000)
-    o = ash(x, rng = -4:.1:4)
+    o = ash(x, rng = -4:.01:4)
     @test extrema(o)[1] ≈ extrema(x)[1] atol=0.2
     @test extrema(o)[2] ≈ extrema(x)[2] atol=0.2
 
@@ -37,7 +37,7 @@ end
     @test quantile(o, 0) ≈ o.rng[findnext(x -> x != 0, o.counts, 1)]
 
     # check that histogram is correct
-    h = fit(Histogram, x, (-4:.1:4.1) .- .05; closed = :left)
+    h = fit(Histogram, x, (-4:.01:4.01) .- .005; closed = :left)
     @test h.weights == o.counts
 
     ash!(o, x)
