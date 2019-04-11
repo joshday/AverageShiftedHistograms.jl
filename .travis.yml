@@ -8,11 +8,8 @@ julia:
   - nightly
 notifications:
   email: false
-
 after_success:
-  - julia -e 'import Pkg; Pkg.add("Documenter")'
-  - julia -e 'import Pkg; cd(Pkg.dir("AverageShiftedHistograms")); include(joinpath("docs", "make.jl"))'
-  - julia -e 'import Pkg; cd(Pkg.dir("AverageShiftedHistograms")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Coveralls.process_folder())'
+  - julia -e 'import Pkg; cd(Pkg.dir("AverageShiftedHistograms")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
 
 jobs:
   include:
