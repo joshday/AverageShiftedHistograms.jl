@@ -1,5 +1,5 @@
 name = "AverageShiftedHistograms"
-uuid = "2ce7a938-4c2e-50e8-8f6e-1a68c546fc8d"
+uuid = "77b51b56-6f8f-5c3a-9cb4-d71f9594ea6e"
 version = "0.8.0"
 
 [deps]
