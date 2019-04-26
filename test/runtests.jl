@@ -37,7 +37,7 @@ end
     @test quantile(o, 0) ≈ o.rng[findnext(x -> x != 0, o.counts, 1)]
 
     # check that histogram is correct
-    h = fit(Histogram, x, (-4:.01:4.01) .- .005; closed = :left)
+    h = fit(Histogram, x, (-7:.01:7.01) .- .005; closed = :left)
     @test h.weights == o.counts
 
     ash!(o, x)
