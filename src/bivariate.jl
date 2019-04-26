@@ -60,7 +60,7 @@ function _ash!(o::Ash2)
     kernelx, kernely = o.kernelx, o.kernely
     w = zeros(2 * my - 1, 2 * mx - 1)
     for i = (1 - my):(my - 1), j = (1 - mx):(mx - 1)
-        w[i + my, j + mx] = kernely(i / my) * kernelx(i / mx)
+        w[i + my, j + mx] = kernely(i / my) * kernelx(j / mx)
     end
     v, z = o.v, o.z
     fill!(z, 0.0)
