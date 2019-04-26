@@ -26,9 +26,9 @@ end
 
 @testset "Ash" begin
     x = randn(10_000)
-    o = ash(x, rng = -4:.01:4)
-    @test extrema(o)[1] ≈ extrema(x)[1] atol=0.2
-    @test extrema(o)[2] ≈ extrema(x)[2] atol=0.2
+    o = ash(x, rng = -7:.01:7)
+    @test extrema(o)[1] ≈ extrema(x)[1] atol=0.01
+    @test extrema(o)[2] ≈ extrema(x)[2] atol=0.01
 
     for f in [mean, var, std, x -> quantile(x, .4), x -> quantile(x, .4:.1:.6)]
         @test f(o) ≈ f(x) atol=.1
