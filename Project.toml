@@ -1,6 +1,6 @@
 name = "AverageShiftedHistograms"
 uuid = "77b51b56-6f8f-5c3a-9cb4-d71f9594ea6e"
-version = "0.8.0"
+version = "0.8.1"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
