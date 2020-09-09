@@ -196,7 +196,7 @@ RecipesBase.@recipe function f(o::Ash; hist = true)
     hist && RecipesBase.@series begin
         label --> "Histogram Density"
         seriestype --> :sticks
-        alpha --> .6
+        seriesalpha --> .6
         o.rng, histdensity(o)
     end
 end
