@@ -32,12 +32,12 @@ using Plots
 
 y = randn(100_000)
 
-o = ash(y; rng = -5:.1:5)
+o = ash(y; rng = -5:.5:5)
 
 xy(o)  # return (rng, density)
 
 plot(plot(o), plot(o; hist=false))
-savefig("plot1.png") # hide
+savefig("plot1.png")  # hide
 ```
 ![](plot1.png)
 
@@ -49,7 +49,7 @@ savefig("plot1.png") # hide
 ```@example index
 o = ash(y; rng = -5:.1:5, m = 20)
 plot(o)
-savefig("plot2.png") # hide
+savefig("plot2.png")  # hide
 ```
 ![](plot2.png)
 
@@ -66,7 +66,7 @@ y = x + randn(10_000)
 o = ash(x, y)
 
 plot(o)
-savefig("bivariate.png")
+savefig("bivariate.png")  # hide
 ```
 
 ![](bivariate.png)
@@ -93,6 +93,7 @@ plot([
 ], line=(2, :auto))
 
 savefig("kernels.png")
+
 nothing
 ```
 ![](kernels.png)
