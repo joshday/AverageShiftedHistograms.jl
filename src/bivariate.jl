@@ -86,7 +86,7 @@ function _ash!(o::Ash2)
 end
 
 
-function ash(x::AbstractVector, y::AbstractVector;
+function ash(x, y;
         rngx::AbstractRange = extendrange(x), rngy::AbstractRange = extendrange(y),
         mx = 5, my = 5, kernelx = Kernels.biweight, kernely = Kernels.biweight)
     o = Ash2(kernelx, kernely, rngx, rngy, mx, my)
@@ -99,7 +99,7 @@ function ash!(o::Ash2; mx = o.mx, my = o.my, kernelx = o.kernelx, kernely = o.ke
     o.mx, o.my, o.kernelx, o.kernely = mx, my, kernelx, kernely
     _ash!(o)
 end
-function ash!(o::Ash2, x::AbstractArray, y::AbstractArray; mx = o.mx, my = o.my,
+function ash!(o::Ash2, x, y; mx = o.mx, my = o.my,
         kernelx = o.kernelx, kernely = o.kernely)
     o.mx, o.my, o.kernelx, o.kernely = mx, my, kernelx, kernely
     _histogram!(o, x, y)

@@ -25,7 +25,7 @@ end
 Base.push!(o::Ash, y::Real) = _histogram!(o::Ash, [y])
 
 # add data to the histogram
-function _histogram!(o::Ash, y::AbstractArray{<:Real})
+function _histogram!(o::Ash, y)
     b = length(o.rng)
     a = first(o.rng)
     δinv = inv(step(o.rng))
@@ -91,7 +91,7 @@ Ash objectes can be updated with new data, smoothing parameter(s), or kernel(s).
     ash!(obj, newx, newy; kw...)
 
 """
-function ash(x::AbstractArray; rng::AbstractRange = extendrange(x), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
+function ash(x; rng::AbstractRange = extendrange(x), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
     o = Ash(rng, kernel, m)
     _histogram!(o, x)
     _ash!(o)
@@ -109,7 +109,7 @@ function ash!(o::Ash; m = o.m, kernel = o.kernel)
     o.kernel = kernel
     _ash!(o)
 end
-function ash!(o::Ash, y::AbstractArray; m = o.m, kernel = o.kernel)
+function ash!(o::Ash, y; m = o.m, kernel = o.kernel)
     o.m = m
     o.kernel = kernel
     _histogram!(o, y)

@@ -1,11 +1,18 @@
+```@setup index
+using Pkg
+Pkg.add("Plots")
+ENV["GKSwstype"] = "100"
+ENV["GKS_ENCODING"]="utf8"
+```
+
 # AverageShiftedHistograms.jl
 
 
 An Average Shifted Histogram (ASH) estimator is essentially a kernel density calculated
-with a fine-partition histogram.
+over a fine-partition histogram.
 
 ```@raw html
-<img width = 700 src = "https://cloud.githubusercontent.com/assets/8075494/17938441/ce8815e4-69da-11e6-8f19-33052e2ef21e.gif">
+<img width = 600 src = "https://cloud.githubusercontent.com/assets/8075494/17938441/ce8815e4-69da-11e6-8f19-33052e2ef21e.gif">
 ```
 
 
@@ -18,9 +25,10 @@ ash
 ```
 
 ## Univariate Example
-```julia
+
+```@example index
 using AverageShiftedHistograms
-using Plots; gr()
+using Plots
 
 y = randn(100_000)
 
@@ -28,28 +36,29 @@ o = ash(y; rng = -5:.1:5)
 
 xy(o)  # return (rng, density)
 
-plot(o)
+plot(plot(o), plot(o; hist=false))
+savefig("plot1.png") # hide
 ```
-![](https://cloud.githubusercontent.com/assets/8075494/17912630/9267e1c0-6949-11e6-92d8-c2d93f96707b.png)
+![](plot1.png)
 
-```julia
-plot(o; hist = false)
-```
 
-![](https://user-images.githubusercontent.com/8075494/30670071-1fafb288-9e1e-11e7-81d2-e93be96209c8.png)
+!!! warning
+    Beware oversmoothing by setting the `m` parameter too large.  Note that "too large" is relative
+    to the width of the bin edges.
 
-```julia
-# BEWARE OVERSMOOTHING!
+```@example index
 o = ash(y; rng = -5:.1:5, m = 20)
 plot(o)
+savefig("plot2.png") # hide
 ```
-![](https://cloud.githubusercontent.com/assets/8075494/17917468/bfd17c2a-6971-11e6-9ffd-93baee75f5a7.png)
+![](plot2.png)
 
 
 ## Bivariate Example
-```julia
+
+```@example index
 using AverageShiftedHistograms
-using Plots; pyplot()
+using Plots
 
 x = randn(10_000)
 y = x + randn(10_000)
@@ -57,9 +66,10 @@ y = x + randn(10_000)
 o = ash(x, y)
 
 plot(o)
+savefig("bivariate.png")
 ```
 
-![](https://cloud.githubusercontent.com/assets/8075494/17917725/df56f456-6973-11e6-9347-abc82e262a82.png)
+![](bivariate.png)
 
 ## Kernel Functions
 
@@ -69,5 +79,20 @@ Any nonnegative symmetric function can be provided to `ash` to be used as a kern
 Kernels
 ```
 
+```@eval index
+plot([
+    Kernels.biweight,    
+    Kernels.cosine,      
+    Kernels.epanechnikov,
+    Kernels.triangular,  
+    Kernels.tricube,     
+    Kernels.triweight,   
+    Kernels.uniform,     
+    Kernels.gaussian,
+    Kernels.logistic
+], line=(2, :auto))
 
-![](https://user-images.githubusercontent.com/8075494/30523575-acd48de2-9bb1-11e7-8f0f-3ce2ab09c713.png)
+savefig("kernels.png")
+nothing
+```
+![](kernels.png)

@@ -14,7 +14,7 @@ export ash, ash!, extendrange, xy, xyz, nout, nobs, Kernels
 Create a range of length `n` starting at `s` standard deviations below
 `minimum(x)` and ending at `s` standard deviations above `maximum(x)`
 """
-function extendrange(y::AbstractVector, s = 0.5, n = 500)
+function extendrange(y, s = 0.5, n = 500)
     σ = std(y)
     range(minimum(y) - s * σ, stop = maximum(y) + s * σ, length = n)
 end

@@ -12,16 +12,16 @@ The Kernels module defines a collection of kernels to avoid namespace collisions
 - `logistic`
 """
 module Kernels
-inrange(u::Float64) = abs(u) <= 1.0
+in_range(u) = abs(u) ≤ 1
 
-biweight(u::Float64)        = inrange(u) ? (1.0 - u ^ 2) ^ 2 : 0.0
-cosine(u::Float64)          = inrange(u) ? cos(0.5 * π * u) : 0.0
-epanechnikov(u::Float64)    = inrange(u) ? 1.0 - u ^ 2 : 0.0
-triangular(u::Float64)      = inrange(u) ? 1.0 - abs(u) : 0.0
-tricube(u::Float64)         = inrange(u) ? (1.0 - abs(u) ^ 3) ^ 3 : 0.0
-triweight(u::Float64)       = inrange(u) ? (1.0 - u ^ 2) ^ 3 : 0.0
-uniform(u::Float64)         = inrange(u) ? 0.5 : 0.0
+biweight(u)         = in_range(u) ? (1.0 - u ^ 2) ^ 2 : 0.0
+cosine(u)           = in_range(u) ? cos(0.5 * π * u) : 0.0
+epanechnikov(u)     = in_range(u) ? 1.0 - u ^ 2 : 0.0
+triangular(u)       = in_range(u) ? 1.0 - abs(u) : 0.0
+tricube(u)          = in_range(u) ? (1.0 - abs(u) ^ 3) ^ 3 : 0.0
+triweight(u)        = in_range(u) ? (1.0 - u ^ 2) ^ 3 : 0.0
+uniform(u)          = in_range(u) ? 0.5 : 0.0
 
-gaussian(u::Float64) = exp(-0.5 * u ^ 2)
-logistic(u::Float64) = 1.0 / (exp(u) + 2.0 + exp(-u))
+gaussian(u) = exp(-0.5 * u ^ 2)
+logistic(u) = 1.0 / (exp(u) + 2.0 + exp(-u))
 end
