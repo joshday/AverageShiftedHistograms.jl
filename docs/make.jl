@@ -7,7 +7,7 @@ makedocs(
     clean = true,
     pages = [
         "index.md",
-        "kernels.md"
+        "kernels.md",
         "api.md"
     ]
 )
