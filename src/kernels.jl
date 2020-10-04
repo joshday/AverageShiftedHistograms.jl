@@ -1,16 +1,3 @@
-"""
-The Kernels module defines a collection of kernels to avoid namespace collisions:
-
-- `biweight`
-- `cosine`
-- `epanechnikov`
-- `triangular`
-- `tricube`
-- `triweight`
-- `uniform`
-- `gaussian`
-- `logistic`
-"""
 module Kernels
 in_range(u) = abs(u) ≤ 1
 

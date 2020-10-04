@@ -32,11 +32,11 @@ using Plots
 
 y = randn(100_000)
 
-o = ash(y; rng = -5:.5:5)
+o = ash(y; rng = -5:.2:5)
 
 xy(o)  # return (rng, density)
 
-plot(plot(o), plot(o; hist=false))
+plot(plot(o), plot(o; hist=false), layout=(2,1))
 savefig("plot1.png")  # hide
 ```
 ![](plot1.png)
@@ -70,30 +70,3 @@ savefig("bivariate.png")  # hide
 ```
 
 ![](bivariate.png)
-
-## Kernel Functions
-
-Any nonnegative symmetric function can be provided to `ash` to be used as a kernel.  The function does not need to be normalized (integrate to 1) as the fitting procedure takes care of this.
-
-```@docs
-Kernels
-```
-
-```@eval index
-plot([
-    Kernels.biweight,    
-    Kernels.cosine,      
-    Kernels.epanechnikov,
-    Kernels.triangular,  
-    Kernels.tricube,     
-    Kernels.triweight,   
-    Kernels.uniform,     
-    Kernels.gaussian,
-    Kernels.logistic
-], line=(2, :auto))
-
-savefig("kernels.png")
-
-nothing
-```
-![](kernels.png)
