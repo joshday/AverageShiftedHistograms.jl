@@ -1,6 +1,4 @@
 ```@setup kernel
-using Pkg
-Pkg.add("Plots")
 ENV["GKSwstype"] = "100"
 ENV["GKS_ENCODING"]="utf8"
 ```
