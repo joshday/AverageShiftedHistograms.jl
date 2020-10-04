@@ -14,13 +14,13 @@ An Average Shifted Histogram (ASH) estimator is essentially a [kernel density es
 - Adding new data is an `O(nbins)` operation vs. `O(n)` for KDE, `nbins << n`.
 - ASH is considerably faster even for small datasets.  See below with a comparison with [KernelDensity.jl](https://github.com/JuliaStats/KernelDensity.jl).
   
-```
+```julia
 julia> @btime kde(x) setup=(x=randn(100));
   169.523 μs (106 allocations: 56.05 KiB)
 
 julia> @btime ash(x) setup=(x=randn(100));
   4.173 μs (3 allocations: 8.22 KiB)
-  ```
+```
 
 
 ```@raw html
