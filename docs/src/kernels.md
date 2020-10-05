@@ -1,8 +1,3 @@
-```@setup kernel
-ENV["GKSwstype"] = "100"
-ENV["GKS_ENCODING"]="utf8"
-```
-
 # Kernel Functions
 
 
@@ -32,7 +27,8 @@ The **Kernels** module defines a collection of kernels:
 
 See [https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use](https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use) for detailed descriptions.
 
-```@eval kernel
+```@eval
+using Plots # hide
 kernels = [
         Kernels.biweight,    
         Kernels.cosine,      
@@ -46,9 +42,4 @@ kernels = [
     ]
 
 plot(kernels, -1.5, 1.5, line=(2, :auto), lab=permutedims(string.(kernels)))
-
-savefig("kernels.png")
-
-nothing
 ```
-![](kernels.png)

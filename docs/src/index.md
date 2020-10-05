@@ -1,8 +1,3 @@
-```@setup index
-ENV["GKSwstype"] = "100"
-ENV["GKS_ENCODING"]="utf8"
-```
-
 # AverageShiftedHistograms.jl
 
 
@@ -28,48 +23,13 @@ julia> @btime ash(x) setup=(x=randn(100));
 ```
 
 
-## Tutorial
+## Usage
 
 The main function exported by **AverageShiftedHistograms** is `ash`.
 
 ```@docs
 ash
 ```
-
-### Univariate Example
-
-```@example index
-using AverageShiftedHistograms
-using Plots
-
-y = randn(100_000)
-
-o = ash(y; rng = -5:.2:5)
-
-xy(o)  # return (rng, density)
-
-plot(plot(o), plot(o; hist=false), layout=(2,1))
-savefig("plot1.png")  # hide
-```
-![](plot1.png)
-
-
-### Bivariate Example
-
-```@example index
-using AverageShiftedHistograms
-using Plots
-
-x = randn(10_000)
-y = x + randn(10_000)
-
-o = ash(x, y)
-
-plot(o)
-savefig("bivariate.png")  # hide
-```
-
-![](bivariate.png)
 
 
 ### Gotchas
@@ -78,9 +38,10 @@ savefig("bivariate.png")  # hide
     Beware oversmoothing by setting the `m` parameter too large.  Note that "too large" is relative
     to the width of the bin edges.
 
-```@example index
+```@example
+using AverageShiftedHistograms, Plots
+
 o = ash(y; rng = -5:.1:5, m = 20)
+
 plot(o)
-savefig("plot2.png")  # hide
 ```
-![](plot2.png)
