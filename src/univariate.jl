@@ -10,7 +10,7 @@ mutable struct Ash{R <: AbstractRange, F <: Function}
         new{R, F}(zeros(Float64, length(rng)), rng, zeros(Int, length(rng)), kernel, m, 0)
     end
 end
-function Base.show(io::IO, o::Ash)
+function Base.show(io::IO, ::MIME"text/plain", o::Ash)
     println(io, "Ash")
     f, l, s = round.((first(o.rng), last(o.rng), step(o.rng)), digits=4)
     println(io, "  > edges  | $f : $s : $l")
