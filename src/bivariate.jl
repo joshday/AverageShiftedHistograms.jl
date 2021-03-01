@@ -86,8 +86,8 @@ function _ash!(o::Ash2)
 end
 
 
-function ash(x, y;
-        rngx::AbstractRange = extendrange(x), rngy::AbstractRange = extendrange(y),
+function ash(x, y; nbin=500, nbinx=nbin, nbiny=nbin,
+        rngx::AbstractRange = extendrange(x, nbinx), rngy::AbstractRange = extendrange(y, nbiny),
         mx = 5, my = 5, kernelx = Kernels.biweight, kernely = Kernels.biweight)
     o = Ash2(kernelx, kernely, rngx, rngy, mx, my)
     _histogram!(o, x, y)

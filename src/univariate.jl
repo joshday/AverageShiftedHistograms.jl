@@ -91,7 +91,7 @@ Ash objectes can be updated with new data, smoothing parameter(s), or kernel(s).
     ash!(obj, newx, newy; kw...)
 
 """
-function ash(x; rng::AbstractRange = extendrange(x), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
+function ash(x; nbin=500, rng::AbstractRange = extendrange(x, nbin), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
     o = Ash(rng, kernel, m)
     _histogram!(o, x)
     _ash!(o)
