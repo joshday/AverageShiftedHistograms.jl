@@ -8,7 +8,9 @@
 
 An Averaged Shifted Histogram (ASH) is essentially Kernel Density Estimation over a fine-partition histogram.  ASH only requires constant memory and can be constructed on-line, allowing you to estimate distributions for arbitrarily big data.
 
-![](https://user-images.githubusercontent.com/8075494/54132735-20e89600-43eb-11e9-9915-c9d588f64308.gif)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/8075494/54132735-20e89600-43eb-11e9-9915-c9d588f64308.gif">
+</p>
 
 | Docs | Build | Test |
 |------|-------|------|
