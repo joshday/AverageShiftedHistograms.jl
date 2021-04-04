@@ -9,7 +9,7 @@ ash!(obj, newx, kw...)
 
 # bivariate
 ash!(obj; kw...)
-ash!(obj, newx, newy; kw...)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/joshday/AverageShiftedHistograms.jl/blob/8b2624131fe656ca5abafe9cf76590be25c34092/src/univariate.jl#L61-L93">source</a></section></article><h3 id="Gotchas"><a class="docs-heading-anchor" href="#Gotchas">Gotchas</a><a id="Gotchas-1"></a><a class="docs-heading-anchor-permalink" href="#Gotchas" title="Permalink"></a></h3><div class="admonition is-warning"><header class="admonition-header">Warning</header><div class="admonition-body"><p>Beware oversmoothing by setting the <code>m</code> parameter too large.  Note that &quot;too large&quot; is relative to the width of the bin edges.</p></div></div><pre><code class="language-">using AverageShiftedHistograms, Plots
+ash!(obj, newx, newy; kw...)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/joshday/AverageShiftedHistograms.jl/blob/ced64446d507d240eea5e7d6af9604c771288619/src/univariate.jl#L61-L93">source</a></section></article><h3 id="Gotchas"><a class="docs-heading-anchor" href="#Gotchas">Gotchas</a><a id="Gotchas-1"></a><a class="docs-heading-anchor-permalink" href="#Gotchas" title="Permalink"></a></h3><div class="admonition is-warning"><header class="admonition-header">Warning</header><div class="admonition-body"><p>Beware oversmoothing by setting the <code>m</code> parameter too large.  Note that &quot;too large&quot; is relative to the width of the bin edges.</p></div></div><pre><code class="language-">using AverageShiftedHistograms, Plots
 
 o = ash(y; rng = -5:.1:5, m = 20)
 
