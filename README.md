@@ -6,7 +6,7 @@
   <strong>⚡ Lightning fast density estimation in Julia ⚡</strong>
 </p>
 
-An Averaged Shifted Histogram (ASH) is essentially Kernel Density Estimation over a fine-partition histogram.  ASH only requires constant memory and can be constructed on-line, allowing you to estimate distributions for arbitrarily big data.
+An Averaged Shifted Histogram (ASH) is essentially Kernel Density Estimation over a fine-partition histogram.  ASH uses **constant memory**, can be constructed on-line via **O(nbins)** updates, and lets you estimate densities for **arbitrarily big data**.
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/8075494/54132735-20e89600-43eb-11e9-9915-c9d588f64308.gif">
