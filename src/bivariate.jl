@@ -134,7 +134,7 @@ function pdf(o::Ash2, x::Real, y::Real)
     j = searchsortedlast(ry, y)
     # Bilinear interpolation
     if 1 <= i < length(rx) && 1 <= j < length(ry)
-        ([rx[i+1]-x x-rx[i]]*[z[i, j] z[i, j+1]; z[i+1, j] z[i+1, j+1]]*[ry[j+1]-y; y-ry[j]])[1]/((rx[i+1]-rx[i])*(ry[j+1]-ry[j]))
+        ([rx[i+1]-x x-rx[i]]*[z[j, i] z[j+1, i]; z[j, i+1] z[j+1, i+1]]*[ry[j+1]-y; y-ry[j]])[1]/((rx[i+1]-rx[i])*(ry[j+1]-ry[j]))
     else
         0.0
     end
