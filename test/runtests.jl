@@ -85,6 +85,13 @@ end
 
     @test nobs(o) == 1000
 
+    # pdf
+    rx = o.rngx; ry = o.rngy
+    ig = rx.step; jg = ry.step
+    ilm = trunc(Int, length(rx) / 2)
+    jlm = trunc(Int, length(ry) / 2)
+    @test (o.z[ilm, jlm] + o.z[ilm + 1, jlm] + o.z[ilm, jlm + 1] + o.z[ilm + 1, jlm + 1]) / 4 ≈ AverageShiftedHistograms.pdf(o, Float64(rx[ilm] + ig / 2), Float64(ry[jlm] + jg / 2))
+
     o = ash([1,2], [1,2])
     @test nout(o) == 0
 

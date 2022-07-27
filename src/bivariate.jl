@@ -121,6 +121,25 @@ function Statistics.var(o::Ash2)
     vary = var(o.rngy, fweights(vec(sum(o.v, dims=2))); corrected=true)
     [varx; vary]
 end
+
+"""
+    pdf(o::Ash2, x::Real, y::Real)
+Return the estimated density at the point `(x, y)`.
+"""
+function pdf(o::Ash2, x::Real, y::Real)
+    z = o.z
+    rx = o.rngx
+    ry = o.rngy
+    i = searchsortedlast(rx, x)
+    j = searchsortedlast(ry, y)
+    # Bilinear interpolation
+    if 1 <= i < length(rx) && 1 <= j < length(ry)
+        ([rx[i+1]-x x-rx[i]]*[z[j, i] z[j+1, i]; z[j, i+1] z[j+1, i+1]]*[ry[j+1]-y; y-ry[j]])[1]/((rx[i+1]-rx[i])*(ry[j+1]-ry[j]))
+    else
+        0.0
+    end
+end
+
 Statistics.std(o::Ash2) = sqrt.(var(o))
 
 RecipesBase.@recipe function f(o::Ash2; hist=false)
