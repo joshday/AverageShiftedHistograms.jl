@@ -92,6 +92,12 @@ end
     jlm = trunc(Int, length(ry) / 2)
     @test (o.z[ilm, jlm] + o.z[ilm + 1, jlm] + o.z[ilm, jlm + 1] + o.z[ilm + 1, jlm + 1]) / 4 ≈ AverageShiftedHistograms.pdf(o, Float64(rx[ilm] + ig / 2), Float64(ry[jlm] + jg / 2))
 
+    # simpler pdf test
+    o2 = ash(1:3, 1:3, rngx=1:3, rngy=1:3, mx=1, my=1)
+    @test AverageShiftedHistograms.pdf(o2, 1, 1) == 1 / 3
+    @test AverageShiftedHistograms.pdf(o2, 2, 2) == 1 / 3
+    @test AverageShiftedHistograms.pdf(o2, 1, 2) == 0
+
     o = ash([1,2], [1,2])
     @test nout(o) == 0
 
