@@ -12,7 +12,7 @@ UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 [compat]
 RecipesBase = "0.7, 0.8, 1.0, 1.1"
 StatsBase = "0.32, 0.33"
-UnicodePlots = "1.1, 2.0, 2.1, 2.2, 2.3, 2.4"
+UnicodePlots = "1.1, 2.0, 2.1, 2.2, 2.3, 2.4, 3"
 julia = "1.0"
 
 [extras]
