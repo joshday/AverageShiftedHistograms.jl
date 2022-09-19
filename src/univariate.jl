@@ -156,18 +156,18 @@ function Base.extrema(o::Ash)
 end
 
 """
-    pdf(o::Ash, x::Real)
+    logpdf(o::Ash, x::Real)
 
 Return the estimated density at the point `x`.
 """
-function pdf(o::Ash, x::Real)
+function DensityInterface.logpdf(o::Ash, x::Real)
     rng = o.rng
     y = o.density
     i = searchsortedlast(rng, x)
     if 1 <= i < length(rng)
-        y[i] + (y[i+1] - y[i]) * (x - rng[i]) / (rng[i+1] - rng[i])
+        log(y[i]) + (log(y[i+1]) - log(y[i])) * (x - rng[i]) / (rng[i+1] - rng[i]))
     else
-        0.0
+        -inf
     end
 end
 
