@@ -3,7 +3,8 @@ module AverageShiftedHistograms
 import UnicodePlots, RecipesBase
 using LinearAlgebra, Statistics
 import StatsBase: nobs, fweights
-export ash, ash!, extendrange, xy, xyz, nout, nobs, Kernels
+import DensityInterface: logpdf, pdf
+export ash, ash!, extendrange, xy, xyz, nout, nobs, Kernels, logpdf, pdf
 
 
 #-----------------------------------------------------------------------# common
