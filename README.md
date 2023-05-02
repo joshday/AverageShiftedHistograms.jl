@@ -1,3 +1,9 @@
+| Docs | Build | Test |
+|------|-------|------|
+| [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://joshday.github.io/AverageShiftedHistograms.jl/stable) [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://joshday.github.io/AverageShiftedHistograms.jl/latest) | [![CI](https://github.com/joshday/AverageShiftedHistograms.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/joshday/AverageShiftedHistograms.jl/actions/workflows/CI.yml) | [![codecov.io](http://codecov.io/github/joshday/AverageShiftedHistograms.jl/coverage.svg?branch=master)](http://codecov.io/github/joshday/AverageShiftedHistograms.jl?branch=master)
+
+
+
 <h1 align="center">
   AverageShiftedHistograms.jl
 </h1>
@@ -11,10 +17,6 @@ An Averaged Shifted Histogram (ASH) is essentially Kernel Density Estimation ove
 <p align="center">
   <img src="https://user-images.githubusercontent.com/8075494/54132735-20e89600-43eb-11e9-9915-c9d588f64308.gif">
 </p>
-
-| Docs | Build | Test |
-|------|-------|------|
-| [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://joshday.github.io/AverageShiftedHistograms.jl/stable) [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://joshday.github.io/AverageShiftedHistograms.jl/latest) | [![Build status](https://github.com/joshday/AverageShiftedHistograms.jl/workflows/CI/badge.svg)](https://github.com/joshday/AverageShiftedHistograms.jl/actions?query=workflow%3ACI+branch%3Amaster) | [![codecov.io](http://codecov.io/github/joshday/AverageShiftedHistograms.jl/coverage.svg?branch=master)](http://codecov.io/github/joshday/AverageShiftedHistograms.jl?branch=master)
 
 
 
