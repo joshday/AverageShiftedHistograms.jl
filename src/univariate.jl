@@ -23,6 +23,7 @@ function Base.show(io::IO, ::MIME"text/plain", o::Ash)
 end
 
 Base.push!(o::Ash, y::Real) = _histogram!(o::Ash, [y])
+Base.push!(o::Ash, y::Real, weight::Real) = _weightedhistogram!(o::Ash, [y], [weight])
 
 # add data to the histogram
 function _histogram!(o::Ash, y)
@@ -36,6 +37,47 @@ function _histogram!(o::Ash, y)
             @inbounds c[ki] += 1
         end
     end
+    o.nobs += length(y)
+    return
+end
+
+#add weighted data to the histogram
+#=
+function _weightedhistogram!(o::Ash, y, weight)
+    b = length(o.rng)
+    a = first(o.rng)
+    b == length(weight) || throw(ArgumentError("length of Weights should be same as the length of the range"))
+    δinv = inv(step(o.rng))
+    c = o.counts
+    for yi in y
+        ki = floor(Int, (yi - a) * δinv + 1.5)
+        if 1 <= ki <= b
+            @inbounds c[ki] += weight[ki]
+        end
+    end
+    o.nobs += length(y)
+    return
+end
+=#
+function _weightedhistogram!(o::Ash, y, weight)
+    b = length(o.rng)
+    a = first(o.rng)
+    b == length(weight) || throw(DimensionMismatch("Length of weights should be same as the length of the range"))
+    δinv = inv(step(o.rng))
+    c = o.counts
+    map(y) do x
+        ki = floor(Int, (x - a) * δinv + 1.5)
+        if 1 <= ki <= b
+            c[ki] += weight[ki]
+        end
+    end
+#=    function increaseindex(x)
+        ki = floor(Int, (x - a) * δinv + 1.5)
+        if 1 <= ki <= b
+            @inbounds c[ki] += weight[ki]
+        end
+    end
+    increaseindex.(y)=#
     o.nobs += length(y)
     return
 end
@@ -97,6 +139,12 @@ function ash(x; nbin=500, rng::AbstractRange = extendrange(x, nbin), m = ceil(In
     _ash!(o)
 end
 
+function ashw(x, weight; nbin=500, rng::AbstractRange = extendrange(x, nbin), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
+    o = Ash(rng, kernel, m)
+    _weightedhistogram!(o, x, weight)
+    _ash!(o)
+end
+
 
 """
     ash!(o::Ash; kw...)
@@ -113,6 +161,12 @@ function ash!(o::Ash, y; m = o.m, kernel = o.kernel)
     o.m = m
     o.kernel = kernel
     _histogram!(o, y)
+    _ash!(o)
+end
+function ashw!(o::Ash, y, weight; m = o.m, kernel = o.kernel)
+    o.m = m
+    o.kernel = kernel
+    _weightedhistogram!(o, y, weight)
     _ash!(o)
 end
 
