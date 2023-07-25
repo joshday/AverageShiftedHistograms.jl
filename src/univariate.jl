@@ -41,24 +41,7 @@ function _histogram!(o::Ash, y)
     return
 end
 
-#add weighted data to the histogram
-#=
-function _weightedhistogram!(o::Ash, y, weight)
-    b = length(o.rng)
-    a = first(o.rng)
-    b == length(weight) || throw(ArgumentError("length of Weights should be same as the length of the range"))
-    δinv = inv(step(o.rng))
-    c = o.counts
-    for yi in y
-        ki = floor(Int, (yi - a) * δinv + 1.5)
-        if 1 <= ki <= b
-            @inbounds c[ki] += weight[ki]
-        end
-    end
-    o.nobs += length(y)
-    return
-end
-=#
+# add data to the weighted histogram
 function _weightedhistogram!(o::Ash, y, weight)
     b = length(o.rng)
     a = first(o.rng)
@@ -71,13 +54,6 @@ function _weightedhistogram!(o::Ash, y, weight)
             c[ki] += weight[ki]
         end
     end
-#=    function increaseindex(x)
-        ki = floor(Int, (x - a) * δinv + 1.5)
-        if 1 <= ki <= b
-            @inbounds c[ki] += weight[ki]
-        end
-    end
-    increaseindex.(y)=#
     o.nobs += length(y)
     return
 end
@@ -110,6 +86,15 @@ Fit an average shifted histogram to data `x`.  Keyword options are:
 - `m`      : Number of adjacent histograms to smooth over
 - `kernel` : kernel used to smooth the estimate
 
+# Univariate Weighted Ash
+    ashw(x, weight; kw...)
+
+Fit a weighted average shifted histogram to data `x`, with weights being `weights`.  Keyword options are:
+
+- `rng`    : values over which the density will be estimated
+- `m`      : Number of adjacent histograms to smooth over
+- `kernel` : kernel used to smooth the estimate
+
 # Bivariate Ash
     ash(x, y; kw...)
 
@@ -122,11 +107,12 @@ Fit a bivariate averaged shifted histogram to data vectors `x` and `y`.  Keyword
 - `kernely` : kernel in y direction
 
 # Mutating an Ash object
-Ash objectes can be updated with new data, smoothing parameter(s), or kernel(s).  They cannot, however, change the ranges over which the density is estimated.  It is therefore suggested to err on the side of caution when choosing data endpoints.
+Ash objectes can be updated with new data, new weights(only for univariates), smoothing parameter(s), or kernel(s).  They cannot, however, change the ranges over which the density is estimated.  It is therefore suggested to err on the side of caution when choosing data endpoints.
 
     # univariate
     ash!(obj; kw...)
     ash!(obj, newx, kw...)
+    ashw!(obj, newx, newweight; kw...)
 
     # bivariate
     ash!(obj; kw...)
@@ -149,8 +135,9 @@ end
 """
     ash!(o::Ash; kw...)
     ash!(o::Ash, newdata; kw...)
+    ashw!(o::Ash, newdata, newweight; kw...)
 
-Update an Ash estimate with new data, smoothing parameter (keyword `m`), or kernel (keyword `kernel`):
+Update an Ash estimate with new data, new weight, smoothing parameter (keyword `m`), or kernel (keyword `kernel`):
 """
 function ash!(o::Ash; m = o.m, kernel = o.kernel)
     o.m = m
