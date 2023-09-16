@@ -120,20 +120,14 @@ Ash objectes can be updated with new data, new weights(only for univariates), sm
     ash!(obj, newx, newy; kw...)
 
 """
-function ash(x; nbin=500, rng::AbstractRange = extendrange(x, nbin), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
+function ash(x; weight=nothing, nbin=500, rng::AbstractRange = extendrange(x, nbin), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
     o = Ash(rng, kernel, m)
-    _histogram!(o, x)
-    _ash!(o)
-end
-
-function ashw(x; weight=nothing, nbin=500, rng::AbstractRange = extendrange(x, nbin), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
     if weight === nothing
-        ash(x; nbin = nbin, rng = rng, m = m, kernel = kernel)
+        _histogram!(o, x)
     else
-        o = Ash(rng, kernel, m)
         _weightedhistogram!(o, x, weight)
-        _ash!(o)
     end
+    _ash!(o)
 end
 
 
@@ -149,21 +143,15 @@ function ash!(o::Ash; m = o.m, kernel = o.kernel)
     o.kernel = kernel
     _ash!(o)
 end
-function ash!(o::Ash, y; m = o.m, kernel = o.kernel)
+function ash!(o::Ash, y; weight=nothing,  m = o.m, kernel = o.kernel)
     o.m = m
     o.kernel = kernel
-    _histogram!(o, y)
-    _ash!(o)
-end
-function ashw!(o::Ash, y; weight=nothing, m = o.m, kernel = o.kernel)
     if weight === nothing
-        ash!(o, y; m = m, kernel = kernel)
+        _histogram!(o, y)
     else
-        o.m = m
-        o.kernel = kernel
         _weightedhistogram!(o, y, weight)
-        _ash!(o)
     end
+    _ash!(o)
 end
 
 function Base.merge!(o::Ash, o2::Ash)

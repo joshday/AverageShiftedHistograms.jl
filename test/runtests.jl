@@ -109,19 +109,18 @@ end
 
 @testset "AshWeighted" begin
     x = randn(10_000)
-    o = ashw(x; weight = ones(21), rng = -1:0.1:1)
+    o = ash(x; weight = ones(21), rng = -1:0.1:1)
     o2 = ash(x; rng = -1:0.1:1)
-    o3 = ashw(x; rng = -1:0.1:1)
-    @test o == o2 == o3
+    @test o == o2
 
     y = rand(1000)
     w = rand(1:10, 11)
     o = ash(y; rng = 0:0.1:1)
-    ow = ashw(y; weight = w, rng = 0:0.1:1)
+    ow = ash(y; weight = w, rng = 0:0.1:1)
     @test o.counts .* w == ow.counts
 
     w = rand(1:10, 10)
-    @test_throws DimensionMismatch ashw(y; weight = w, rng = 0:0.1:1)
+    @test_throws DimensionMismatch ash(y; weight = w, rng = 0:0.1:1)
     
 end
 
