@@ -42,7 +42,7 @@ function _histogram!(o::Ash, y)
 end
 
 # add data to the weighted histogram
-function _weightedhistogram!(o::Ash, y, weight)
+function _weightedhistogram!(o::Ash, y, weight::AbstractWeights)
     b = length(o.rng)
     a = first(o.rng)
     b == length(weight) || throw(DimensionMismatch("Length of weights should be same as the length of the range"))
@@ -80,18 +80,14 @@ end
 # Univariate Ash
     ash(x; kw...)
 
-Fit an average shifted histogram to data `x`.  Keyword options are:
+Fit an average shifted histogram to data `x`.
 
-- `rng`    : values over which the density will be estimated
-- `m`      : Number of adjacent histograms to smooth over
-- `kernel` : kernel used to smooth the estimate
+    ash(x, weight::AbstractWeights; kw...)
 
-# Univariate Weighted Ash
-    ashw(x; weight, kw...)
+Fit a weighted average shifted histogram to data `x`.
 
-Fit a weighted average shifted histogram to data `x`, with weights being `weights`.  Keyword options are:
+Keyword options are:
 
-- `weight` : weights (defaults to `nothing`)
 - `rng`    : values over which the density will be estimated
 - `m`      : Number of adjacent histograms to smooth over
 - `kernel` : kernel used to smooth the estimate
@@ -112,21 +108,23 @@ Ash objectes can be updated with new data, new weights(only for univariates), sm
 
     # univariate
     ash!(obj; kw...)
-    ash!(obj, newx, kw...)
-    ashw!(obj, newx; kw...)
+    ash!(obj, newx; kw...)
+    ash!(obj, newx, weight::AbstractWeights; kw...)
 
     # bivariate
     ash!(obj; kw...)
     ash!(obj, newx, newy; kw...)
 
 """
-function ash(x; weight=nothing, nbin=500, rng::AbstractRange = extendrange(x, nbin), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
+function ash(x; nbin=500, rng::AbstractRange = extendrange(x, nbin), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
     o = Ash(rng, kernel, m)
-    if weight === nothing
-        _histogram!(o, x)
-    else
-        _weightedhistogram!(o, x, weight)
-    end
+    _histogram!(o, x)
+    _ash!(o)
+end
+
+function ash(x, weight::AbstractWeights; nbin=500, rng::AbstractRange = extendrange(x, nbin), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
+    o = Ash(rng, kernel, m)
+    _weightedhistogram!(o, x, weight)
     _ash!(o)
 end
 
@@ -134,7 +132,7 @@ end
 """
     ash!(o::Ash; kw...)
     ash!(o::Ash, newdata; kw...)
-    ashw!(o::Ash, newdata; kw...)
+    ash!(o::Ash, newdata, weight::AbstractWeights; kw...)
 
 Update an Ash estimate with new data, new weight, smoothing parameter (keyword `m`), or kernel (keyword `kernel`):
 """
@@ -143,14 +141,16 @@ function ash!(o::Ash; m = o.m, kernel = o.kernel)
     o.kernel = kernel
     _ash!(o)
 end
-function ash!(o::Ash, y; weight=nothing,  m = o.m, kernel = o.kernel)
+function ash!(o::Ash, y; m = o.m, kernel = o.kernel)
     o.m = m
     o.kernel = kernel
-    if weight === nothing
-        _histogram!(o, y)
-    else
-        _weightedhistogram!(o, y, weight)
-    end
+    _histogram!(o, y)
+    _ash!(o)
+end
+function ash!(o::Ash, y, weight::AbstractWeights;  m = o.m, kernel = o.kernel)
+    o.m = m
+    o.kernel = kernel
+    _weightedhistogram!(o, y, weight)
     _ash!(o)
 end
 
