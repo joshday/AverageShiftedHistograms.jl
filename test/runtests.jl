@@ -107,4 +107,24 @@ end
     xyz(o)
 end
 
+@testset "AshWeighted" begin
+    weight_funcs = (weights, aweights, fweights, pweights)
+
+    for f in weight_funcs
+        x = randn(10_000)
+        o = ash(x, f(ones(21)), rng = -1:0.1:1)
+        o2 = ash(x; rng = -1:0.1:1)
+        @test o == o2
+
+        y = rand(1000)
+        w = f(rand(1:10, 11))
+        o = ash(y; rng = 0:0.1:1)
+        ow = ash(y, w; rng = 0:0.1:1)
+        @test o.counts .* w == ow.counts
+
+        w = f(rand(1:10, 10))
+        @test_throws DimensionMismatch ash(y, w; rng = 0:0.1:1)
+    end 
+end
+
 end #module
