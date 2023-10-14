@@ -1,14 +1,14 @@
 # AverageShiftedHistograms.jl
 
 
-An Average Shifted Histogram (ASH) estimator is essentially a [kernel density estimator](https://en.wikipedia.org/wiki/Kernel_density_estimation) calculated over a fine-partition histogram.  
+An Average Shifted Histogram (ASH) estimator is essentially a [kernel density estimator](https://en.wikipedia.org/wiki/Kernel_density_estimation) calculated over a fine-partition histogram.
 
 ## Benefits Over KDE
 
 - The histogram component can be constructed on-line.
 - Adding new data is an `O(nbins)` operation vs. `O(n)` for KDE, `nbins << n`.
 - ASH is considerably faster even for small datasets.  See below with a comparison with [KernelDensity.jl](https://github.com/JuliaStats/KernelDensity.jl).
-  
+
 ```julia
 julia> @btime kde(x) setup=(x=randn(100));
   169.523 μs (106 allocations: 56.05 KiB)
@@ -40,6 +40,8 @@ ash
 
 ```@example
 using AverageShiftedHistograms, Plots
+
+y = randn(10 ^ 6)
 
 o = ash(y; rng = -5:.1:5, m = 20)
 

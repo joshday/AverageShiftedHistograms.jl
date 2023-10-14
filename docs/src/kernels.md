@@ -1,7 +1,7 @@
 # Kernel Functions
 
 
-A [kernel function](https://en.wikipedia.org/wiki/Kernel_(statistics)#Nonparametric_statistics) defines the smoothing behavior of the ASH estimator.  
+A [kernel function](https://en.wikipedia.org/wiki/Kernel_(statistics)#Nonparametric_statistics) defines the smoothing behavior of the ASH estimator.
 
 **AverageShiftedHistograms** can use any function as a kernel that satisifies the following properties:
 
@@ -28,15 +28,15 @@ The **Kernels** module defines a collection of kernels:
 See [https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use](https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use) for detailed descriptions.
 
 ```@eval
-using Plots # hide
+using Plots, AverageShiftedHistograms # hide
 kernels = [
-        Kernels.biweight,    
-        Kernels.cosine,      
+        Kernels.biweight,
+        Kernels.cosine,
         Kernels.epanechnikov,
-        Kernels.triangular,  
-        Kernels.tricube,     
-        Kernels.triweight,   
-        Kernels.uniform,     
+        Kernels.triangular,
+        Kernels.tricube,
+        Kernels.triweight,
+        Kernels.uniform,
         Kernels.gaussian,
         Kernels.logistic
     ]
