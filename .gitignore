@@ -3,5 +3,5 @@
 *.png
 *.Rhistory
 *.gif
-docs/site
+docs/build
 *Manifest.toml

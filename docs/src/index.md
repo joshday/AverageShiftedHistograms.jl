@@ -46,4 +46,8 @@ y = randn(10 ^ 6)
 o = ash(y; rng = -5:.1:5, m = 20)
 
 plot(o)
+
+savefig("indexplot.svg"); nothing # hide
 ```
+
+![](indexplot.svg)

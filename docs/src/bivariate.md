@@ -10,4 +10,8 @@ y = x + randn(10_000)
 o = ash(x, y)
 
 plot(o)
+
+savefig("bivariateplot.svg"); nothing # hide
 ```
+
+![](bivariateplot.svg)

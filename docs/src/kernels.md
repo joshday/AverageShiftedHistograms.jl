@@ -28,7 +28,7 @@ The **Kernels** module defines a collection of kernels:
 See [https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use](https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use) for detailed descriptions.
 
 ```@eval
-using Plots, AverageShiftedHistograms # hide
+using Plots, AverageShiftedHistograms
 kernels = [
         Kernels.biweight,
         Kernels.cosine,
@@ -42,4 +42,8 @@ kernels = [
     ]
 
 plot(kernels, -1.5, 1.5, line=(2, :auto), lab=permutedims(string.(kernels)))
+savefig("kernelplot.svg")
+nothing
 ```
+
+![](kernelplot.svg)

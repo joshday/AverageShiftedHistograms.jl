@@ -10,4 +10,7 @@ o = ash(y; rng = -5:.2:5)
 xy(o)  # return (rng, density)
 
 plot(plot(o), plot(o; hist=false), layout=(2,1))
+
+savefig("univariateplot.svg"); nothing # hide
 ```
+![](univariateplot.svg)
