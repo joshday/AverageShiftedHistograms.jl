@@ -23,7 +23,6 @@ function Base.show(io::IO, ::MIME"text/plain", o::Ash)
 end
 
 Base.push!(o::Ash, y::Real) = _histogram!(o::Ash, [y])
-Base.push!(o::Ash, y::Real, weight::Real) = _weightedhistogram!(o::Ash, [y], [weight])
 
 # add data to the histogram
 function _histogram!(o::Ash, y)
@@ -35,23 +34,6 @@ function _histogram!(o::Ash, y)
         ki = floor(Int, (yi - a) * δinv + 1.5)
         if 1 <= ki <= b
             @inbounds c[ki] += 1
-        end
-    end
-    o.nobs += length(y)
-    return
-end
-
-# add data to the weighted histogram
-function _weightedhistogram!(o::Ash, y, weight::AbstractWeights)
-    b = length(o.rng)
-    a = first(o.rng)
-    b == length(weight) || throw(DimensionMismatch("Length of weights should be same as the length of the range"))
-    δinv = inv(step(o.rng))
-    c = o.counts
-    map(y) do x
-        ki = floor(Int, (x - a) * δinv + 1.5)
-        if 1 <= ki <= b
-            c[ki] += weight[ki]
         end
     end
     o.nobs += length(y)
@@ -80,13 +62,7 @@ end
 # Univariate Ash
     ash(x; kw...)
 
-Fit an average shifted histogram to data `x`.
-
-    ash(x, weight::AbstractWeights; kw...)
-
-Fit a weighted average shifted histogram to data `x`.
-
-Keyword options are:
+Fit an average shifted histogram to data `x`.  Keyword options are:
 
 - `rng`    : values over which the density will be estimated
 - `m`      : Number of adjacent histograms to smooth over
@@ -104,12 +80,11 @@ Fit a bivariate averaged shifted histogram to data vectors `x` and `y`.  Keyword
 - `kernely` : kernel in y direction
 
 # Mutating an Ash object
-Ash objectes can be updated with new data, new weights(only for univariates), smoothing parameter(s), or kernel(s).  They cannot, however, change the ranges over which the density is estimated.  It is therefore suggested to err on the side of caution when choosing data endpoints.
+Ash objectes can be updated with new data, smoothing parameter(s), or kernel(s).  They cannot, however, change the ranges over which the density is estimated.  It is therefore suggested to err on the side of caution when choosing data endpoints.
 
     # univariate
     ash!(obj; kw...)
-    ash!(obj, newx; kw...)
-    ash!(obj, newx, weight::AbstractWeights; kw...)
+    ash!(obj, newx, kw...)
 
     # bivariate
     ash!(obj; kw...)
@@ -122,19 +97,12 @@ function ash(x; nbin=500, rng::AbstractRange = extendrange(x, nbin), m = ceil(In
     _ash!(o)
 end
 
-function ash(x, weight::AbstractWeights; nbin=500, rng::AbstractRange = extendrange(x, nbin), m = ceil(Int, length(rng)/100), kernel = Kernels.biweight)
-    o = Ash(rng, kernel, m)
-    _weightedhistogram!(o, x, weight)
-    _ash!(o)
-end
-
 
 """
     ash!(o::Ash; kw...)
     ash!(o::Ash, newdata; kw...)
-    ash!(o::Ash, newdata, weight::AbstractWeights; kw...)
 
-Update an Ash estimate with new data, new weight, smoothing parameter (keyword `m`), or kernel (keyword `kernel`):
+Update an Ash estimate with new data, smoothing parameter (keyword `m`), or kernel (keyword `kernel`):
 """
 function ash!(o::Ash; m = o.m, kernel = o.kernel)
     o.m = m
@@ -145,12 +113,6 @@ function ash!(o::Ash, y; m = o.m, kernel = o.kernel)
     o.m = m
     o.kernel = kernel
     _histogram!(o, y)
-    _ash!(o)
-end
-function ash!(o::Ash, y, weight::AbstractWeights;  m = o.m, kernel = o.kernel)
-    o.m = m
-    o.kernel = kernel
-    _weightedhistogram!(o, y, weight)
     _ash!(o)
 end
 
