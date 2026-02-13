@@ -1,0 +1,23 @@
+---
+title: "AverageShiftedHistograms.jl"
+engine: julia
+---
+
+Welcome to the documentation for **AverageShiftedHistograms.jl**.
+
+## Overview
+
+AverageShiftedHistograms.jl is a Julia package that ...
+
+## Installation
+
+```julia
+using Pkg
+Pkg.add("AverageShiftedHistograms")
+```
+
+## Quickstart
+
+```{julia}
+println("Hello, World!")
+```
