@@ -1,3 +1,8 @@
+[![CI](https://github.com/joshday/AverageShiftedHistograms.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/joshday/AverageShiftedHistograms.jl/actions/workflows/CI.yml)
+[![Docs Build](https://github.com/joshday/AverageShiftedHistograms.jl/actions/workflows/Docs.yml/badge.svg)](https://github.com/joshday/AverageShiftedHistograms.jl/actions/workflows/Docs.yml)
+[![Stable Docs](https://img.shields.io/badge/docs-stable-blue)](https://joshday.github.io/AverageShiftedHistograms.jl/stable/)
+[![Dev Docs](https://img.shields.io/badge/docs-dev-blue)](https://joshday.github.io/AverageShiftedHistograms.jl/dev/)
+
 | Docs | Build | Test |
 |------|-------|------|
 | [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://joshday.github.io/AverageShiftedHistograms.jl/stable) [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://joshday.github.io/AverageShiftedHistograms.jl/latest) | [![CI](https://github.com/joshday/AverageShiftedHistograms.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/joshday/AverageShiftedHistograms.jl/actions/workflows/CI.yml) | [![codecov.io](http://codecov.io/github/joshday/AverageShiftedHistograms.jl/coverage.svg?branch=master)](http://codecov.io/github/joshday/AverageShiftedHistograms.jl?branch=master)

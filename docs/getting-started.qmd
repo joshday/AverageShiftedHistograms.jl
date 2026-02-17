@@ -1,0 +1,11 @@
+# Getting Started {.unnumbered}
+
+## Basic Usage
+
+```julia
+using AverageShiftedHistograms
+```
+
+## Examples
+
+*TODO: Add examples here.*
